@@ -445,6 +445,8 @@ function explain(txt) {
     $('#helpModalDesc').html(exp[txt].subtitle)
     if (exp[txt].more != null) {
       $('#helpModalMore').html(exp[txt].more)
+    } else {
+      $('#helpModalMore').html("")
     }
     $('#helpModal').modal("show");
   }
