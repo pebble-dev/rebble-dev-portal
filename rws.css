@@ -55,6 +55,11 @@ body {
   cursor: pointer;
 }
 
+.btn-primary {
+  /* padding: 15px; */
+  font-size: 20px;
+}
+
 strong {
   color: var(--rebble-orange) !important
 }
