@@ -422,3 +422,27 @@ function build() {
   // $("body").html(JSON.stringify(app))
 
 }
+
+function explain(txt) {
+  var exp = {};
+  exp.appname = {title: "App Name", subtitle: "The name of the application.", more: "The display name in the app store.", opt: false}
+  exp.websiteurl = {title: "Website URL", subtitle: "A link to your website, or a page about the face.", opt: true}
+  exp.sourcecodeurl = {title: "Source code URL", subtitle: "A link to the source repository.", opt: true}
+  exp.apptype = {title: "App type", subtitle: "Watchapp or Watchface.", more: "Watchfaces don't require icons, watchapps require icons and a category.", opt: false}
+  exp.category = {title: "Watchapp category", subtitle: "For watch apps only.", more: "Used for categorisation in the store. <br><a href='https://developer.rebble.io/developer.pebble.com/assets/images/guides/appstore-publishing/app-category.png'>Click here</a> for a description of each category.", opt: false }
+  exp.appdescription = { title: "Description", subtitle: "A description of the watchface or app.", more: "Used in the appstore.", opt: false}
+  exp.releasenotes = { title: "Release Notes", subtitle: "A description of what is new in this release.", more: "Useful for updating users on changes.", opt: false}
+  exp.largeicon = { title: "Large icon", subtitle: "Used in the appstore.", more: "Required for watch apps only.", opt: false}
+  exp.smallicon = { title: "Small icon", subtitle: "Used in the pebble app applocker.", more: "Required for watch apps only.", opt: false}
+  exp.screenshots = { title: "Screenshots", subtitle: "At least one required.", more: "You can use different screenshots per platform, or the same for all.", opt: false}
+  exp.banner = { title: "Appstore Banner", subtitle: "A banner advert used in the store.", more: "Make it nice and eye-catching.", opt: false}
+
+  if (exp[txt] != null) {
+    $('#helpModalLabel').html(exp[txt].title);
+    $('#helpModalDesc').html(exp[txt].subtitle)
+    if (exp[txt].more != null) {
+      $('#helpModalMore').html(exp[txt].more)
+    }
+    $('#helpModal').modal("show");
+  }
+}
