@@ -195,6 +195,8 @@ function build() {
       app.category = appcat
     }
 
+  } else {
+    app.category = "Faces"
   }
 
   if ($('#i-appdesc').val() == null || $('#i-appdesc').val() == "") {
@@ -412,6 +414,7 @@ function build() {
     $('#buildbtn').removeClass("btn-primary");
     $('#buildbtn').addClass("btn-success");
     $('#buildbtn').html("Success! Downloading .zip");
+    $('#finishedModal').modal("show");
     setTimeout(function () {
       $('#buildbtn').removeClass("btn-success");
       $('#buildbtn').addClass("btn-primary");
@@ -426,8 +429,8 @@ function build() {
 function explain(txt) {
   var exp = {};
   exp.appname = {title: "App Name", subtitle: "The name of the application.", more: "The display name in the app store.", opt: false}
-  exp.websiteurl = {title: "Website URL", subtitle: "A link to your website, or a page about the face.", opt: true}
-  exp.sourcecodeurl = {title: "Source code URL", subtitle: "A link to the source repository.", opt: true}
+  exp.websiteurl = {title: "Website URL", subtitle: "An optional link to your website, or a page about the face.", opt: true}
+  exp.sourcecodeurl = {title: "Source code URL", subtitle: "An optional link to the source code repository, if available.", opt: true}
   exp.apptype = {title: "App type", subtitle: "Watchapp or Watchface.", more: "Watchfaces don't require icons, watchapps require icons and a category.", opt: false}
   exp.category = {title: "Watchapp category", subtitle: "For watch apps only.", more: "Used for categorisation in the store. <br><a href='https://developer.rebble.io/developer.pebble.com/assets/images/guides/appstore-publishing/app-category.png'>Click here</a> for a description of each category.", opt: false }
   exp.appdescription = { title: "Description", subtitle: "A description of the watchface or app.", more: "Used in the appstore.", opt: false}
