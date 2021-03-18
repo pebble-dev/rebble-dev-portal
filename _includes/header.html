@@ -3,7 +3,7 @@
       <a class="navbar-brand" href="/">{{ site.title }}
     
     
-          {% include real_time_rebble_dark.svg %}
+          {% include real_time_rebble_light.svg %}
     
     
         </a>
@@ -26,18 +26,9 @@
     
           </ul>
           <ul class="navbar-nav navbar-dark nav-flex-icons">
-            {% if page.url == "/" %}
             <li class="nav-item " id="viewAllOn">
-              <a class="nav-link" href="https://rebble.io/discord"> <i class="fab fa-discord"></i> Rebble Discord</a>
+              <a class="nav-link" href="https://rebble.io/discord"> <span class="data-username"></span> <i class="fas fa-user"></i></a>
           </li>
-            {% else %}
-            <li class="nav-item " id="viewAllOn">
-                <a class="nav-link" href="{{ page.link }}?viewall=true"> <i class="fas fa-list-alt"></i> View All Steps</a>
-            </li>
-            <li class="nav-item hidden" id="viewAllOff">
-                <a class="nav-link" href="{{ page.link }}?viewall=false"> <i class="fas fa-shoe-prints"></i> Step-by-step</a>
-            </li>
-            {% endif %}
           </ul>
         </div>
       </nav>

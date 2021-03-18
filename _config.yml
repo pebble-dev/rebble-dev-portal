@@ -1,9 +1,9 @@
 
 # Site settings
-title: Rebble Help
+title: Rebble Developer Portal
 # email: your-email@domain.com
 description: >
-  Rebble Support Center, for any and all issues with your Pebble smartwatch
+  Rebble Support Center, publish new apps to the appstore!
 baseurl: ""		# no trailing slash
 url: ""	# no trailing slash
 excerpt_separator: <!--more-->
@@ -25,8 +25,3 @@ sass:
 
 plugins:
 - jemoji
-
-collections: 
-  topic:
-    output: true
-    permalink: /:path/

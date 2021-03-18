@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/res/js/devPortal.js"></script>
+    <script type="text/javascript" src="/res/js/oauth.js"></script>
+    <link href="/res/mdb/css/mdb.min.css" rel="stylesheet" />
+    <link href="/res/css/login.css" rel="stylesheet" />
+</head>
+
+
+<body onload="authPart2()">
+    <div class="container-fluid">
+        <div class="row tall">
+            <div class="col-8 dark-bg">
+
+                <div class="container tac mt-5">
+                    <h1 class="largetext"> Developer Portal </h1>
+                    <h5> Submit apps and watchfaces to the appstore </h5>
+                    <div style="margin-top: 120px;">
+                        <img src="/res/img/large_icon_space.svg" id="porthole"></img>
+                    </div>
+                    <br><br>
+                    <h5 class="mt-5"> Don't yet have an app to submit? Read the <a href="#">developer documentation</a> </h5>
+                </div>
+
+            </div>
+            <div class="tl-l col-4">
+                <div class="container tall vertical-center">
+                    <span class="wide tac">
+
+            <h4> Logging in  </h4><div class="loader" id="loader"><div class="spinner"></div></div><div class="error text-danger" id="errorText"></div>  <br>
+            <div id="takemeback" class="hidden"><a href="/">Start again</a></div>
+            <br><br><br><br>
+          </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

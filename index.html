@@ -1,71 +1,99 @@
+--- 
+layout: default 
+title: "Rebble" 
+date: 2015-06-12 11:56:42 
+permalink: / 
 ---
-layout: default
-title: "Rebble"
-date:   2015-06-12 11:56:42
 
-permalink: /
----
-
+      
 <div class="container">
-    <div class="row">
-      <h1 class="hugeText"> Welcome to the Rebble Help Center </h1>
+        
+    <div class="row mt-5">
+        <div class="col-3">
+            
+            <input placeholder="Search" class="niceInput hidden animated fadeIn" onchange="searchUserApps(this.value)" id="appsearch"> </input>
+            <ul class="nav flex-column border-right" id="userAppList">
+                
+                <li class="nav-item">
+                    <a class="nav-link ' + extraClasses + '" href="#"><span class="ml-2">Retrieving Apps</span></a>
+                </li>
+                
+            </ul>
+            <ul class="nav flex-column tall border-right">
+              <li class="nav-item">
+                <a class="nav-link" href="#"> <i class="fas fa-plus"></i> New App</a>
+              </li>
+            </ul>
+
+        </div>
+
+        <div class="col-8 ml-3 hidden" id="appinfo-main">
+
+            <div class="row">
+                <div class="col-3">
+                    <img src="/res/placeholder/140x140.png" id="appinfo-icon"></img>
+                </div>
+                <div class="col-sm">
+                    <h1 id="appinfo-appname"> </h1>
+                    <ul class="nodec"> 
+                        <li> <i class="far fa-heart" ></i> <span id="appinfo-hearts"> </span> </li>
+                        <li> <i class="fas fa-code-branch"></i> <span id="appinfo-latestrelease"> </span></li>
+                        <li> 
+                            <img src="/res/img/icon_og.png" class="tinyicon bandw" title="Aplite Unsupported"/>
+                            <img src="/res/img/icon_steel.png" class="tinyicon bandw" title="Aplite unsupported"/>
+                            <img src="/res/img/icon_timesteel.png" class="tinyicon" title="Basalt Supported"/>
+                            <img src="/res/img/icon_round.png" class="tinyicon" title="Chalk Supported"/>
+                            <img src="/res/img/icon_p2.png" class="tinyicon" title="Diorite Supported"/>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="row mt-4 lineup">
+                <btn class="btn btn-secondary noshadow"> <i class="fas fa-pen"></i> New Release </btn>
+                <btn class="btn btn-secondary noshadow"> <i class="fas fa-align-justify"></i> Edit Store Listing </btn>
+                <btn class="btn btn-secondary noshadow"> <i class="fas fa-external-link-alt"></i> View in store </btn>
+            </div>
+            
+            <div class="row mt-5 ml-1" id="appinfo-secondary">
+                <table class="table">
+                    <tr>
+                        <td class="font-weight-bold"> Category: </td><td class="pl-3" id="appinfo-category"> </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Created: </td><td class="pl-3" id="appinfo-initaldate"> </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Updated: </td><td class="pl-3" id="appinfo-latestdate"> </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Description: </td><td class="pl-3" id="appinfo-description"> </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Source Link: </td><td class="pl-3" id="appinfo-sourcelink">  </td>
+                    </tr>
+                   
+                    <tr>
+                        <td class="font-weight-bold"> Latest Release: </td><td class="pl-3" id="appinfo-latestreleaselist"> </td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Latest Release Notes: </td><td class="pl-3" id="appinfo-releasenotes"> </td>
+                    </tr>
+                </table>
+            </div>
+            
+
+        </div>
+        <div class="col-8 ml-3 hidden" id="appinfo-main-loader">
+            Fetching Details
+        </div>
+
     </div>
-    <div class="row">
-    <div class="lite">Search for a support topic, or pick from below</div>
-    </div>
-    <div class="row">
-      <br><br>
-
-      <div class="wide mt-5">
-        <!-- <center> -->
-          <input class="search matchtitle" id="searchbar" onchange="performSearch()" type="text" placeholder="Search for a topic"></input>
-        <!-- </center> -->
-      </div>
-    </div>
-
-    <br>
-
-    <div class="row">
-      <div class="highlight-text lite" id="topicfilter">All topics:</div>
-    </div>
-
-
-    <div class="row mt-3">
-      <ul class="linklist">
-        <li class="searchitem" data-keywords="setup start started install rebble help first time inital"><a href="/setup/"> Setting up Rebble Web Services </a></li>
-        {% for post in site.topic %}
-           {% if post.osSpecific != true or post.os == "choose" %}
-              {% if post.hideFromSearch != true %}
-                <li class="searchitem" data-keywords="{{ post.keywords }} {{ post.prompt | downcase }}"><a href="{{ post.url | prepend: site.baseurl }}"> {{ post.prompt }} </a></li>
-              {% endif %}
-            {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
-
-
-  <div class="row hidden" id="nothingFound">
-    Nothing quite matches, try changing your search term or asking on Discord.
-  </div>
 
 </div>
 
-{% if site.posts == 0 %}
-    <section>
-        <div class="text-content">
-            <p><em>There's nothing here (yet...)</em></p>
-            <p>
-                In the meantime, check out the <a href="https://discordapp.com/invite/aRUAYFN">
-                    Discord Server</a> or subscribe to the mailing list:
-            </p>
-            {% include mailinglist.html %}
-        </div>
-    </section>
-    <style> footer { display: none; } </style>
-{% endif %}
-
 <script src="{{ site.baseurl }}/res/mdb/js/jquery.min.js"></script>
 <script src="{{ site.baseurl }}/res/mdb/js/bootstrap.min.js"></script>
-<script src="{{ site.baseurl }}/res/js/search.js"></script>
+<script src="{{ site.baseurl }}/res/js/devPortal.js"></script>
 
 {% include footer.html %}
