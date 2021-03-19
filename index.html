@@ -54,10 +54,10 @@ permalink: /
             <div class="row mt-4 lineup">
                 <btn class="btn btn-secondary noshadow"> <i class="fas fa-upload"></i> New Release </btn>
                 <btn class="btn btn-secondary noshadow" onclick="editAppListing()"> <i class="fas fa-align-justify"></i> Edit Store Listing </btn>
-                <btn class="btn btn-secondary noshadow" onclick="showExtraAppOptions()"> <i class="fas fa-cogs"></i> More Options </btn>
+                <btn class="btn btn-secondary noshadow" onclick="showMoreOptions()"> <i class="fas fa-cogs"></i> More Options </btn>
             </div>
             
-            <div class="row mt-5 ml-1" id="appinfo-secondary">
+            <div class="row mt-5 ml-1 appinfoscreen" id="appinfo-secondary">
                 <table class="table">
                     <tr>
                         <td class="font-weight-bold"> Category: </td><td class="pl-3" id="appinfo-category"> </td>
@@ -84,7 +84,8 @@ permalink: /
                 </table>
             </div>
 
-            <div id="appinfo-secondary-listingcontrol" class="hidden mt-4 lineup">
+            <!-- Edit appstore listing -->
+            <div id="appinfo-secondary-listingcontrol" class="hidden mt-4 lineup appinfoscreen">
                 <table class="table">
                     <tr>
                         <td class="font-weight-bold"> Title: </td><td> <input id="edit-title" class="simple p-2" onkeyup="updateAppField('title')"></input></td> <td><i id="change-title" class="fas fa-asterisk hidden change"></i></td>
@@ -113,7 +114,14 @@ permalink: /
                 </table>
                 <div class="row" >
                     <btn class="btn btn-primary noshadow"> <i class="fas fa-save"></i> Save </btn>
-                    <btn class="btn btn-secondary noshadow" onclick="abortEditAppListing()"> <i class="fas fa-ban"></i> Cancel </btn>
+                    <btn class="btn btn-secondary noshadow" onclick="returnToMainSecondaryWindow()"> <i class="fas fa-ban"></i> Cancel </btn>
+                </div>
+            </div>
+
+            <!-- More options -->
+            <div id="appinfo-secondary-moreoptions" class="hidden mt-4 lineup appinfoscreen">
+                <div class="row">
+                    <btn class="btn btn-danger noshadow"> <i class="fas fa-skull"></i> Delete App </btn>
                 </div>
             </div>
 

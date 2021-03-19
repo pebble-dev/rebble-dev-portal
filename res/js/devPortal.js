@@ -44,8 +44,12 @@ function searchUserApps(searchText) {
     })
 }
 
+
+// UX functions
+
+// - Edit appstore listing
 function editAppListing() {
-    $('#appinfo-secondary').addClass("hidden");
+    $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary-listingcontrol').removeClass("hidden");
 
     $('.change').addClass("hidden");
@@ -81,9 +85,15 @@ function editAppListing() {
 function updateAppField(field) {
     $('#change-' + field).removeClass("hidden")
 }
-function abortEditAppListing() {
+function returnToMainSecondaryWindow() {
+    $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary').removeClass("hidden");
-    $('#appinfo-secondary-listingcontrol').addClass("hidden");
+}
+
+// - More options
+function showMoreOptions() {
+    $('.appinfoscreen').addClass("hidden");
+    $('#appinfo-secondary-moreoptions').removeClass("hidden");
 }
 
 // Data functions
@@ -176,7 +186,8 @@ function getAppDetails_cb(data) {
     $('#appinfo-main-loader').addClass("hidden");
 
 
-
+    //TEST
+    showMoreOptions();
 }
 
 function genericAPIErrorHandler(data, statusCode, cbo) {
