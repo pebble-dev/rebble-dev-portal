@@ -61,7 +61,9 @@ function authPart3(data) {
         data = JSON.parse(data);
         sessionStorage.setItem("access_token", data.access_token);
         sessionStorage.setItem("refresh_token", data.refresh_token);
-        sessionStorage.setItem("expires", data.expires);
+        var d = new Date()
+        d.setTime(d.getTime() + data.expires_in);
+        sessionStorage.setItem("expires", d.toISOString());
         window.location = "/"
         
 
@@ -69,6 +71,12 @@ function authPart3(data) {
         part2Error("Something went wrong", "001D");
         return
     }
+}
+
+function localLogout() {
+    //This clears the oauth client data, but doesn't log out from auth.rebble.io
+    sessionStorage.clear();
+    checkAuthState();
 }
 
 // Helper functions
