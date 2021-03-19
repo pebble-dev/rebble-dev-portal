@@ -5,6 +5,9 @@ body {
   --color-rebble-orange: #ff4700;
   --color-rebble-green: #6fa673;
   --color-rebble-amber: #FFB449;
+  --color-rebble-red: #AF0000;
+  --color-rebble-light-red: #FF7575;
+  --color-rebble-light-grey: #5c5c5c;
   /* --color-header: #f88f1d; */
   --color-background-dark: #9e6900;
   --color-foreground: #FFFFFF;
@@ -298,6 +301,10 @@ div.email-signup input[type="submit"] {
 .btn-secondary:focus, .btn-secondary:not(:disabled):not(.disabled):active:focus {
   box-shadow: none !important;
 }
+.btn-active, .btn-active:hover {
+  background-color: var(--color-rebble-light-grey) !important;
+  border: 1px solid var(--color-rebble-light-grey) !important;
+}
 
 
 
@@ -343,7 +350,7 @@ ul.nodec > li {
   filter: grayscale(100%);
 }
 
-.noshadow {
+.noshadow, .noshadow:hover {
   box-shadow: none;
 }
 
@@ -425,4 +432,13 @@ textarea {
 
 .change {
   color: var(--color-rebble-orange)
+}
+
+.btn-danger {
+  background-color: var(--color-rebble-red) !important;
+}
+
+
+p.small {
+  font-size: 1rem;
 }

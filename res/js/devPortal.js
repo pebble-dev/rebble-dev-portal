@@ -48,9 +48,14 @@ function searchUserApps(searchText) {
 // UX functions
 
 // - Edit appstore listing
-function editAppListing() {
+function showAppListingEditor(sender) {
+    if ($('#editStoreListingBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }
+
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary-listingcontrol').removeClass("hidden");
+
+    $('.appinfobtn').removeClass("btn-active");
+    $(sender).addClass("btn-active");
 
     $('.change').addClass("hidden");
     $('#edit-title').val(currentAppCache.title);
@@ -88,12 +93,16 @@ function updateAppField(field) {
 function returnToMainSecondaryWindow() {
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary').removeClass("hidden");
+    $('.appinfobtn').removeClass("btn-active");
 }
 
 // - More options
-function showMoreOptions() {
+function showMoreOptions(sender) {
+    if ($('#moreOptionsBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary-moreoptions').removeClass("hidden");
+    $('.appinfobtn').removeClass("btn-active");
+    $(sender).addClass("btn-active");
 }
 
 // Data functions
@@ -149,13 +158,14 @@ function getAppDetails_cb(data) {
     $('#appinfo-hearts').html(data.hearts);
     $('#appinfo-latestrelease').html(data.latest_release.version);
     $('#appinfo-latestreleaselist').html(data.latest_release.version);
+    $('#appinfo-uuid').html(data.uuid);
     $('#appinfo-category').html(data.category);
     $('#appinfo-initaldate').html(data.created_at);
     $('#appinfo-latestdate').html(data.latest_release.published_date);
     $('#appinfo-description').html(data.description);
     $('#appinfo-sourcelink').html(data.source);
     $('#appinfo-releasenotes').html(data.latest_release.release_notes);
-    $('#appinfo-icon').attr("src",data.list_image["144x144"]);
+    $('#appinfo-icon').attr("src",data.screenshot_images[0]["144x168"]);
 
     //Icons
     $('.tinyicon').addClass("bandw");
@@ -186,8 +196,6 @@ function getAppDetails_cb(data) {
     $('#appinfo-main-loader').addClass("hidden");
 
 
-    //TEST
-    showMoreOptions();
 }
 
 function genericAPIErrorHandler(data, statusCode, cbo) {
