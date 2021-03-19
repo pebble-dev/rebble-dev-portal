@@ -1,3 +1,5 @@
+var currentAppCache = {}
+
 // Worker functions
 
 function displayLoginPage() {
@@ -40,6 +42,48 @@ function searchUserApps(searchText) {
             $(element).removeClass("hiddenSearchResult")
         }
     })
+}
+
+function editAppListing() {
+    $('#appinfo-secondary').addClass("hidden");
+    $('#appinfo-secondary-listingcontrol').removeClass("hidden");
+
+    $('.change').addClass("hidden");
+    $('#edit-title').val(currentAppCache.title);
+    $('#edit-description').val(currentAppCache.description);
+    $('#edit-website').val(currentAppCache.website);
+    $('#edit-source').val(currentAppCache.source);
+
+
+    //Screenshots
+    $('#edit-screenshotContainer').html("");
+    var extra = 5 - currentAppCache.screenshot_images.length
+    currentAppCache.screenshot_images.forEach((screenshot, index) => {
+        $('#edit-screenshotContainer').append('\
+        <div class="card img-card ml-3 mt-3">\
+            <img class="card-img-top" src="' + screenshot["144x168"] + '" alt="Card image cap" />\
+            <div class="card-body">\
+                <a href="#" class="btn btn-primary">Delete</a>\
+            </div>\
+        </div>');
+    });
+    for (var i = 0; i < extra; i++) {
+        $('#edit-screenshotContainer').append('\
+        <div class="card img-card ml-3 mt-3">\
+            <img class="card-img-top" src="https://rebble.io/submit/img/add.png" alt="Card image cap" />\
+            <div class="card-body">\
+                <a href="#" class="btn btn-primary">Add</a>\
+            </div>\
+        </div>');
+    }
+    $('#screenshot-platform').val(currentAppCache.screenshot_hardware);
+}
+function updateAppField(field) {
+    $('#change-' + field).removeClass("hidden")
+}
+function abortEditAppListing() {
+    $('#appinfo-secondary').removeClass("hidden");
+    $('#appinfo-secondary-listingcontrol').addClass("hidden");
 }
 
 // Data functions
@@ -86,9 +130,11 @@ function getAppDetails_cb(data) {
     }
 
     data = data.data[0];
+    currentAppCache = data
 
     debugLog(data)
 
+    //Data
     $('#appinfo-appname').html(data.title);
     $('#appinfo-hearts').html(data.hearts);
     $('#appinfo-latestrelease').html(data.latest_release.version);
@@ -99,17 +145,49 @@ function getAppDetails_cb(data) {
     $('#appinfo-description').html(data.description);
     $('#appinfo-sourcelink').html(data.source);
     $('#appinfo-releasenotes').html(data.latest_release.release_notes);
-    $('#appinfo-icon').attr("src",data.list_image["144x144"])
+    $('#appinfo-icon').attr("src",data.list_image["144x144"]);
+
+    //Icons
+    $('.tinyicon').addClass("bandw");
+    $('.supports-emery').addClass("hidden");
+    if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("bandw") }
+    if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("bandw") }
+    if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("bandw") }
+    if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("bandw") }
+    if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); $('.supports-emery').removeClass("hidden");  }
+
+    //Status
+    if (data.visible) {
+        $('#statusText').html("Published");
+        $('#statusIcon').removeClass();
+        $('#statusIcon').addClass("far fa-check-circle");
+        $('#statusIcon').css("color", "var(--color-rebble-green)")
+    } else {
+        $('#statusText').html("Unpublished");
+        $('#statusIcon').removeClass();
+        $('#statusIcon').addClass("far fa-pause-circle");
+        $('#statusIcon').css("color", "var(--color-rebble-amber)")
+    }
+
+    $('#externalStoreListing').attr("href", config.misc.appstoreUrl + data.id)
 
     $('#appinfo-main').addClass("animated fadeIn");
     $('#appinfo-main').removeClass("hidden");
     $('#appinfo-main-loader').addClass("hidden");
+
+
 
 }
 
 function genericAPIErrorHandler(data, statusCode, cbo) {
     console.log("API error. Data to follow.")
     console.log(data)
+
+    if ([401,403].includes(statusCode)) {
+        debugLog("Auth expired?");
+        console.log("Authentication has expired. Redirecting to login page");
+        localLogout();
+    }
     
     if (typeof cbo == "object") {
         $(cbo).html("Something went wrong")

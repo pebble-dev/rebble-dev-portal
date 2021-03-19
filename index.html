@@ -11,7 +11,7 @@ permalink: /
     <div class="row mt-5">
         <div class="col-3">
             
-            <input placeholder="Search" class="niceInput hidden animated fadeIn" onchange="searchUserApps(this.value)" id="appsearch"> </input>
+            <input placeholder="Search" class="niceInput smallInput hidden animated fadeIn" onchange="searchUserApps(this.value)" id="appsearch"> </input>
             <ul class="nav flex-column border-right" id="userAppList">
                 
                 <li class="nav-item">
@@ -34,25 +34,27 @@ permalink: /
                     <img src="/res/placeholder/140x140.png" id="appinfo-icon"></img>
                 </div>
                 <div class="col-sm">
-                    <h1 id="appinfo-appname"> </h1>
+                    <h1 id="appinfo-appname"> </h1> 
                     <ul class="nodec"> 
-                        <li> <i class="far fa-heart" ></i> <span id="appinfo-hearts"> </span> </li>
-                        <li> <i class="fas fa-code-branch"></i> <span id="appinfo-latestrelease"> </span></li>
+                        <li> <i class="far fa-heart" ></i> <span id="appinfo-hearts"> </span> <i class="fas fa-code-branch ml-5"></i> <span id="appinfo-latestrelease"> </span> </li>
+                        <li> <i id="statusIcon" class="far fa-check-circle"></i> <span id="statusText"> Published </span> </li>
                         <li> 
-                            <img src="/res/img/icon_og.png" class="tinyicon bandw" title="Aplite Unsupported"/>
-                            <img src="/res/img/icon_steel.png" class="tinyicon bandw" title="Aplite unsupported"/>
-                            <img src="/res/img/icon_timesteel.png" class="tinyicon" title="Basalt Supported"/>
-                            <img src="/res/img/icon_round.png" class="tinyicon" title="Chalk Supported"/>
-                            <img src="/res/img/icon_p2.png" class="tinyicon" title="Diorite Supported"/>
+                            <img src="/res/img/icon_og.png" class="supports-aplite tinyicon bandw" title="Aplite"/>
+                            <!-- <img src="/res/img/icon_steel.png" class="supports-aplite tinyicon bandw" title="Aplite unsupported"/> -->
+                            <!-- <img src="/res/img/icon_time.png" class="supports-basalt tinyicon bandw" title="Basalt Supported"/> -->
+                            <img src="/res/img/icon_timesteel.png" class="supports-basalt tinyicon bandw" title="Basalt"/>
+                            <img src="/res/img/icon_round.png" class="supports-chalk tinyicon bandw" title="Chalk"/>
+                            <img src="/res/img/icon_p2.png" class="supports-diorite tinyicon bandw" title="Diorite"/>
+                            <img src="/res/img/icon_time2.png" class="supports-emery tinyicon bandw" title="Emery"/>
                         </li>
                     </ul>
                 </div>
 
             </div>
             <div class="row mt-4 lineup">
-                <btn class="btn btn-secondary noshadow"> <i class="fas fa-pen"></i> New Release </btn>
-                <btn class="btn btn-secondary noshadow"> <i class="fas fa-align-justify"></i> Edit Store Listing </btn>
-                <btn class="btn btn-secondary noshadow"> <i class="fas fa-external-link-alt"></i> View in store </btn>
+                <btn class="btn btn-secondary noshadow"> <i class="fas fa-upload"></i> New Release </btn>
+                <btn class="btn btn-secondary noshadow" onclick="editAppListing()"> <i class="fas fa-align-justify"></i> Edit Store Listing </btn>
+                <btn class="btn btn-secondary noshadow" onclick="showExtraAppOptions()"> <i class="fas fa-cogs"></i> More Options </btn>
             </div>
             
             <div class="row mt-5 ml-1" id="appinfo-secondary">
@@ -81,7 +83,39 @@ permalink: /
                     </tr>
                 </table>
             </div>
-            
+
+            <div id="appinfo-secondary-listingcontrol" class="hidden mt-4 lineup">
+                <table class="table">
+                    <tr>
+                        <td class="font-weight-bold"> Title: </td><td> <input id="edit-title" class="simple p-2" onkeyup="updateAppField('title')"></input></td> <td><i id="change-title" class="fas fa-asterisk hidden change"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Description: </td><td> <textarea class="simple" id="edit-description" onkeyup="updateAppField('description')"></textarea> </td> <td><i id="change-description" class="fas fa-asterisk hidden change"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Website: </td><td> <input class="simple p-2" id="edit-website" onkeyup="updateAppField('website')"></input> </td> <td><i id="change-website" class="fas fa-asterisk hidden change"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Source: </td><td> <input class="simple p-2" id="edit-source" onkeyup="updateAppField('source')"></input> </td> <td><i id="change-source" class="fas fa-asterisk hidden change"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="font-weight-bold"> Screenshots: 
+                            <select id="screenshot-platform" onchange="alert('Todo');">
+                                <option value="aplite">Aplite</option>
+                                <option value="basalt">Basalt</option>
+                                <option value="chalk">Chalk</option>
+                                <option value="diorite">Diorite</option>
+                                <option value="emery">Emery</option>
+                              </select>
+                        </td>
+                        <td> <div class="row" id="edit-screenshotContainer"></div>  </td>  <td><i id="change-screenshots" class="fas fa-asterisk hidden change"></i></td>
+                    </tr>
+                </table>
+                <div class="row" >
+                    <btn class="btn btn-primary noshadow"> <i class="fas fa-save"></i> Save </btn>
+                    <btn class="btn btn-secondary noshadow" onclick="abortEditAppListing()"> <i class="fas fa-ban"></i> Cancel </btn>
+                </div>
+            </div>
 
         </div>
         <div class="col-8 ml-3 hidden" id="appinfo-main-loader">
