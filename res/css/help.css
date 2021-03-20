@@ -40,6 +40,7 @@ body.clear {
   box-shadow: none;
   font-size: 20px;
   background-color: var(--color-header) !important;
+  z-index: 1;
 }
 
 .navbar.navbar-dark .navbar-nav .nav-item .nav-link {
@@ -437,8 +438,32 @@ textarea {
 .btn-danger {
   background-color: var(--color-rebble-red) !important;
 }
-
+.alert-large.alert-danger {
+  background-color: var(--color-rebble-light-red) !important;
+  border: 1px solid var(--color-rebble-light-red) !important;
+  border-radius: 0px;
+  color: black !important;
+}
+.alert-large {
+  font-size: 1rem;
+}
+.alert-large a {
+  color: black;
+  text-decoration: underline;
+}
+.text-danger {
+  color: var(--color-rebble-red) !important;
+}
+.close {
+  height: 100%;
+}
 
 p.small {
   font-size: 1rem;
+}
+
+
+.largeText {
+  font-size: 3rem;
+  color: var(--color-rebble-orange)
 }
