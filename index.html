@@ -6,28 +6,35 @@ permalink: /
 ---
 
       
-<div class="container">
+<div class="container page" id="master-home">
         
     <div class="row mt-5">
-        <div class="col-3">
+        <div class="col-3" id="menu-applistContainer">
             
             <input placeholder="Search" class="niceInput smallInput hidden animated fadeIn" onchange="searchUserApps(this.value)" id="appsearch"> </input>
             <ul class="nav flex-column border-right" id="userAppList">
                 
                 <li class="nav-item">
-                    <a class="nav-link ' + extraClasses + '" href="#"><span class="ml-2">Retrieving Apps</span></a>
+                    <a class="nav-link" href="#"><span class="ml-2">Retrieving Apps</span></a>
                 </li>
                 
             </ul>
             <ul class="nav flex-column tall border-right">
               <li class="nav-item">
-                <a class="nav-link" href="#"> <i class="fas fa-plus"></i> New App</a>
+                <a class="nav-link" href="#" onclick="showNewAppWindow()"> <i class="fas fa-plus"></i> New App</a>
               </li>
             </ul>
 
         </div>
+        <div class="col-1 hidden" id="menu-newAppSteps">
+    
+            <div style="font-size:0.9rem;">
+                <i class="fas fa-chevron-left"></i> Back
+            </div>
 
-        <div class="col-8 ml-3 hidden" id="appinfo-main">
+        </div>
+
+        <div class="col-8 ml-3 hidden mainwindow" id="appinfo-main">
 
             <div class="row">
                 <div class="col-3">
@@ -72,10 +79,10 @@ permalink: /
                         <td class="font-weight-bold"> Updated: </td><td class="pl-3" id="appinfo-latestdate"> </td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold"> Description: </td><td class="pl-3" id="appinfo-description"> </td>
+                        <td class="font-weight-bold"> Description: </td><td class="pl-3" id="appinfo-description" ondblclick="wiggleButton('editStoreListingBtn')"> </td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold"> Source Link: </td><td class="pl-3" id="appinfo-sourcelink">  </td>
+                        <td class="font-weight-bold"> Source Link: </td><td class="pl-3" id="appinfo-sourcelink" ondblclick="wiggleButton('editStoreListingBtn')">  </td>
                     </tr>
                    
                     <tr>
@@ -134,11 +141,11 @@ permalink: /
             </div>
         </div>
 
-        <div class="col-8 ml-3 hidden" id="appinfo-main-loader">
+        <div class="col-8 ml-3 hidden mainwindow" id="appinfo-main-loader">
             Fetching Details
         </div>
 
-        <div class="col-8 ml-3 hidden" id="appinfo-noapps">
+        <div class="col-8 ml-3 hidden mainwindow" id="appinfo-noapps">
             <div class="row pl-2">
                 <h1 class="largeText"> Welcome, <span class="data-username"></span>. </h1>
             </div>
@@ -168,8 +175,108 @@ permalink: /
             </ul>
         </div>
 
+        <!-- New App -->
+        <div class="col-10 ml-3 hidden mainwindow longForm" id="window-newApp">
+            <div class="row ml-1">
+                <h1 class="lite"> Submit a new app </h1>
+            </div>
+
+            <div class="mt-3 ml-2">
+                <span class="appOrFace">App</span> Name* 
+                <br>
+                <input class="niceInput mt-2" placeholder="" id="i-newapp-name"></input> <i class="fas fa-question"></i>
+            </div>
+
+            <div class="mt-4 ml-2">
+                App Type*
+                <br> 
+                <button type="button" class="btn btn-secondary noshadow">Watchface</button>
+                <button type="button" class="btn btn-secondary noshadow">Watch App</button>
+            </div>
+
+            <div class="mt-4 ml-2">
+                Description*
+                <br>
+                <textarea class="niceInput mt-2"></textarea>
+            </div>  
+
+            <div class="mt-4 ml-2">
+                Release Notes*
+                <br>
+                <textarea class="niceInput mt-2"></textarea>
+            </div>  
+
+            <div class="mt-4 ml-2">
+                Screenshots (Minimum 1 required)
+                <br>
+
+                <input type="checkbox">Use per-platform screenshots</input>
+                
+                <br>
+                <div class="row">
+
+
+                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
+                        <div class="card-body">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+
+                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
+                        <div class="card-body">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+
+                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
+                        <div class="card-body">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+
+                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
+                        <div class="card-body">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+
+                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
+                        <div class="card-body">
+                            <a href="#" class="btn btn-primary">Add</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 ml-2">
+                    Appstore Banner
+                    <br>
+                    <div class="image-upload br-sm">
+                        <label for="i-ban-f">
+                          <img id="i-ban" class="screenshot banner" src="/res/placeholder/140x140.png">
+                        </label>
+            
+                        <input class="hidden" id="i-ban-f" type="file" onchange="readURL(this);">
+                      </div>
+                </div>
+
+                <br><br><br><br>
+            </div>  
+
+            
+                
+        </div>
+
     </div>
 
+</div>
+
+<div class="container hidden page" id="master-profile"> 
+    Yolo
 </div>
 
 <script src="{{ site.baseurl }}/res/mdb/js/jquery.min.js"></script>

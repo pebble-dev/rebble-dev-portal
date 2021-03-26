@@ -4,7 +4,6 @@ const authconfig = {
         token: "https://auth.rebble.watch/oauth/token",
     },
     clientID: "WtE2fAXm2vLTYn5vFFr1MetE",
-    secret: "secret_u7pMs0AneO23lO5XnW0Aj8b7AdiY1ZEV",
     redirectURI: "https://dev-portal.rebble.watch/auth/complete",
     scopes: "pebble_token pebble profile"
 }
@@ -84,6 +83,7 @@ function localLogout() {
 function generateAndStoreState() {
     var state = generateState();
     sessionStorage.setItem('state', state);
+    debugLog("Store state as " + state);
     return state
 }
 

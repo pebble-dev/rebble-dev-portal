@@ -47,7 +47,7 @@ function searchUserApps(searchText) {
 
 // UX functions
 
-// - Edit appstore listing
+//  - Edit appstore listing
 function showAppListingEditor(sender) {
     if ($('#editStoreListingBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }
 
@@ -96,13 +96,51 @@ function returnToMainSecondaryWindow() {
     $('.appinfobtn').removeClass("btn-active");
 }
 
-// - More options
+//  - More options
 function showMoreOptions(sender) {
     if ($('#moreOptionsBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary-moreoptions').removeClass("hidden");
     $('.appinfobtn').removeClass("btn-active");
     $(sender).addClass("btn-active");
+}
+
+//  - New app
+function showNewAppWindow() {
+    $('#menu-applistContainer').addClass("hidden");
+    $('.mainwindow').addClass("hidden");
+    $('#window-newApp').removeClass("hidden")
+    $('#menu-newAppSteps').removeClass("hidden");
+}
+
+//  - Global UX
+function showAlert(title, text) {
+    $('#mainAlert').removeClass("hidden");
+    $('#mainAlert-topic').html(title);
+    $('#mainAlert-text').html(text);
+}
+
+function wiggleButton(id) {
+    $('#' + id).addClass("animated bounce");
+    setTimeout(function () {
+        $('#' + id).removeClass("animated bounce");
+    }, 1000)
+}
+
+function showPage(pageID) {
+    $('.page').addClass("hidden");
+    $('.page').addClass("hidden");
+
+    var validPages = ["profile","home"];
+
+    if (validPages.includes(pageID)) {
+        $('#master-' + pageID).removeClass("hidden");
+        window.history.pushState(pageID, 'Rebble Developer Portal - ' + pageID, '/' + pageID);
+    } else {
+        $('#master-home').removeClass("hidden");
+    }
+
+    
 }
 
 // Data functions
@@ -119,13 +157,18 @@ function getUserInfo_cb(data) {
 
     $(".data-username").html(data.name);
     $("#userAppList").html("");
-    data.applications.forEach((element, index) => {
-        console.log(element)
-        addUserApp(element, (index == 0))
-    });
-    if (data.applications.length > 14) {
+
+    if (data.applications.length > 0) {
+        data.applications.forEach((element, index) => {
+            console.log(element)
+            addUserApp(element, (index == 0))
+        });
+        if (data.applications.length > 14) {
         debugLog("Wow. Use has enough apps to use the search bar.")
         $('#appsearch').removeClass("hidden");
+        }
+    } else {
+        $('#appinfo-noapps').removeClass("hidden")
     }
 }
 
@@ -201,11 +244,17 @@ function getAppDetails_cb(data) {
 function genericAPIErrorHandler(data, statusCode, cbo) {
     console.log("API error. Data to follow.")
     console.log(data)
+    console.log(statusCode)
 
     if ([401,403].includes(statusCode)) {
         debugLog("Auth expired?");
         console.log("Authentication has expired. Redirecting to login page");
         localLogout();
+    }
+
+    if (statusCode == 0) {
+        //Network error
+        showAlert("Connection Error", "Check your connection, or the <a href='#'>rebble service status</a>.")
     }
     
     if (typeof cbo == "object") {
@@ -280,6 +329,8 @@ function initDevPortal() {
 
     //Start up
     getUserInfo();
+
+    // showNewAppWindow()
 }
 
 initDevPortal();
