@@ -105,12 +105,14 @@ function showMoreOptions(sender) {
     $(sender).addClass("btn-active");
 }
 
-//  - New app
-function showNewAppWindow() {
-    $('#menu-applistContainer').addClass("hidden");
-    $('.mainwindow').addClass("hidden");
-    $('#window-newApp').removeClass("hidden")
-    $('#menu-newAppSteps').removeClass("hidden");
+//  - Profile
+function updateProfileSubtitle() {
+    var subtitles = [
+        "Developer Extraordinaire",
+        "Rebble with a cause",
+        "Prolific publisher",
+    ]
+    $('#developer-subtitle').html(subtitles[Math.floor(Math.random() * subtitles.length)])
 }
 
 //  - Global UX
@@ -126,15 +128,24 @@ function wiggleButton(id) {
         $('#' + id).removeClass("animated bounce");
     }, 1000)
 }
+function flipElement(id) {
+    $(id).addClass("animated flip");
+    setTimeout(function () {
+        $(id).removeClass("animated flip");
+    }, 1000)
+}
 
 function showPage(pageID) {
-    $('.page').addClass("hidden");
+
+    pageID = pageID.replace("/","");
+
     $('.page').addClass("hidden");
 
-    var validPages = ["profile","home"];
+    var validPages = ["profile","home","submit"];
 
     if (validPages.includes(pageID)) {
         $('#master-' + pageID).removeClass("hidden");
+        if (pageID == "home") { pageID = "" }
         window.history.pushState(pageID, 'Rebble Developer Portal - ' + pageID, '/' + pageID);
     } else {
         $('#master-home').removeClass("hidden");
@@ -170,6 +181,10 @@ function getUserInfo_cb(data) {
     } else {
         $('#appinfo-noapps').removeClass("hidden")
     }
+
+    var page = window.location.pathname;
+    debugLog("Init router detected path as " + page);
+    showPage(page);
 }
 
 function getAppDetails(appID) {
@@ -262,6 +277,71 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
     }
 }
 
+function submitNewApp() {
+
+    var shinyNewApp = {
+        name: $('#i-newapp-name').val(),
+        type: ($('#i-iswatchface').prop("checked")) ? "face" : "app",
+        category: $('#i-appCat').val(),
+        description: $('#i-description').val(),
+        releaseNotes: $('#i-releaseNotes').val(),
+    }
+
+    //Client side basic validation
+    if (shinyNewApp.name == "") { newAppValidationError("App name cannot be blank"); return }
+    if (shinyNewApp.type == "app" && shinyNewApp.category == "") { newAppValidationError("Please select an app category"); return }
+    if (shinyNewApp.description == "") { newAppValidationError("Description cannot be blank"); return }
+    if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
+
+
+    var formData = new FormData();
+
+    formData.append("appname", );
+    formData.append("apptype", apptype); // number 123456 is immediately converted to a string "123456"
+
+    // HTML file input, chosen by user
+    // formData.append("userfile", fileInputElement.files[0]);
+
+    // JavaScript file-like object
+    // var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
+    // var blob = new Blob([content], { type: "text/xml"});
+
+    // formData.append("webmasterfile", blob);
+
+    var request = new XMLHttpRequest();
+    request.open("POST", config.endpoint.base + config.path.submitApp);
+    request.send(formData);
+
+}
+function newAppValidationError(txt) {
+    $('#btn-newAppSubmit').html(txt);
+    $('#btn-newAppSubmit').addClass("btn-danger");
+    setTimeout(function() {
+        $('#btn-newAppSubmit').html("GO");
+        $('#btn-newAppSubmit').removeClass("btn-danger");
+    }, 2000)
+}
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            $('.activeImage').attr('src', e.target.result);
+
+            var i = null;
+            $('.activeImage').each(function () {
+              i = this.id;
+            });
+            images[i] = e.target.result.split("base64,")[1];
+            console.log("Image ID " + i + " = " + e.target.result)
+            // $('.activeImage').css('display', 'inline');
+
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
 
 // Helper functions
 
@@ -327,10 +407,39 @@ function initDevPortal() {
         searchUserApps($('#appsearch').val())
     });
 
-    //Start up
+    //Bind other events
+    $('#master-profile').on('classChange', function(e) {
+        // Change subtitle on visiblity change
+        alert("F")
+        updateProfileSubtitle();
+     });
+
+    $('.rbtype').on('click', function(e) {
+        if ($('#i-iswatchface').prop("checked")) {
+            $('#appCategory').addClass("hidden");
+            $('.appOrFace').html("Watchface")
+        } else {
+            $('#appCategory').removeClass("hidden");
+            $('.appOrFace').html("App")
+        }
+    });
+
+    $('#screenshotCollectionType').on('click', function(e) {
+        if ($('#screenshotCollectionType').prop("checked")) {
+            $('#platformAgnosticScreenshots').addClass("hidden");
+            $('#platformSpecificScreenshots').removeClass("hidden");
+        } else {
+            $('#platformSpecificScreenshots').addClass("hidden");
+            $('#platformAgnosticScreenshots').removeClass("hidden");
+        }
+    });
+
+    
+    //Start up. Router runs on callback
     getUserInfo();
 
-    // showNewAppWindow()
+    // $('#submitModal').modal('show');
+
 }
 
 initDevPortal();
