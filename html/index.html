@@ -718,8 +718,19 @@
       </div>
 </header>
 
-        <div class="container page" id="master-home">
+<div class="modal fade bd-example-modal-lg mt-5 uploader" data-backdrop="static" tabindex="-1" role="dialog" id="submitModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg square uploader">
+      <div class="modal-content square p-4 uploader">
         
+        <h1> Uploading app </h1>
+        Your app is being uploaded to the store
+
+      </div>
+    </div>
+</div>
+
+
+<div class="container page hidden" id="master-home">        
     <div class="row mt-5">
         <div class="col-3" id="menu-applistContainer">
             
@@ -727,22 +738,15 @@
             <ul class="nav flex-column border-right" id="userAppList">
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="ml-2">Retrieving Apps</span></a>
+                    <a class="nav-link" ><span class="ml-2">Retrieving Apps</span></a>
                 </li>
                 
             </ul>
             <ul class="nav flex-column tall border-right">
               <li class="nav-item">
-                <a class="nav-link" href="#" onclick="showNewAppWindow()"> <i class="fas fa-plus"></i> New App</a>
+                <a class="nav-link"  onclick="showPage('submit')"> <i class="fas fa-plus"></i> New App</a>
               </li>
             </ul>
-
-        </div>
-        <div class="col-1 hidden" id="menu-newAppSteps">
-    
-            <div style="font-size:0.9rem;">
-                <i class="fas fa-chevron-left"></i> Back
-            </div>
 
         </div>
 
@@ -844,7 +848,7 @@
             <div id="appinfo-secondary-moreoptions" class="hidden mt-4 appinfoscreen animated fadeIn">
                 <h4 class="mt-4"> App status </h4>
                 <div class="row pl-4">
-                    <p class="small"> Your app is currently Public, and can be downloaded. <a href="#">Make Unlisted.</a> </p>
+                    <p class="small"> Your app is currently Public, and can be downloaded. <a >Make Unlisted.</a> </p>
                 </div>
                 <h4 class="mt-3"> Danger Zone </h4>
                 <div class="row pl-4">
@@ -887,83 +891,362 @@
             </ul>
         </div>
 
+      
+
+    </div>
+
+</div>
+
+<div class="container page hidden" id="master-submit">
+        
+    <div class="row mt-5">
         <!-- New App -->
-        <div class="col-10 ml-3 hidden mainwindow longForm" id="window-newApp">
+        <div class="col-1" id="menu-newAppSteps">
+    
+            <div style="font-size:0.9rem;">
+                <a onclick="showPage('home')"><i class="fas fa-chevron-left"></i> Back </a>
+            </div>
+
+        </div>
+        <div class="col-10 ml-3 longForm" id="window-newApp">
             <div class="row ml-1">
-                <h1 class="lite"> Submit a new app </h1>
+                <h1 class="lite"> Submit a new app or face </h1>
             </div>
-
+            
             <div class="mt-3 ml-2">
-                <span class="appOrFace">App</span> Name* 
+                <span class="appOrFace ">Watchface</span> Name* 
                 <br>
-                <input class="niceInput mt-2" placeholder="" id="i-newapp-name"></input> <i class="fas fa-question"></i>
+                <input class="niceInput mt-2" name="appname" id="i-newapp-name"></input> <i class="fas fa-question"></i>
             </div>
-
+        
             <div class="mt-4 ml-2">
                 App Type*
                 <br> 
-                <button type="button" class="btn btn-secondary noshadow">Watchface</button>
-                <button type="button" class="btn btn-secondary noshadow">Watch App</button>
+                <div class="custom-control custom-radio m-l-s">
+                    <input type="radio" class="custom-control-input rbtype" id="i-iswatchface" name="apptype">
+                    <label class="custom-control-label" for="i-iswatchface">Watchface</label>
+                </div>
+                <div class="custom-control custom-radio m-l-s">
+                    <input type="radio" class="custom-control-input rbtype" id="i-iswatchapp" name="apptype">
+                    <label class="custom-control-label" for="i-iswatchapp">Watch App</label>
+                </div>
             </div>
 
+            <div class="mt-4 ml-2 animated fadeIn hidden" id="appCategory">
+                App Category*
+                <br> 
+                <div class="input-group mb-3">
+                    <select class="custom-select niceInput" id="i-appCat">
+                      <option selected value="">Choose...</option>
+                      <option value="Daily">Daily</option>
+                      <option value="Tools & Utilities">Tools & Utilities</option>
+                      <option value="Notifications">Notifications</option>
+                      <option value="Remotes">Remotes</option>
+                      <option value="Health & Fitness">Health & Fitness</option>
+                      <option value="Games">Games</option>
+                    </select>
+                </div>
+            </div>
+              
             <div class="mt-4 ml-2">
                 Description*
                 <br>
-                <textarea class="niceInput mt-2"></textarea>
+                <textarea class="niceInput mt-2" id="i-description"></textarea>
             </div>  
-
+        
             <div class="mt-4 ml-2">
                 Release Notes*
                 <br>
-                <textarea class="niceInput mt-2"></textarea>
+                <textarea class="niceInput mt-2" id="i-releaseNotes"></textarea>
             </div>  
-
+        
             <div class="mt-4 ml-2">
-                Screenshots (Minimum 1 required)
+                Screenshots
                 <br>
+                <div class="small"> 
+                    Screenshots let users see what your <span class="appOrFace lcase">app</span> looks like.
+                    <br>You can provide one set of screenshots for all platforms, or platform specific ones.
+                </div>
+            
+                <input id="screenshotCollectionType" type="checkbox" value="" class="mt-3">Use per-platform screenshots</input>
 
-                <input type="checkbox">Use per-platform screenshots</input>
-                
                 <br>
-                <div class="row">
-
-
-                    <div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
-                        <div class="card-body">
-                            <a href="#" class="btn btn-primary">Add</a>
+                <div class="" id="platformAgnosticScreenshots">
+                    <div class="row">
+                    
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-1-f">
+                                <img id = "i-icon-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-1-f" type="file" class="hidden" onchange="document.getElementById('i-icon-1-i').src = window.URL.createObjectURL(this.files[0])">
                         </div>
-                    </div>
-
-                    <div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
-                        <div class="card-body">
-                            <a href="#" class="btn btn-primary">Add</a>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-2-f">
+                                <img id = "i-icon-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-2-f" type="file" class="hidden" onchange="document.getElementById('i-icon-2-i').src = window.URL.createObjectURL(this.files[0])">
                         </div>
-                    </div>
-
-                    <div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
-                        <div class="card-body">
-                            <a href="#" class="btn btn-primary">Add</a>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-3-f">
+                                <img id = "i-icon-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-3-f" type="file" class="hidden" onchange="document.getElementById('i-icon-3-i').src = window.URL.createObjectURL(this.files[0])">
                         </div>
-                    </div>
-
-                    <div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
-                        <div class="card-body">
-                            <a href="#" class="btn btn-primary">Add</a>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-4-f">
+                                <img id = "i-icon-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-4-f" type="file" class="hidden" onchange="document.getElementById('i-icon-4-i').src = window.URL.createObjectURL(this.files[0])">
                         </div>
-                    </div>
-
-                    <div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img class="card-img-top" src="/res/placeholder/140x140.png" alt="Card image cap" />
-                        <div class="card-body">
-                            <a href="#" class="btn btn-primary">Add</a>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-5-f">
+                                <img id = "i-icon-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-5-f" type="file" class="hidden" onchange="document.getElementById('i-icon-5-i').src = window.URL.createObjectURL(this.files[0])">
                         </div>
+
                     </div>
                 </div>
 
+                <div class="hidden" id="platformSpecificScreenshots">
+
+                    <!-- Aplite specific screenshots -->
+                    <h4 class="m-0 highlight-text mt-4"> Aplite screenshots</h4>
+                    <div class="row">
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-a-1-f">
+                                <img id = "i-icon-a-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-a-1-f" type="file" class="hidden" onchange="document.getElementById('i-icon-a-1-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-a-2-f">
+                                <img id = "i-icon-a-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-a-2-f" type="file" class="hidden" onchange="document.getElementById('i-icon-a-2-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-a-3-f">
+                                <img id = "i-icon-a-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-a-3-f" type="file" class="hidden" onchange="document.getElementById('i-icon-a-3-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-a-4-f">
+                                <img id = "i-icon-a-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-a-4-f" type="file" class="hidden" onchange="document.getElementById('i-icon-a-4-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-a-5-f">
+                                <img id = "i-icon-a-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-a-5-f" type="file" class="hidden" onchange="document.getElementById('i-icon-a-5-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    </div>
+
+                    <!-- Basalt specific screenshots -->
+                    <h4 class="m-0 highlight-text mt-5"> Basalt screenshots</h4>
+                    <div class="row">
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-b-1-f">
+                                <img id = "i-icon-b-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-b-1-f" type="file" class="hidden" onchange="document.getElementById('i-icon-b-1-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-b-2-f">
+                                <img id = "i-icon-b-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-b-2-f" type="file" class="hidden" onchange="document.getElementById('i-icon-b-2-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-b-3-f">
+                                <img id = "i-icon-b-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-b-3-f" type="file" class="hidden" onchange="document.getElementById('i-icon-b-3-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-b-4-f">
+                                <img id = "i-icon-b-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-b-4-f" type="file" class="hidden" onchange="document.getElementById('i-icon-b-4-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-b-5-f">
+                                <img id = "i-icon-b-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-b-5-f" type="file" class="hidden" onchange="document.getElementById('i-icon-b-5-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    </div>
+
+                    <!-- Chalk specific screenshots -->
+                    <h4 class="m-0 highlight-text mt-5"> Chalk screenshots</h4>
+                    <div class="row">
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-c-1-f">
+                                <img id = "i-icon-c-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-c-1-f" type="file" class="hidden" onchange="document.getElementById('i-icon-c-1-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-c-2-f">
+                                <img id = "i-icon-c-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-c-2-f" type="file" class="hidden" onchange="document.getElementById('i-icon-c-2-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-c-3-f">
+                                <img id = "i-icon-c-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-c-3-f" type="file" class="hidden" onchange="document.getElementById('i-icon-c-3-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-c-4-f">
+                                <img id = "i-icon-c-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-c-4-f" type="file" class="hidden" onchange="document.getElementById('i-icon-c-4-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    
+                        <div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-icon-c-5-f">
+                                <img id = "i-icon-c-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary">Add</a>
+                                </div>
+                            </label>
+                            <input id="i-icon-c-5-f" type="file" class="hidden" onchange="document.getElementById('i-icon-c-5-i').src = window.URL.createObjectURL(this.files[0])">
+                        </div>
+                    </div>
+
+                      <!-- Diorite specific screenshots -->
+                      <h4 class="m-0 highlight-text mt-5"> Diorite screenshots </h4>
+                      <div class="row">
+                          <div class="card img-card noshadow border-lite ml-3 mt-3">
+                              <label for="i-icon-d-1-f">
+                                  <img id = "i-icon-d-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <div class="card-body wide">
+                                      <a  class="btn btn-primary">Add</a>
+                                  </div>
+                              </label>
+                              <input id="i-icon-d-1-f" type="file" class="hidden" onchange="document.getElementById('i-icon-d-1-i').src = window.URL.createObjectURL(this.files[0])">
+                          </div>
+                      
+                          <div class="card img-card noshadow border-lite ml-3 mt-3">
+                              <label for="i-icon-d-2-f">
+                                  <img id = "i-icon-d-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <div class="card-body wide">
+                                      <a  class="btn btn-primary">Add</a>
+                                  </div>
+                              </label>
+                              <input id="i-icon-d-2-f" type="file" class="hidden" onchange="document.getElementById('i-icon-d-2-i').src = window.URL.createObjectURL(this.files[0])">
+                          </div>
+                      
+                          <div class="card img-card noshadow border-lite ml-3 mt-3">
+                              <label for="i-icon-d-3-f">
+                                  <img id = "i-icon-d-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <div class="card-body wide">
+                                      <a  class="btn btn-primary">Add</a>
+                                  </div>
+                              </label>
+                              <input id="i-icon-d-3-f" type="file" class="hidden" onchange="document.getElementById('i-icon-d-3-i').src = window.URL.createObjectURL(this.files[0])">
+                          </div>
+                      
+                          <div class="card img-card noshadow border-lite ml-3 mt-3">
+                              <label for="i-icon-d-4-f">
+                                  <img id = "i-icon-d-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <div class="card-body wide">
+                                      <a  class="btn btn-primary">Add</a>
+                                  </div>
+                              </label>
+                              <input id="i-icon-d-4-f" type="file" class="hidden" onchange="document.getElementById('i-icon-d-4-i').src = window.URL.createObjectURL(this.files[0])">
+                          </div>
+                      
+                          <div class="card img-card noshadow border-lite ml-3 mt-3">
+                              <label for="i-icon-d-5-f">
+                                  <img id = "i-icon-d-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <div class="card-body wide">
+                                      <a  class="btn btn-primary">Add</a>
+                                  </div>
+                              </label>
+                              <input id="i-icon-d-5-f" type="file" class="hidden" onchange="document.getElementById('i-icon-d-5-i').src = window.URL.createObjectURL(this.files[0])">
+                          </div>
+                      </div>
+                </div>
+            
                 <div class="mt-4 ml-2">
                     Appstore Banner
                     <br>
@@ -971,24 +1254,40 @@
                         <label for="i-ban-f">
                           <img id="i-ban" class="screenshot banner" src="/res/placeholder/140x140.png">
                         </label>
-            
+                    
                         <input class="hidden" id="i-ban-f" type="file" onchange="readURL(this);">
                       </div>
                 </div>
 
+                <div class="text-danger ml-1" id="newAppErrorText"></div>
+                <button onclick="submitNewApp()" class="btn btn-primary" id="btn-newAppSubmit">Go</button>
+            
                 <br><br><br><br>
             </div>  
-
-            
-                
         </div>
-
-    </div>
-
+    </div>          
 </div>
 
-<div class="container hidden page" id="master-profile"> 
-    Yolo
+<div class="container-flex hidden page small" id="master-profile">
+    <div class="row">
+    </div>
+    <div class="row">
+        <div class="col-2 mt-5 nopad">&nbsp</div>
+        <div class="col-3 mt-5 nopad">
+            <span class="data-username mt-5 r2"></span> <i class="fas fa-pencil-alt"></i>
+            <div id="developer-subtitle" class="mt-2">Developer extrodainaire</div>
+            <div class="col-5 mt-3 nopad">
+                <table class="table noborder">
+                    <tr><td>Developer ID</td><td>1234</td></tr>
+                    <tr><td>Developer since</td><td>01/01/1970</td></tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-7 mt-5 nopad" id="profile-image">
+            <!-- <img class="circle" src="/res/img/space.gif" onclick="flipElement(this)"></img> -->
+            <!-- <img class="" src="/res/img/drawing.jpg" onclick="flipElement(this)"></img> -->
+        </div>
+    </div>
 </div>
 
 <script src="/res/mdb/js/jquery.min.js"></script>
