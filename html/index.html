@@ -718,6 +718,7 @@
       </div>
 </header>
 
+<!-- Modals -->
 <div class="modal fade bd-example-modal-lg mt-5 uploader" data-backdrop="static" tabindex="-1" role="dialog" id="submitModal" aria-hidden="true">
     <div class="modal-dialog modal-lg square uploader">
       <div class="modal-content square p-4 uploader">
@@ -728,7 +729,6 @@
       </div>
     </div>
 </div>
-
 
 <div class="container page hidden" id="master-home">        
     <div class="row mt-5">
@@ -912,11 +912,17 @@
             <div class="row ml-1">
                 <h1 class="lite"> Submit a new app or face </h1>
             </div>
+
+            <div class="ml-1 small">
+                So you're ready to ship your app or watchface, how exciting! If you're not quite sure what a field means, <a href="/res/img/explain.png" target="_blank">click here.</a>
+                <br>Fields marked with an * are required
+                <br>To download a set of presized example resources <a href="/res/zip/exampleImages.zip">click here.</a>
+            </div>
             
             <div class="mt-3 ml-2">
                 <span class="appOrFace ">Watchface</span> Name* 
                 <br>
-                <input class="niceInput mt-2" name="appname" id="i-newapp-name"></input> <i class="fas fa-question"></i>
+                <input class="niceInput mt-2" name="appname" id="i-newapp-name"></input>
             </div>
         
             <div class="mt-4 ml-2">
@@ -935,6 +941,7 @@
             <div class="mt-4 ml-2 animated fadeIn hidden" id="appCategory">
                 App Category*
                 <br> 
+                <div class="small">For a description of each category, <a href="https://help.rebble.io/images/submit/3.png" target="_blank">click here</a></div>
                 <div class="input-group mb-3">
                     <select class="custom-select niceInput" id="i-appCat">
                       <option selected value="">Choose...</option>
@@ -951,12 +958,14 @@
             <div class="mt-4 ml-2">
                 Description*
                 <br>
+                <div class="small">What does this <span class="appOrFace lcase">watchface</span> do?</div>
                 <textarea class="niceInput mt-2" id="i-description"></textarea>
             </div>  
         
             <div class="mt-4 ml-2">
                 Release Notes*
                 <br>
+                <div class="small">What's changed with this release? Still required for a first release.</div>
                 <textarea class="niceInput mt-2" id="i-releaseNotes"></textarea>
             </div>  
         
@@ -964,11 +973,11 @@
                 Screenshots
                 <br>
                 <div class="small"> 
-                    Screenshots let users see what your <span class="appOrFace lcase">app</span> looks like.
+                    Screenshots let users see what your <span class="appOrFace lcase">watchface</span> looks like. You must provide at least one.
                     <br>You can provide one set of screenshots for all platforms, or platform specific ones.
                 </div>
             
-                <input id="screenshotCollectionType" type="checkbox" value="" class="mt-3">Use per-platform screenshots</input>
+                <input id="screenshotCollectionType" type="checkbox" value="" class="mt-3">Use platform specific screenshots</input>
 
                 <br>
                 <div class="" id="platformAgnosticScreenshots">
@@ -977,7 +986,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-1-f">
-                                <img id = "i-icon-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -987,7 +996,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-2-f">
-                                <img id = "i-icon-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -997,7 +1006,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-3-f">
-                                <img id = "i-icon-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1007,7 +1016,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-4-f">
-                                <img id = "i-icon-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1017,7 +1026,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-5-f">
-                                <img id = "i-icon-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1035,7 +1044,7 @@
                     <div class="row">
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-a-1-f">
-                                <img id = "i-icon-a-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-a-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1045,7 +1054,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-a-2-f">
-                                <img id = "i-icon-a-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-a-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1055,7 +1064,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-a-3-f">
-                                <img id = "i-icon-a-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-a-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1065,7 +1074,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-a-4-f">
-                                <img id = "i-icon-a-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-a-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1075,7 +1084,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-a-5-f">
-                                <img id = "i-icon-a-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-a-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1089,7 +1098,7 @@
                     <div class="row">
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-b-1-f">
-                                <img id = "i-icon-b-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-b-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1099,7 +1108,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-b-2-f">
-                                <img id = "i-icon-b-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-b-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1109,7 +1118,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-b-3-f">
-                                <img id = "i-icon-b-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-b-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1119,7 +1128,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-b-4-f">
-                                <img id = "i-icon-b-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-b-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1129,7 +1138,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-b-5-f">
-                                <img id = "i-icon-b-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-b-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1143,7 +1152,7 @@
                     <div class="row">
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-c-1-f">
-                                <img id = "i-icon-c-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-c-1-i" class="card-img-top" src="/res/img/screenshotRound.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1153,7 +1162,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-c-2-f">
-                                <img id = "i-icon-c-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-c-2-i" class="card-img-top" src="/res/img/screenshotRound.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1163,7 +1172,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-c-3-f">
-                                <img id = "i-icon-c-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-c-3-i" class="card-img-top" src="/res/img/screenshotRound.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1173,7 +1182,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-c-4-f">
-                                <img id = "i-icon-c-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-c-4-i" class="card-img-top" src="/res/img/screenshotRound.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1183,7 +1192,7 @@
                     
                         <div class="card img-card noshadow border-lite ml-3 mt-3">
                             <label for="i-icon-c-5-f">
-                                <img id = "i-icon-c-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                <img id = "i-icon-c-5-i" class="card-img-top" src="/res/img/screenshotRound.png" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary">Add</a>
                                 </div>
@@ -1197,7 +1206,7 @@
                       <div class="row">
                           <div class="card img-card noshadow border-lite ml-3 mt-3">
                               <label for="i-icon-d-1-f">
-                                  <img id = "i-icon-d-1-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <img id = "i-icon-d-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                   <div class="card-body wide">
                                       <a  class="btn btn-primary">Add</a>
                                   </div>
@@ -1207,7 +1216,7 @@
                       
                           <div class="card img-card noshadow border-lite ml-3 mt-3">
                               <label for="i-icon-d-2-f">
-                                  <img id = "i-icon-d-2-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <img id = "i-icon-d-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                   <div class="card-body wide">
                                       <a  class="btn btn-primary">Add</a>
                                   </div>
@@ -1217,7 +1226,7 @@
                       
                           <div class="card img-card noshadow border-lite ml-3 mt-3">
                               <label for="i-icon-d-3-f">
-                                  <img id = "i-icon-d-3-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <img id = "i-icon-d-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                   <div class="card-body wide">
                                       <a  class="btn btn-primary">Add</a>
                                   </div>
@@ -1227,7 +1236,7 @@
                       
                           <div class="card img-card noshadow border-lite ml-3 mt-3">
                               <label for="i-icon-d-4-f">
-                                  <img id = "i-icon-d-4-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <img id = "i-icon-d-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                   <div class="card-body wide">
                                       <a  class="btn btn-primary">Add</a>
                                   </div>
@@ -1237,7 +1246,7 @@
                       
                           <div class="card img-card noshadow border-lite ml-3 mt-3">
                               <label for="i-icon-d-5-f">
-                                  <img id = "i-icon-d-5-i" class="card-img-top" src="/res/placeholder/140x140.png" />
+                                  <img id = "i-icon-d-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
                                   <div class="card-body wide">
                                       <a  class="btn btn-primary">Add</a>
                                   </div>
@@ -1247,23 +1256,59 @@
                       </div>
                 </div>
             
-                <div class="mt-4 ml-2">
+                <div class="mt-5 ml-2">
                     Appstore Banner
                     <br>
-                    <div class="image-upload br-sm">
+                    <div class="small">
+                        This is the banner that is displayed above your <span class="apptype lcase">app</span> screenshots in the store.<br>
+                        It is required for apps, and options for watchfaces.
+                    </div>
+                    <div class="image-upload br-sm border-lite curve">
                         <label for="i-ban-f">
-                          <img id="i-ban" class="screenshot banner" src="/res/placeholder/140x140.png">
+                          <img id="i-ban-i" class="screenshot banner" src="/res/img/newappbanner.png">
                         </label>
                     
-                        <input class="hidden" id="i-ban-f" type="file" onchange="readURL(this);">
+                        <input class="hidden" id="i-ban-f" type="file" onchange="document.getElementById('i-ban-i').src = window.URL.createObjectURL(this.files[0]);">
                       </div>
                 </div>
 
-                <div class="text-danger ml-1" id="newAppErrorText"></div>
-                <button onclick="submitNewApp()" class="btn btn-primary" id="btn-newAppSubmit">Go</button>
+                <div class="mt-5 ml-2">
+                    App icons
+                    <div class="small">App icons are shown in the user's app locker</div>
+                    <br>
+                    <label for="i-icon-large-f">
+                        <img id="i-icon-large-i" class="card-img-top border-lite" src="/res/img/largeicon.png" style="height:144px;width:144px;" />
+                    </label>
+                    <input id="i-icon-large-f" type="file" class="hidden" onchange="document.getElementById('i-icon-large-i').src = window.URL.createObjectURL(this.files[0])">
+                    <br><br>
+                    <label for="i-icon-small-f">
+                        <img id="i-icon-small-i" class="card-img-top border-lite" src="/res/img/smallicon.png" style="height:96px;width:96px;" />
+                    </label>
+                    <input id="i-icon-small-f" type="file" class="hidden" onchange="document.getElementById('i-icon-small-i').src = window.URL.createObjectURL(this.files[0])">
+                </div>
+
+                <div class="mt-4 ml-2">
+                    Website
+                    <br>
+                    <div class="small">Where can users find you?</div>
+                    <input class="niceInput mt-2" name="website" id="i-website"></input>
+                </div>
+
+                <div class="mt-4 ml-2">
+                    Source URL
+                    <br>
+                    <div class="small">Is your app open source? If so pop the repo link in below!</div>
+                    <input class="niceInput mt-2" name="website" id="i-website"></input>
+                </div>
+
+                <button onclick="submitNewApp()" class="btn btn-primary mt-5" id="btn-newAppSubmit">Go</button>
             
                 <br><br><br><br>
             </div>  
+
+          
+
+
         </div>
     </div>          
 </div>

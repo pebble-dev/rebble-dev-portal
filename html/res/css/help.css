@@ -166,13 +166,6 @@ qr img {
 .helpcontent h1 {
   margin-bottom: 60px;
 }
-img {
-  max-height: 400px;
-  /* max-width: 90%; */
-  /* width: 200px; */
-  /* margin-left: calc(50% - 100px); */
-  
-}
 .post img {
   border: 6px solid black;
 }
@@ -420,6 +413,12 @@ textarea {
   max-width: 70%;
   font-size: 1.3rem;
 }
+.longForm .image-upload {
+  width: 70%;
+}
+.longForm .banner {
+  width: 100%;
+}
 input[type="checkbox"] {
   width: inherit !important; 
   margin-right: 10px;
@@ -505,6 +504,10 @@ input[type="checkbox"] {
 .border-lite {
   border: 1px solid black;
 }
+.curve {
+  border-top-left-radius: calc(.25rem - 1px);
+  border-top-right-radius: calc(.25rem - 1px);
+}
 
 .circle {
   border-radius: 50%;
@@ -519,6 +522,10 @@ input[type="checkbox"] {
 .uploader img {
   height: 100px;
   width: 100px;
+}
+.large {
+  height: 100% !important;
+  width: auto;
 }
 .uploader .fill {
   width: 100%;
