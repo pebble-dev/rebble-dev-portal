@@ -143,6 +143,12 @@ function showPage(pageID) {
 
     var validPages = ["profile","home","submit"];
 
+    //Any weird custom per-window log goes here
+    if (pageID == "submit") {
+        $('#i-iswatchface').prop("checked",true);
+        $('#usePlatformSpecificScreenshots').prop("checked",false);
+    }
+
     if (validPages.includes(pageID)) {
         $('#master-' + pageID).removeClass("hidden");
         if (pageID == "home") { pageID = "" }
@@ -286,13 +292,39 @@ function submitNewApp() {
         description: $('#i-description').val(),
         releaseNotes: $('#i-releaseNotes').val(),
     }
-
     //Client side basic validation
+    //No blank required fields
     if (shinyNewApp.name == "") { newAppValidationError("App name cannot be blank"); return }
     if (shinyNewApp.type == "app" && shinyNewApp.category == "") { newAppValidationError("Please select an app category"); return }
     if (shinyNewApp.description == "") { newAppValidationError("Description cannot be blank"); return }
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
+    //At least one screenshot
+    if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
+        if ($('#i-icon-a-1-f').prop('files')[0] == undefined && $('#i-icon-b-1-f').prop('files')[0] == undefined && $('#i-icon-c-1-f').prop('files')[0] == undefined && $('#i-icon-d-1-f').prop('files')[0] == undefined) {
+            newAppValidationError("Provide at least one screenshot")
+            return
+        }
+
+    } else {
+
+        if ($('#i-icon-1-f').prop('files')[0] == undefined) {
+            newAppValidationError("Provide at least one screenshot")
+            return
+        }
+
+    }
+    //App specific fields
+    if ($('#i-iswatchapp').prop("checked")) {
+
+        if ($('#i-ban-f').prop('files')[0] == undefined) { newAppValidationError("A banner is required"); return }
+        if ($('#i-icon-large-f').prop('files')[0] == undefined) { newAppValidationError("A large app icon required"); return }
+        if ($('#i-icon-small-f').prop('files')[0] == undefined) { newAppValidationError("A small app icon required"); return }
+
+    }
+
+    $('#submitModal').modal('show');
+    return
 
     var formData = new FormData();
 
@@ -424,8 +456,8 @@ function initDevPortal() {
         }
     });
 
-    $('#screenshotCollectionType').on('click', function(e) {
-        if ($('#screenshotCollectionType').prop("checked")) {
+    $('#usePlatformSpecificScreenshots').on('click', function(e) {
+        if ($('#usePlatformSpecificScreenshots').prop("checked")) {
             $('#platformAgnosticScreenshots').addClass("hidden");
             $('#platformSpecificScreenshots').removeClass("hidden");
         } else {
