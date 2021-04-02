@@ -287,28 +287,28 @@ function submitNewApp() {
 
     var shinyNewApp = {
         name: $('#i-newapp-name').val(),
-        type: ($('#i-iswatchface').prop("checked")) ? "face" : "app",
-        category: $('#i-appCat').val(),
+        type: ($('#i-iswatchface').prop("checked")) ? "watchface" : "watchapp",
         description: $('#i-description').val(),
         releaseNotes: $('#i-releaseNotes').val(),
     }
+    shinyNewApp.category = (shinyNewApp.type == "watchface") ? "Faces" : $('#i-appCat').val()
     //Client side basic validation
     //No blank required fields
     if (shinyNewApp.name == "") { newAppValidationError("App name cannot be blank"); return }
-    if (shinyNewApp.type == "app" && shinyNewApp.category == "") { newAppValidationError("Please select an app category"); return }
+    if (shinyNewApp.type == "watchapp" && shinyNewApp.category == "") { newAppValidationError("Please select an app category"); return }
     if (shinyNewApp.description == "") { newAppValidationError("Description cannot be blank"); return }
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
     //At least one screenshot
     if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
-        if ($('#i-icon-a-1-f').prop('files')[0] == undefined && $('#i-icon-b-1-f').prop('files')[0] == undefined && $('#i-icon-c-1-f').prop('files')[0] == undefined && $('#i-icon-d-1-f').prop('files')[0] == undefined) {
+        if ($('#i-screenshot-a-1-f').prop('files')[0] == undefined && $('#i-screenshot-b-1-f').prop('files')[0] == undefined && $('#i-screenshot-c-1-f').prop('files')[0] == undefined && $('#i-screenshot-d-1-f').prop('files')[0] == undefined) {
             newAppValidationError("Provide at least one screenshot")
             return
         }
 
     } else {
 
-        if ($('#i-icon-1-f').prop('files')[0] == undefined) {
+        if ($('#i-screenshot-1-f').prop('files')[0] == undefined) {
             newAppValidationError("Provide at least one screenshot")
             return
         }
@@ -323,13 +323,72 @@ function submitNewApp() {
 
     }
 
+    if ($('#i-pbw').prop('files')[0] == undefined) { newAppValidationError("A banner is required"); return }
+
     $('#submitModal').modal('show');
-    return
+
+    //Prepare the multipart/form
 
     var formData = new FormData();
 
-    formData.append("appname", );
-    formData.append("apptype", apptype); // number 123456 is immediately converted to a string "123456"
+    formData.append("title", shinyNewApp.name);
+    formData.append("type", shinyNewApp.type);
+    formData.append("description", shinyNewApp.description);
+    formData.append("release_notes", shinyNewApp.releaseNotes);
+    formData.append("category", shinyNewApp.category);
+
+
+    //Add banner if present
+    if ($('#i-ban-f').prop('files')[0] != undefined) {
+        formData.append("banner", $('#i-ban-f').prop('files')[0]);
+    }
+    
+    var largeIcon = null
+    //Collect screenshots, store the first valid one for use as largeIcon if we're a watchface
+    if ($('#usePlatformSpecificScreenshots').prop("checked")) {
+
+        //The weird order here is order of preference for largeIcon platform. Basalt looks best
+        ["basalt","aplite", "diorite", "chalk"].forEach(platform => {
+            var short = platform.substr(0,1);
+            for (var i = 1; i < 6; i ++) {
+                if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) { 
+                    formData.append(`screenshot-${platform}-${i}`, $(`#i-screenshot-${short}-${i}-f`).prop("files")[0]); 
+                    if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${short}-${i}-f`).prop("files")[0] }
+                }
+            }
+        })
+
+    } else {
+
+        for (var i = 1; i < 6; i ++) {
+            if ($(`#i-screenshot-${i}-f`).prop("files")[0] != undefined) { 
+                formData.append(`screenshot-generic-${i}`, $(`#i-screenshot-${i}-f`).prop("files")[0]); 
+                if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${i}-f`).prop("files")[0] }
+            }
+        }
+
+    }
+
+    //append app-only fields
+    if (shinyNewApp.type == "watchapp") {
+        console.log("Is an app, yo")
+        formData.append("large_icon", $('#i-icon-large-f').prop("files")[0])
+        formData.append("small_icon", $('#i-icon-small-f').prop("files")[0])
+    } else {
+        // Use a screenshot as largeIcon
+        formData.append("large_icon", largeIcon)
+    }
+
+    //Attach pbw
+    formData.append("pbw",$('#i-pbw').prop('files')[0]);
+
+//     var object = {};
+// formData.forEach(function(value, key){
+//     object[key] = value;
+// });
+// var json = JSON.stringify(object);
+
+//     alert(json);
 
     // HTML file input, chosen by user
     // formData.append("userfile", fileInputElement.files[0]);
@@ -340,9 +399,26 @@ function submitNewApp() {
 
     // formData.append("webmasterfile", blob);
 
-    var request = new XMLHttpRequest();
-    request.open("POST", config.endpoint.base + config.path.submitApp);
-    request.send(formData);
+    //var request = new XMLHttpRequest();
+    //request.setRequestHeader("Authorization", value)
+    //request.open("POST", config.endpoint.base + config.path.submitApp);
+    // request.onreadystatechange = function () {
+    //     // In local files, status is 0 upon success in Mozilla Firefox
+    //     if(request.readyState === XMLHttpRequest.DONE) {
+    //       var status = request.status;
+    //       if (status === 0 || (status >= 200 && status < 400)) {
+    //         // The request has been completed successfully
+    //         console.log(request.responseText);
+    //       } else {
+    //         // Oh no! There has been an error with the request!
+    //         alert("Oh no: " + status)
+    //       }
+    //     } else {
+    //         // console.log("ST: " + request.readyState)
+    //     }
+    //   };
+    // request.send(formData);
+    apiPOST(config.endpoint.base + config.path.submitApp, formData, function(data) { alert("It worked: " + data )}, function(error) { alert("It failed: " + error)}, {}, true)
 
 }
 function newAppValidationError(txt) {
@@ -377,7 +453,7 @@ function readURL(input) {
 
 // Helper functions
 
-function apiPOST(rurl, postdata, callback, errorCallback, callBackObject) {
+function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disableContentTypeSet = false) {
 	console.log("POST: " + rurl + " - Data: " + postdata)
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
@@ -395,7 +471,9 @@ function apiPOST(rurl, postdata, callback, errorCallback, callBackObject) {
 	}
     }
     xmlHttp.open("POST", rurl, true); // true for asynchronous
-    xmlHttp.setRequestHeader("Content-Type", "application/json");
+    if (! disableContentTypeSet) {
+        xmlHttp.setRequestHeader("Content-Type", "application/json");
+    }
     if (getUserToken() != null) {
       xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
     }
@@ -424,7 +502,7 @@ function apiGET(url, callback, errorCallback, callBackObject) {
       xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
     }
     xmlHttp.send(null);
-  }
+}
   
 function getUserToken() {
     return sessionStorage.getItem("access_token");
@@ -449,9 +527,11 @@ function initDevPortal() {
     $('.rbtype').on('click', function(e) {
         if ($('#i-iswatchface').prop("checked")) {
             $('#appCategory').addClass("hidden");
-            $('.appOrFace').html("Watchface")
+            $('#appIconContainer').addClass("hidden");
+            $('.appOrFace').html("Watchface");
         } else {
             $('#appCategory').removeClass("hidden");
+            $('#appIconContainer').removeClass("hidden");
             $('.appOrFace').html("App")
         }
     });
