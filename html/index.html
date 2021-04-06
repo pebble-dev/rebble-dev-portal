@@ -731,6 +731,29 @@
     </div>
 </div>
 
+<div class="modal fade bd-example-modal-lg mt-5 uploader" tabindex="-1" role="dialog" id="updateModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg uploader">
+      <div class="modal-content p-4 uploader">
+        
+        <div class="row ml-3 mt-3">
+            <h1> Updating app </h1>
+            <!-- <div class="spinner-sm" style="margin-left: 10px;"></div> -->
+        </div>
+        <div class="ml-3">
+            <div class="mt-3">
+                Updating the following fields for <strong><span id="updateAppName">{{appname}}</span></strong>:
+            </div>
+            <div class="mt-1 ml-3">
+                <ul id="updateChangedFields" class="capitalise">
+
+                </ul>
+            </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+
 <div class="container page hidden" id="master-home">        
     <div class="row mt-5">
         <div class="col-3" id="menu-applistContainer">
@@ -755,7 +778,9 @@
 
             <div class="row">
                 <div class="col-3">
-                    <img src="/res/placeholder/140x140.png" id="appinfo-icon"></img>
+                    <div class="image-container" id="previewImageContainer">
+                        <img src="/res/placeholder/140x140.png" id="appinfo-icon"></img>
+                    </div>
                 </div>
                 <div class="col-sm">
                     <h1 id="appinfo-appname"> </h1> 
@@ -763,13 +788,11 @@
                         <li> <i class="far fa-heart" ></i> <span id="appinfo-hearts"> </span> <i class="fas fa-code-branch ml-5"></i> <span id="appinfo-latestrelease"> </span> </li>
                         <li> <i id="statusIcon" class="far fa-check-circle"></i> <span id="statusText"> Published </span> </li>
                         <li> 
-                            <img src="/res/img/icon_og.png" class="supports-aplite tinyicon bandw" title="Aplite"/>
-                            <!-- <img src="/res/img/icon_steel.png" class="supports-aplite tinyicon bandw" title="Aplite unsupported"/> -->
-                            <!-- <img src="/res/img/icon_time.png" class="supports-basalt tinyicon bandw" title="Basalt Supported"/> -->
-                            <img src="/res/img/icon_timesteel.png" class="supports-basalt tinyicon bandw" title="Basalt"/>
-                            <img src="/res/img/icon_round.png" class="supports-chalk tinyicon bandw" title="Chalk"/>
-                            <img src="/res/img/icon_p2.png" class="supports-diorite tinyicon bandw" title="Diorite"/>
-                            <img src="/res/img/icon_time2.png" class="supports-emery tinyicon bandw" title="Emery"/>
+                            <img src="/res/img/icon_og.png" class="supports-aplite tinyicon bandw" onclick="changePreviewWatchPlatform('aplite', this)" title="Aplite"/>
+                            <img src="/res/img/icon_timesteel.png" class="supports-basalt tinyicon bandw" onclick="changePreviewWatchPlatform('basalt', this)" title="Basalt"/>
+                            <img src="/res/img/icon_round.png" class="supports-chalk tinyicon bandw" onclick="changePreviewWatchPlatform('chalk', this)" title="Chalk"/>
+                            <img src="/res/img/icon_p2.png" class="supports-diorite tinyicon bandw" onclick="changePreviewWatchPlatform('diorite', this)" title="Diorite"/>
+                            <!-- <img src="/res/img/icon_time2.png" class="supports-emery tinyicon bandw" onclick="changePreviewWatchPlatform('basalt', this)" title="Emery"/> -->
                         </li>
                     </ul>
                 </div>
@@ -815,16 +838,16 @@
             <div id="appinfo-secondary-listingcontrol" class="hidden mt-4 lineup appinfoscreen animated fadeIn">
                 <table class="table">
                     <tr>
-                        <td class="font-weight-bold"> Title: </td><td> <input id="edit-title" class="simple p-2" onkeyup="updateAppField('title')"></input></td> <td><i id="change-title" class="fas fa-asterisk hidden change"></i></td>
+                        <td class="font-weight-bold"> Title: </td><td> <input id="edit-title" class="simple p-2 appUpdateField" onkeyup="updateAppField('title')"></input></td> <td><i id="change-title" class="fas fa-asterisk hidden change"></i></td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold"> Description: </td><td> <textarea class="simple" id="edit-description" onkeyup="updateAppField('description')"></textarea> </td> <td><i id="change-description" class="fas fa-asterisk hidden change"></i></td>
+                        <td class="font-weight-bold"> Description: </td><td> <textarea class="simple appUpdateField" id="edit-description" onkeyup="updateAppField('description')"></textarea> </td> <td><i id="change-description" class="fas fa-asterisk hidden change"></i></td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold"> Website: </td><td> <input class="simple p-2" id="edit-website" onkeyup="updateAppField('website')"></input> </td> <td><i id="change-website" class="fas fa-asterisk hidden change"></i></td>
+                        <td class="font-weight-bold"> Website: </td><td> <input class="simple p-2 appUpdateField" id="edit-website" onkeyup="updateAppField('website')"></input> </td> <td><i id="change-website" class="fas fa-asterisk hidden change"></i></td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold"> Source: </td><td> <input class="simple p-2" id="edit-source" onkeyup="updateAppField('source')"></input> </td> <td><i id="change-source" class="fas fa-asterisk hidden change"></i></td>
+                        <td class="font-weight-bold"> Source: </td><td> <input class="simple p-2 appUpdateField" id="edit-source" onkeyup="updateAppField('source')"></input> </td> <td><i id="change-source" class="fas fa-asterisk hidden change"></i></td>
                     </tr>
                     <tr>
                         <td class="font-weight-bold"> Screenshots: 
@@ -840,7 +863,7 @@
                     </tr>
                 </table>
                 <div class="row" >
-                    <btn class="btn btn-primary noshadow"> <i class="fas fa-save"></i> Save </btn>
+                    <btn class="btn btn-primary noshadow" onclick="saveAndPublishAppEdits()"> <i class="fas fa-save"></i> Update &  Publish </btn>
                     <btn class="btn btn-secondary noshadow" onclick="returnToMainSecondaryWindow()"> <i class="fas fa-ban"></i> Cancel </btn>
                 </div>
             </div>

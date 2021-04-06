@@ -90,6 +90,22 @@ function showAppListingEditor(sender) {
 function updateAppField(field) {
     $('#change-' + field).removeClass("hidden")
 }
+function saveAndPublishAppEdits() {
+    //Submit changes to store
+    $('#updateAppName').html($('#edit-title').val())
+    $('#updateChangedFields').html("")
+    $('.appUpdateField').each((i, e) => {
+        var fieldName = $(e).prop("id").toString().split("-")[1];
+        currentAppCache[fieldName] = (currentAppCache[fieldName] == null) ? "" : currentAppCache[fieldName];
+        console.log("Does '" + $(e).val() + "' == '" + currentAppCache[fieldName] + "'")
+        if ($(e).val() != currentAppCache[fieldName]) {
+            $('#updateChangedFields').append("<li>" + fieldName + "</li>")
+        }
+    })
+
+    $('#updateModal').modal('show');
+    
+}
 function returnToMainSecondaryWindow() {
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary').removeClass("hidden");
@@ -160,6 +176,25 @@ function showPage(pageID) {
     
 }
 
+function changePreviewWatchPlatform(platform, sender) {
+    //Sender is passed by tinyicons, ignore if bandw
+    if (sender != null && $(sender).hasClass("bandw")) { return }
+
+    var platformMap = {
+        "aplite": "screenshot_slider_background_original.png",
+        "basalt": "screenshot_slider_background_time.png",
+        "chalk": "screenshot_slider_background_time_round_14.png",
+        "diorite": "screenshot_slider_background_pebble2.png"
+    }
+    if (platformMap.hasOwnProperty(platform)) {
+        $('#previewImageContainer').css("background-image", 'url("/res/img/' + platformMap[platform] + '")');
+    }
+
+    if (platform == "chalk") {
+        // $('#appinfo-icon').css("border-radius", '40px');
+    }
+}
+
 // Data functions
 
 function getUserInfo() {
@@ -195,6 +230,7 @@ function getUserInfo_cb(data) {
 
 function getAppDetails(appID) {
     $('#appinfo-icon').attr("src", "/res/placeholder/140x140.png")
+    changePreviewWatchPlatform("basalt")
     $('#userAppList .active').removeClass("active");
     $('#appselector_' + appID).addClass("active");
     // $('#appinfo-main-loader').removeClass("hidden");
@@ -233,12 +269,16 @@ function getAppDetails_cb(data) {
 
     //Icons
     $('.tinyicon').addClass("bandw");
-    $('.supports-emery').addClass("hidden");
-    if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("bandw") }
-    if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("bandw") }
-    if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("bandw") }
-    if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("bandw") }
-    if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); $('.supports-emery').removeClass("hidden");  }
+    // $('.supports-emery').addClass("hidden");
+    var favouriteSupportedPlatform = "basalt"
+    if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("bandw"); favouriteSupportedPlatform = "aplite" }
+    if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("bandw"); favouriteSupportedPlatform = "chalk" }
+    if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("bandw"); favouriteSupportedPlatform = "diorite" }
+    if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("bandw"); favouriteSupportedPlatform = "basalt" }
+
+    changePreviewWatchPlatform(favouriteSupportedPlatform)
+
+    // if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); $('.supports-emery').removeClass("hidden");  }
 
     //Status
     if (data.visible) {
@@ -551,6 +591,7 @@ function initDevPortal() {
     getUserInfo();
 
     // $('#submitModal').modal('show');
+    $('#updateModal').modal('show');
 
 }
 
