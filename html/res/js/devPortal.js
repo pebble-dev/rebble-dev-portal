@@ -191,7 +191,9 @@ function changePreviewWatchPlatform(platform, sender) {
     }
 
     if (platform == "chalk") {
-        // $('#appinfo-icon').css("border-radius", '40px');
+        $('#previewImageContainer').addClass("chalk");
+    } else {
+        $('#previewImageContainer').removeClass("chalk");
     }
 }
 
@@ -265,7 +267,7 @@ function getAppDetails_cb(data) {
     $('#appinfo-description').html(data.description);
     $('#appinfo-sourcelink').html(data.source);
     $('#appinfo-releasenotes').html(data.latest_release.release_notes);
-    $('#appinfo-icon').attr("src",data.screenshot_images[0]["144x168"]);
+    
 
     //Icons
     $('.tinyicon').addClass("bandw");
@@ -279,6 +281,13 @@ function getAppDetails_cb(data) {
     changePreviewWatchPlatform(favouriteSupportedPlatform)
 
     // if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); $('.supports-emery').removeClass("hidden");  }
+
+    // Preview icon
+    if (favouriteSupportedPlatform == "chalk") {
+        $('#appinfo-icon').attr("src",data.screenshot_images[0]["144x168"].replace("144x168","144x144"));
+    } else {
+        $('#appinfo-icon').attr("src",data.screenshot_images[0]["144x168"]);
+    }
 
     //Status
     if (data.visible) {
