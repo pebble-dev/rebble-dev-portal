@@ -534,8 +534,16 @@ input[type="checkbox"] {
   font-weight: 800;
 }
 .uploader img {
-  height: 100px;
-  width: 100px;
+  height: 300px;
+  width: 300px;
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.funtext {
+  width: 100%;
+  text-align: center;
+  margin-top: 40px;
 }
 .large {
   height: 100% !important;
@@ -557,8 +565,9 @@ input[type="checkbox"] {
 #master-profile {
   overflow-x: hidden;
 }
-.modal-content .uploader {
+.modal-content .uploader, .submitModal-section {
   height: 100% !important;
+  text-align:center;
 }
 
 .modal-dialog .modal-content {
@@ -599,6 +608,7 @@ input[type="checkbox"] {
   margin-top: 61px;
   margin-left: 26px;
   width: 110px;
-  height: 111px;
+  height: 110px;
   border-radius: 55px;
+  object-fit: cover;
 }

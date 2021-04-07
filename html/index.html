@@ -712,7 +712,7 @@
       <!-- <div class="percbar" style="width: 0%"></div> -->
       <div class="alert alert-large alert-danger alert-dismissible animated slideInDown show hidden" role="alert" id="mainAlert">
         <strong class="text-danger" id="mainAlert-topic">[topic]</strong> - <span id="mainAlert-text">[text]</span>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <button type="button" class="close" onclick="hideMainAlert()" aria-label="Close">
           <span aria-hidden="true"><i class="fas fa-times"></i></span>
         </button>
       </div>
@@ -720,33 +720,82 @@
 
 <!-- Modals -->
 <!-- data-backdrop="static" -->
-<div class="modal fade bd-example-modal-lg mt-5 uploader"  tabindex="-1" role="dialog" id="submitModal" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg mt-5 uploader" data-backdrop="static" tabindex="-1" role="dialog" id="submitModal" aria-hidden="true">
     <div class="modal-dialog modal-lg square uploader">
-      <div class="modal-content square p-4 uploader">
+      <div class="modal-content square p-4 uploader pl-5">
         
-        <h1> Uploading app </h1>
-        Your app is being uploaded to the store
+        <div id="submitModal-uploading" class="uploader submitModal-section">
+            <div>
+                <h1> Uploading app </h1>
+                Your app is being uploaded to the store
+            </div>
 
+            <img class="circle" src="/res/img/space.gif"></img>
+            <div id="uploadingModalFunText" class="funtext animated">
+                This may take a moment!
+            </div>
+
+        </div>
+        <div id="submitModal-success" class="submitModal-section hidden">
+            <div>
+                <h1> App uploaded! </h1>
+                Your shiny new app is live on the appstore!
+            </div>
+
+            <img class="circle" src="/res/img/large_icon_landed.svg"></img>
+            <div class="mt-5">
+                <a id="submitModal-linkToApp" target="_blank">View in the appstore <i class="fas fa-external-link-alt"></i></a>
+                <br><br>
+                <a href="/">Close</a>
+            </div>
+
+        </div>
+        <div id="submitModal-error" class="submitModal-section hidden">
+            <div>
+                <h1> Submission failed: </h1>
+                <span id="submitModal-error-text">{{ error }}</span>
+            </div>
+
+            <img class="circle" src="/res/img/large_icon_failure.svg"></img>
+            <div class="mt-3">
+                <btn class="btn btn-primary" data-dismiss="modal">Close</a>
+            </div>
+        </div>
       </div>
     </div>
 </div>
 
-<div class="modal fade bd-example-modal-lg mt-5 uploader" tabindex="-1" role="dialog" id="updateModal" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg mt-5 uploader" data-backdrop="static" tabindex="-1" role="dialog" id="updateModal" aria-hidden="true">
     <div class="modal-dialog modal-lg uploader">
       <div class="modal-content p-4 uploader">
         
-        <div class="row ml-3 mt-3">
-            <h1> Updating app </h1>
-            <!-- <div class="spinner-sm" style="margin-left: 10px;"></div> -->
-        </div>
-        <div class="ml-3">
-            <div class="mt-3">
-                Updating the following fields for <strong><span id="updateAppName">{{appname}}</span></strong>:
+        <div id="updateModal-inProgress">
+            <div class="row ml-3 mt-3">
+                <h1> Updating app </h1>
+                <!-- <div class="spinner-sm" style="margin-left: 10px;"></div> -->
             </div>
-            <div class="mt-1 ml-3">
-                <ul id="updateChangedFields" class="capitalise">
+            <div class="ml-3">
+                <div class="mt-3">
+                    Updating the following fields for <strong><span id="updateAppName">{{appname}}</span></strong>:
+                </div>
+                <div class="mt-1 ml-3">
+                    <ul id="updateChangedFields" class="capitalise">
 
-                </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="updateModal-success">
+            <div class="row ml-3 mt-3">
+                <h1> Update complete </h1>
+            </div>
+            <div class="ml-3">
+                <div class="mt-3">
+                    Your app has been updated!
+                </div>
+            </div>
+            <div class="modal-footer float-left noborder">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Nice</button>
             </div>
         </div>
 
@@ -785,9 +834,13 @@
                 <div class="col-sm">
                     <h1 id="appinfo-appname"> </h1> 
                     <ul class="nodec"> 
-                        <li> <i class="far fa-heart" ></i> <span id="appinfo-hearts"> </span> <i class="fas fa-code-branch ml-5"></i> <span id="appinfo-latestrelease"> </span> </li>
-                        <li> <i id="statusIcon" class="far fa-check-circle"></i> <span id="statusText"> Published </span> </li>
                         <li> 
+                            <i class="far fa-heart" ></i> <span id="appinfo-hearts"> </span>
+                            <i class="fas fa-code-branch ml-4"></i> <span id="appinfo-latestrelease"> </span>
+                            <span id="appinfo-type"> <i class="far fa-clock ml-4"></i> Watchface </span>
+                        </li>
+                        <li> <i id="statusIcon" class="far fa-check-circle"></i> <span id="statusText"> Published </span> </li>
+                        <li class="mt-1"> 
                             <img src="/res/img/icon_og.png" class="supports-aplite tinyicon bandw" onclick="changePreviewWatchPlatform('aplite', this)" title="Aplite"/>
                             <img src="/res/img/icon_timesteel.png" class="supports-basalt tinyicon bandw" onclick="changePreviewWatchPlatform('basalt', this)" title="Basalt"/>
                             <img src="/res/img/icon_round.png" class="supports-chalk tinyicon bandw" onclick="changePreviewWatchPlatform('chalk', this)" title="Chalk"/>
@@ -810,7 +863,7 @@
                         <td class="font-weight-bold"> Category: </td><td class="pl-3" id="appinfo-category"> </td>
                     </tr>
                     <tr>
-                        <td class="font-weight-bold"> UUID: </td><td class="pl-3" id="appinfo-uuid"> </td>
+                        <td class="font-weight-bold"> ID: </td><td class="pl-3" id="appinfo-id"> </td>
                     </tr>
                     <tr>
                         <td class="font-weight-bold"> Created: </td><td class="pl-3" id="appinfo-initaldate"> </td>
@@ -1322,7 +1375,7 @@
                     Source URL
                     <br>
                     <div class="small">Is your app open source? If so pop the repo link in below!</div>
-                    <input class="niceInput mt-2" name="website" id="i-website"></input>
+                    <input class="niceInput mt-2" name="source" id="i-source"></input>
                 </div>
 
                 <div class="mt-4 ml-2">
@@ -1332,7 +1385,11 @@
                     <input class="mt-2" type="file" name="pbw" id="i-pbw"></input>
                 </div>
 
-                <button onclick="submitNewApp()" class="btn btn-primary mt-5" id="btn-newAppSubmit">Go</button>
+                <div>
+                    <input id="makeAppPublic" type="checkbox" value=True class="mt-4 ml-2" checked>Make my app public immediately</input>
+                </div>
+
+                <button onclick="submitNewApp()" class="btn btn-primary mt-4" id="btn-newAppSubmit">Go</button>
             
                 <br><br><br><br>
             </div>  

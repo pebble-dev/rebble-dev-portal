@@ -1,4 +1,6 @@
-var currentAppCache = {}
+//Global variables
+currentAppCache = {}
+funMessageIntervalTimer = null;
 
 // Worker functions
 
@@ -92,19 +94,62 @@ function updateAppField(field) {
 }
 function saveAndPublishAppEdits() {
     //Submit changes to store
+
+    var appUpdateObj = {}
+
+    $('#updateModal-inProgress').removeClass("hidden");
+    $('#updateModal-success').addClass("hidden");
     $('#updateAppName').html($('#edit-title').val())
     $('#updateChangedFields').html("")
     $('.appUpdateField').each((i, e) => {
         var fieldName = $(e).prop("id").toString().split("-")[1];
         currentAppCache[fieldName] = (currentAppCache[fieldName] == null) ? "" : currentAppCache[fieldName];
-        console.log("Does '" + $(e).val() + "' == '" + currentAppCache[fieldName] + "'")
         if ($(e).val() != currentAppCache[fieldName]) {
             $('#updateChangedFields').append("<li>" + fieldName + "</li>")
+            appUpdateObj[fieldName] = $(e).val();
         }
     })
 
     $('#updateModal').modal('show');
+    setTimeout(function() {
+        apiPOST(config.endpoint.base + config.path.editApp + currentAppCache.id, JSON.stringify(appUpdateObj), saveAndPublishAppEdits_cb, saveAndPublishAppEdits_ecb)
+    }, 500);
     
+}
+function saveAndPublishAppEdits_cb(data) {
+    try {
+
+        data = JSON.parse(data);
+
+    } catch (e) {
+
+        //Can't pass the response? Let the error cb handle this
+        saveAndPublishAppEdits_ecb(data);
+        return
+
+    }
+
+    $('#updateModal-inProgress').addClass("hidden");
+    $('#updateModal-success').removeClass("hidden");
+    $('.change').addClass("hidden");
+    returnToMainSecondaryWindow();
+    //Make sure we refresh our updated app
+    getAppDetails(data.id);
+}
+function saveAndPublishAppEdits_ecb(data) {
+    $('#updateModal').modal('hide');
+    window.scrollTo(0,0);
+
+    try {
+        data = JSON.parse(data)
+    } catch (e) {
+        showAlert("Failed to update app", "Something went wrong. Tell someone.");
+        console.log(e);
+        return
+    }
+
+    showAlert("Failed to update app", data.error);
+    console.log(data)
 }
 function returnToMainSecondaryWindow() {
     $('.appinfoscreen').addClass("hidden");
@@ -136,6 +181,9 @@ function showAlert(title, text) {
     $('#mainAlert').removeClass("hidden");
     $('#mainAlert-topic').html(title);
     $('#mainAlert-text').html(text);
+}
+function hideMainAlert() {
+    $('#mainAlert').addClass("hidden");
 }
 
 function wiggleButton(id) {
@@ -190,11 +238,54 @@ function changePreviewWatchPlatform(platform, sender) {
         $('#previewImageContainer').css("background-image", 'url("/res/img/' + platformMap[platform] + '")');
     }
 
+    $('#previewImageContainer').removeClass("bandw");
+    $('#previewImageContainer').removeClass("chalk");
     if (platform == "chalk") {
         $('#previewImageContainer').addClass("chalk");
-    } else {
-        $('#previewImageContainer').removeClass("chalk");
+    } else if (["aplite","diorite"].includes(platform)) {
+        $('#previewImageContainer').addClass("bandw");
     }
+}
+
+function updateFunMessage() {
+    var funMessages = [
+        "Please stand by",
+        "Reticulating Splines",
+        "Disinfecting pbw",
+        "Almost there probably",
+        "Testing on a Pebble Time 2",
+        "Fixing Bugs",
+        "Adding bugs to fix later",
+        "Searching for the intranet",
+        "Loading loading messages",
+        "Refueling Spaceship",
+        "Compressing",
+        "Extracting",
+        "Unzipping",
+        "Point it. Zoom it. Snap it. Press it",
+        "Just checking twitter real quick",
+        "Working",
+        "Still working",
+        "Thinking",
+        "Computing",
+        "Checking progress",
+        "Booting Windows XP",
+        "Warming neurotoxin emitters",
+    ];
+
+    $('#uploadingModalFunText').removeClass("fadeIn");
+    $('#uploadingModalFunText').addClass("fadeOut");
+    setTimeout(function() {
+        $('#uploadingModalFunText').removeClass("fadeOut");
+        $('#uploadingModalFunText').html(funMessages[Math.floor(Math.random() * funMessages.length)] + ".");
+        $('#uploadingModalFunText').addClass("fadeIn");
+    }, 500)
+}
+function startFunMessageTimer() {
+    funMessageIntervalTimer = setInterval(updateFunMessage, 7000);
+}
+function stopFunMessageTimer() {
+    clearInterval(funMessageIntervalTimer);
 }
 
 // Data functions
@@ -213,6 +304,8 @@ function getUserInfo_cb(data) {
     $("#userAppList").html("");
 
     if (data.applications.length > 0) {
+        //Reverse array so newest is first
+        data.applications = data.applications.reverse()
         data.applications.forEach((element, index) => {
             console.log(element)
             addUserApp(element, (index == 0))
@@ -235,6 +328,7 @@ function getAppDetails(appID) {
     changePreviewWatchPlatform("basalt")
     $('#userAppList .active').removeClass("active");
     $('#appselector_' + appID).addClass("active");
+
     // $('#appinfo-main-loader').removeClass("hidden");
 
     apiGET(config.endpoint.base + config.path.appInfo + appID, getAppDetails_cb, genericAPIErrorHandler, $('#appinfo-main-loader'))
@@ -255,12 +349,15 @@ function getAppDetails_cb(data) {
 
     debugLog(data)
 
+    appinfostring = (data.category == "Faces") ? '<i class="far fa-clock ml-4"></i> Watchface' : '<i class="fas fa-mobile-alt ml-4"></i> Watchapp'
+
     //Data
     $('#appinfo-appname').html(data.title);
     $('#appinfo-hearts').html(data.hearts);
     $('#appinfo-latestrelease').html(data.latest_release.version);
     $('#appinfo-latestreleaselist').html(data.latest_release.version);
-    $('#appinfo-uuid').html(data.uuid);
+    $('#appinfo-type').html(appinfostring)
+    $('#appinfo-id').html(data.id);
     $('#appinfo-category').html(data.category);
     $('#appinfo-initaldate').html(data.created_at);
     $('#appinfo-latestdate').html(data.latest_release.published_date);
@@ -308,7 +405,12 @@ function getAppDetails_cb(data) {
     $('#appinfo-main').removeClass("hidden");
     $('#appinfo-main-loader').addClass("hidden");
 
-
+    //Update the app name in the lefthand menu if it doesn't match. This will happen if the user edits the listing and updates the app's name
+    console.log("Does " + $('#appselector_' + data.id).data("title") + " match " + data.title + " ?")
+    if ($('#appselector_' + data.id).data("title") != data.title) {
+        $('#appselector_' + data.id).data("title",data.title);
+        $('#appselector_' + data.id).html('<a class="nav-link " href="#" onclick="getAppDetails(\'' + data.id + '\')"><span class="ml-2">' + data.title + '</span></a>');
+    }
 }
 
 function genericAPIErrorHandler(data, statusCode, cbo) {
@@ -332,6 +434,13 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
     }
 }
 
+function showAppUploadingModal() {
+    $('.submitModal-section').addClass("hidden");
+    $('#submitModal-uploading').removeClass("hidden");
+    $('#submitModal').modal('show');
+    clearTimeout(funMessageIntervalTimer)
+    setTimeout(startFunMessageTimer, 2000);
+}
 function submitNewApp() {
 
     var shinyNewApp = {
@@ -374,7 +483,7 @@ function submitNewApp() {
 
     if ($('#i-pbw').prop('files')[0] == undefined) { newAppValidationError("A banner is required"); return }
 
-    $('#submitModal').modal('show');
+    showAppUploadingModal();
 
     //Prepare the multipart/form
 
@@ -428,47 +537,46 @@ function submitNewApp() {
         formData.append("large_icon", largeIcon)
     }
 
+    //append optional fields
+    if ($('#i-website').val() != null && $('#i-website').val() != "") {
+        formData.append("website", $('#i-website').val());
+    }
+    if ($('#i-source').val() != null && $('#i-source').val() != "") {
+        formData.append("source", $('#i-source').val());
+    }
+
     //Attach pbw
     formData.append("pbw",$('#i-pbw').prop('files')[0]);
 
-//     var object = {};
-// formData.forEach(function(value, key){
-//     object[key] = value;
-// });
-// var json = JSON.stringify(object);
+    apiPOST(config.endpoint.base + config.path.submitApp, formData, submitNewApp_cb, submitNewApp_ecb, {}, true)
 
-//     alert(json);
+}
+function submitNewApp_cb(data) {
+    stopFunMessageTimer();
+    $('.submitModal-section').addClass("hidden");
+    $('#submitModal-success').removeClass("hidden");
+    data = JSON.parse(data);
+    $('#submitModal-linkToApp').attr("href",config.misc.appstoreUrl + data.id);
+}
+function submitNewApp_ecb(data) {
+    stopFunMessageTimer();
+    $('.submitModal-section').addClass("hidden");
+    $('#submitModal-error').removeClass("hidden");
 
-    // HTML file input, chosen by user
-    // formData.append("userfile", fileInputElement.files[0]);
+    try {
+        data = JSON.parse(data)
+    } catch (e) {
+        $('#submitModal-error-text').html("Something went wrong, please try again later. If the problem persists, ask on the <a target='_blank' href='https://rebble.io/discord'>Rebble Discord</a>.");
+        return
+    }
 
-    // JavaScript file-like object
-    // var content = '<a id="a"><b id="b">hey!</b></a>'; // the body of the new file...
-    // var blob = new Blob([content], { type: "text/xml"});
+    var nicerMessages = {
+        "app.exists": "An application with the supplied UUID already exists. Please generate a new UUID in your appinfo.json."
+    }
 
-    // formData.append("webmasterfile", blob);
+    var msg = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error;
 
-    //var request = new XMLHttpRequest();
-    //request.setRequestHeader("Authorization", value)
-    //request.open("POST", config.endpoint.base + config.path.submitApp);
-    // request.onreadystatechange = function () {
-    //     // In local files, status is 0 upon success in Mozilla Firefox
-    //     if(request.readyState === XMLHttpRequest.DONE) {
-    //       var status = request.status;
-    //       if (status === 0 || (status >= 200 && status < 400)) {
-    //         // The request has been completed successfully
-    //         console.log(request.responseText);
-    //       } else {
-    //         // Oh no! There has been an error with the request!
-    //         alert("Oh no: " + status)
-    //       }
-    //     } else {
-    //         // console.log("ST: " + request.readyState)
-    //     }
-    //   };
-    // request.send(formData);
-    apiPOST(config.endpoint.base + config.path.submitApp, formData, function(data) { alert("It worked: " + data )}, function(error) { alert("It failed: " + error)}, {}, true)
-
+    $('#submitModal-error-text').html(msg)
 }
 function newAppValidationError(txt) {
     $('#btn-newAppSubmit').html(txt);
@@ -502,7 +610,7 @@ function readURL(input) {
 
 // Helper functions
 
-function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disableContentTypeSet = false) {
+function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disableContentTypeSet = false, percentageCallback) {
 	console.log("POST: " + rurl + " - Data: " + postdata)
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
@@ -511,13 +619,18 @@ function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disabl
 			callback(xmlHttp.responseText, callBackObject);
 		} else {
 			callback(xmlHttp.responseText);
-    }
+        }
 	} else if (xmlHttp.readyState == 4) {
            console.log("Error Code: " + xmlHttp.status)
            if (errorCallback != null) {
 	   	        errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
        	   }
 	}
+    }
+    xmlHttp.onprogress = function (e) {
+        if (e.lengthComputable) {
+            percentageCallback(e.loaded, e.total)
+        }
     }
     xmlHttp.open("POST", rurl, true); // true for asynchronous
     if (! disableContentTypeSet) {
@@ -596,11 +709,11 @@ function initDevPortal() {
     });
 
     
-    //Start up. Router runs on callback
+    //Start up. Router and other special stuff runs on callback. Follow this.
     getUserInfo();
 
     // $('#submitModal').modal('show');
-    $('#updateModal').modal('show');
+    // $('#updateModal').modal('show');
 
 }
 
