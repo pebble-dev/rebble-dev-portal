@@ -414,7 +414,7 @@ function getAppDetails_cb(data) {
     $('#appinfo-hearts').text(data.hearts);
     $('#appinfo-latestrelease').text(data.latest_release.version);
     $('#appinfo-latestreleaselist').text(data.latest_release.version);
-    $('#appinfo-type').text(appinfostring)
+    $('#appinfo-type').html(appinfostring)
     $('#appinfo-id').text(data.id);
     $('#appinfo-category').text(data.category);
     $('#appinfo-initaldate').text(data.created_at);
