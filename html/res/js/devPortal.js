@@ -170,11 +170,65 @@ function showMoreOptions(sender) {
 function updateProfileSubtitle() {
     var subtitles = [
         "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
+        "Developer Extraordinaire",
         "Rebble with a cause",
         "Prolific publisher",
+        "Watchface wizard",
+        "Assembler of apps",
+        "<span class='rainbow-text'>Thanks for being here!</span>"
     ]
     $('#developer-subtitle').html(subtitles[Math.floor(Math.random() * subtitles.length)])
 }
+
+function toggleUsernameEdit(operation) {
+    $('#profile-username-edit').removeClass("disabled");
+    if (operation == "hide") {
+        $('#profile-username-edit').addClass("hidden");
+        $('#profile-username-display').removeClass("hidden");
+    } else {
+        $('#editUsernameInput').val($('#profileUsername').html())
+        $('#profile-username-edit').removeClass("hidden");
+        $('#profile-username-display').addClass("hidden");
+    }
+
+}
+function updateDeveloperName() {
+    $('#profile-username-edit').addClass("disabled");
+
+    if ($('#editUsernameInput').val().length < 1) {
+        showAlert("Name update failed", "Developer name cannot be blank");
+        toggleUsernameEdit("hide");
+        return
+    }
+
+    var postdata = {
+        name: $('#editUsernameInput').val()
+    }
+
+    apiPOST(config.endpoint.base + config.path.aboutme, JSON.stringify(postdata), updateDeveloperName_cb, updateDeveloperName_ecb);
+}
+function updateDeveloperName_cb(data) {
+    toggleUsernameEdit("hide");
+    getUserInfo();
+}
+function updateDeveloperName_ecb(data) {
+    toggleUsernameEdit("hide");
+    try {
+        data = JSON.parse(data);
+    } catch (e) {
+        console.log(e)
+        showAlert("Name update failed", "Something went wrong. Please try again later.");
+    }
+    showAlert("Name update failed", data.error);
+} 
 
 //  - Global UX
 function showAlert(title, text) {
@@ -211,6 +265,8 @@ function showPage(pageID) {
     if (pageID == "submit") {
         $('#i-iswatchface').prop("checked",true);
         $('#usePlatformSpecificScreenshots').prop("checked",false);
+    } else if (pageID == "profile") {
+        updateProfileSubtitle();
     }
 
     if (validPages.includes(pageID)) {
@@ -301,6 +357,8 @@ function getUserInfo_cb(data) {
     }
 
     $(".data-username").html(data.name);
+    $(".data-developerID").html(data.id);
+    $(".data-userID").html(data.userid)
     $("#userAppList").html("");
 
     if (data.applications.length > 0) {
@@ -406,7 +464,6 @@ function getAppDetails_cb(data) {
     $('#appinfo-main-loader').addClass("hidden");
 
     //Update the app name in the lefthand menu if it doesn't match. This will happen if the user edits the listing and updates the app's name
-    console.log("Does " + $('#appselector_' + data.id).data("title") + " match " + data.title + " ?")
     if ($('#appselector_' + data.id).data("title") != data.title) {
         $('#appselector_' + data.id).data("title",data.title);
         $('#appselector_' + data.id).html('<a class="nav-link " href="#" onclick="getAppDetails(\'' + data.id + '\')"><span class="ml-2">' + data.title + '</span></a>');

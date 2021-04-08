@@ -1406,17 +1406,26 @@
     </div>
     <div class="row">
         <div class="col-2 mt-5 nopad">&nbsp</div>
-        <div class="col-3 mt-5 nopad">
-            <span class="data-username mt-5 r2"></span> <i class="fas fa-pencil-alt"></i>
-            <div id="developer-subtitle" class="mt-2">Developer extrodainaire</div>
-            <div class="col-5 mt-3 nopad">
+        <div class="col-6 mt-5 nopad">
+            <div id="profile-username-display">
+                <span class="data-username mt-5 r2" id="profileUsername"></span> <i class="fas fa-pencil-alt pointer" onclick="toggleUsernameEdit('show')"></i>
+                <div id="developer-subtitle" class="mt-2">Developer extrodainaire</div>
+            </div>
+            <div id="profile-username-edit" class="w-40 hidden">
+                <div class="row">
+                    <input class="simple p-2 ml-1 r2" id="editUsernameInput"></input>
+                    <button class="btn btn-primary" id="editUsernameOkBtn" onclick="updateDeveloperName()">Update Name</button>
+                    <button class="btn btn-secondary" id="editUsernameCancelBtn" onclick="toggleUsernameEdit('hide')">Cancel</button>
+                </div>
+            </div>
+            <div class="col-4 mt-3 nopad">
                 <table class="table noborder">
-                    <tr><td>Developer ID</td><td>1234</td></tr>
-                    <tr><td>Developer since</td><td>01/01/1970</td></tr>
+                    <tr><td>Developer ID</td><td class="data-developerID">Unknown</td></tr>
+                    <tr><td>User ID</td><td class="data-userID">Unknown</td></tr>
                 </table>
             </div>
         </div>
-        <div class="col-7 mt-5 nopad" id="profile-image">
+        <div class="col-4 mt-5 nopad" id="profile-image">
             <!-- <img class="circle" src="/res/img/space.gif" onclick="flipElement(this)"></img> -->
             <!-- <img class="" src="/res/img/drawing.jpg" onclick="flipElement(this)"></img> -->
         </div>

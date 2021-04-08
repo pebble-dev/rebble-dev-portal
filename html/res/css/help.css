@@ -73,6 +73,9 @@ header {
   background-color: rgba(0,0,0,0.1);
   cursor: pointer;
 }
+.pointer {
+  cursor: pointer;
+}
 
 h1 {
   font-size: 2rem;
@@ -414,6 +417,9 @@ input.simple, input.niceInput:focus, input.niceInput:active, textarea.simple, te
   box-shadow:none;
   outline: 0 none;
 }
+.w-40 {
+  max-width: 400px;
+}
 textarea {
   width: 100%;
   height: 100px;
@@ -611,4 +617,9 @@ input[type="checkbox"] {
   height: 110px;
   border-radius: 55px;
   object-fit: cover;
+}
+
+.rainbow-text {
+  background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);   -webkit-background-clip: text;
+  color: transparent;
 }
