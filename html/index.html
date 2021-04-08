@@ -756,7 +756,12 @@
                 <span id="submitModal-error-text">{{ error }}</span>
             </div>
 
-            <img class="circle" src="/res/img/large_icon_failure.svg"></img>
+            <img class="circle" ondblclick="$('#fatalErrorZone').removeClass('hidden')" src="/res/img/large_icon_failure.svg"></img>
+
+            <div class="hidden submitModal-section" id="fatalErrorZone">
+                <h4 class="text-danger mt-3">Unhandled Error Details</h4> 
+                <textarea id="fatalErrorText" readonly></textarea>
+            </div>
             <div class="mt-3">
                 <btn class="btn btn-primary" data-dismiss="modal">Close</a>
             </div>

@@ -624,11 +624,13 @@ function submitNewApp_ecb(data) {
         data = JSON.parse(data)
     } catch (e) {
         $('#submitModal-error-text').html("Something went wrong, please try again later. If the problem persists, ask on the <a target='_blank' href='https://rebble.io/discord'>Rebble Discord</a>.");
+        var errorOutput = "Error:\n" + e + "\n\n Data:\n" + data
+        $('#fatalErrorText').text(errorOutput)
         return
     }
 
     var nicerMessages = {
-        "app.exists": "An application with the supplied UUID already exists. Please generate a new UUID in your appinfo.json."
+        "app.exists": "An application with the supplied UUID already exists. <br>If you are sure you have not uploaded this app already, please generate a new UUID in your appinfo.json."
     }
 
     var msg = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error;
