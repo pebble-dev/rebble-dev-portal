@@ -356,9 +356,9 @@ function getUserInfo_cb(data) {
         genericAPIErrorHandler("Failed to parse getUserInfo_cb data")
     }
 
-    $(".data-username").html(data.name);
-    $(".data-developerID").html(data.id);
-    $(".data-userID").html(data.userid)
+    $(".data-username").text(data.name);
+    $(".data-developerID").text(data.id);
+    $(".data-userID").text(data.userid)
     $("#userAppList").html("");
 
     if (data.applications.length > 0) {
@@ -410,18 +410,18 @@ function getAppDetails_cb(data) {
     appinfostring = (data.category == "Faces") ? '<i class="far fa-clock ml-4"></i> Watchface' : '<i class="fas fa-mobile-alt ml-4"></i> Watchapp'
 
     //Data
-    $('#appinfo-appname').html(data.title);
-    $('#appinfo-hearts').html(data.hearts);
-    $('#appinfo-latestrelease').html(data.latest_release.version);
-    $('#appinfo-latestreleaselist').html(data.latest_release.version);
-    $('#appinfo-type').html(appinfostring)
-    $('#appinfo-id').html(data.id);
-    $('#appinfo-category').html(data.category);
-    $('#appinfo-initaldate').html(data.created_at);
-    $('#appinfo-latestdate').html(data.latest_release.published_date);
-    $('#appinfo-description').html(data.description);
-    $('#appinfo-sourcelink').html(data.source);
-    $('#appinfo-releasenotes').html(data.latest_release.release_notes);
+    $('#appinfo-appname').text(data.title);
+    $('#appinfo-hearts').text(data.hearts);
+    $('#appinfo-latestrelease').text(data.latest_release.version);
+    $('#appinfo-latestreleaselist').text(data.latest_release.version);
+    $('#appinfo-type').text(appinfostring)
+    $('#appinfo-id').text(data.id);
+    $('#appinfo-category').text(data.category);
+    $('#appinfo-initaldate').text(data.created_at);
+    $('#appinfo-latestdate').text(data.latest_release.published_date);
+    $('#appinfo-description').text(data.description);
+    $('#appinfo-sourcelink').text(data.source);
+    $('#appinfo-releasenotes').text(data.latest_release.release_notes);
     
 
     //Icons
@@ -446,12 +446,12 @@ function getAppDetails_cb(data) {
 
     //Status
     if (data.visible) {
-        $('#statusText').html("Published");
+        $('#statusText').text("Published");
         $('#statusIcon').removeClass();
         $('#statusIcon').addClass("far fa-check-circle");
         $('#statusIcon').css("color", "var(--color-rebble-green)")
     } else {
-        $('#statusText').html("Unpublished");
+        $('#statusText').text("Unpublished");
         $('#statusIcon').removeClass();
         $('#statusIcon').addClass("far fa-pause-circle");
         $('#statusIcon').css("color", "var(--color-rebble-amber)")
