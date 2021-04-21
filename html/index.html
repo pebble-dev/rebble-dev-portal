@@ -1430,7 +1430,7 @@
                     <br>
                     <div class="small">
                         This is the banner that is displayed above your <span class="apptype lcase">app</span> screenshots in the store.<br>
-                        It is required for apps, and options for watchfaces.
+                        It is required for apps, and optional for watchfaces.
                     </div>
                     <div class="image-upload br-sm border-lite curve">
                         <label for="i-ban-f">
@@ -1906,6 +1906,54 @@
             
         </div>
     </div>
+</div>
+
+<div class="container page hidden" id="master-setup">        
+    <div class="row mt-5">
+        <div class="col-2" id="menu-applistContainer">
+            
+        </div>
+
+        <div class="col-10 ml-3 setupWindow" id="setup-inital">
+            <div class="row pl-2">
+                <h1 class="largeText"> Developer Onboarding </h1>
+            </div>
+            <p class="mt-3 pl-0">
+                It appears you don't yet have a developer account. Is this correct? <br>
+            </p>
+            <p class="mt-5 small">
+                <button class="btn btn-primary" style="width:150px;" onclick="showSetupStep('firstrun')"> Yes </button> - I have never uploaded a Pebble app before, and I need to setup my developer account.
+            </p>
+            <p class="mt-3 small">
+                <button class="btn btn-secondary" style="width:150px;"> No </button> - I have uploaded Pebble apps before, either before the Pebble shutdown or after.
+            </p>
+            
+            
+        </div>
+        <div class="col-10 ml-3 hidden setupWindow" id="setup-firstrun">
+            <div class="row pl-2">
+                <h1 class="largeText"> Developer Onboarding </h1>
+            </div>
+            <p class="mt-3 pl-0">
+                Setting up a Rebble developer account is easy. There's only 1 question.
+            </p>
+            <p>
+                What name should we publish your apps or watchfaces under? 
+            </p>
+            <div class="mt-2 ml-2 col-5 longForm">
+                Developer Name:
+                <input class="niceInput" placeholder="" id="newDevName"></input>
+            </div>
+
+            <button class="btn btn-primary mt-4" onclick="onboardNewDeveloper()" id="runNewDevOnboardBtn"> Create Account </button>
+            
+            
+        </div>
+
+      
+
+    </div>
+
 </div>
 
 <script src="/res/mdb/js/jquery.min.js"></script>

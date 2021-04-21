@@ -25,6 +25,9 @@ body {
 .orange {
   background-color: var(--color-rebble-orange) !important;
 }
+.light-red {
+  background-color: var(--color-rebble-red) !important;
+}
 
 
 body.clear {

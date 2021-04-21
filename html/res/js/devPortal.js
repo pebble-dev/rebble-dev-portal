@@ -299,6 +299,28 @@ function showNewRelease() {
     showPage("release");
 }
 
+//  - Setup
+function showSetupStep(step) {
+    $('.setupWindow').addClass("hidden");
+    $('#setup-' + step).removeClass("hidden");
+
+    var placeholderNames = [
+        "Renholm Industries",
+        "Aperture Science",
+        "Black Mesa",
+        "Umbrella Corporation",
+        "Acme Corp",
+        "Sirius Cybernetics Corp",
+        "Wayne Enterprises",
+        "Globex",
+        "Stark Industries",
+        "Cyberdyne Systems",
+        "Oscorp"
+    ];
+
+    $('#newDevName').attr("placeholder",placeholderNames[Math.floor(Math.random() * placeholderNames.length)]);
+}
+
 //  - Global UX
 function showAlert(title, text) {
     $('#mainAlert').removeClass("hidden");
@@ -328,7 +350,7 @@ function showPage(pageID) {
 
     $('.page').addClass("hidden");
 
-    var validPages = ["profile","home","submit","release"];
+    var validPages = ["profile","home","submit","release","setup"];
 
     //Any weird custom per-window log goes here
     if (pageID == "submit") {
@@ -338,9 +360,12 @@ function showPage(pageID) {
         syncScreenshotButtonPreviews();
     } else if (pageID == "profile") {
         updateProfileSubtitle();
+    } else if (pageID == "setup") {
+        $('#viewAllOn').addClass("hidden")
     }
 
     if (validPages.includes(pageID)) {
+        $('#viewAllOn').removeClass("hidden")
         $('#master-' + pageID).removeClass("hidden");
         if (pageID == "home") { pageID = "" }
         window.history.pushState(pageID, 'Rebble Developer Portal - ' + pageID, '/' + pageID);
@@ -425,6 +450,13 @@ function getUserInfo_cb(data) {
         data = JSON.parse(data);
     } catch (e) {
         genericAPIErrorHandler("Failed to parse getUserInfo_cb data")
+    }
+
+    if (! data.hasOwnProperty("name")) { data.name = "New User"}
+
+    if (data.needsSetup) {
+        showPage("setup");
+        return
     }
 
     $(".data-username").text(data.name);
@@ -556,7 +588,12 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
 
     if (statusCode == 0) {
         //Network error
-        showAlert("Connection Error", "Check your connection, or the <a href='#'>rebble service status</a>.")
+        showAlert("Connection Error", "Check your connection, or the <a target='_blank' href='#'>rebble service status</a>.")
+    }
+
+    if (statusCode == 500) {
+        //Network error
+        showAlert("Something went wrong", "Please retry. If the problem persists check the <a target='_blank' href='#'>rebble service status</a>, or ask on <a target='_blank' href='https://rebble.io/discord'>Discord</a>.")
     }
     
     if (typeof cbo == "object") {
@@ -749,7 +786,28 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+function onboardNewDeveloper() {
+    var newDevName = $('#newDevName').val();
+    if (newDevName.length < 1) {
+        showAlert("Failed to onboard user", "Developer name cannot be blank");
+        return
+    }
 
+    $('#runNewDevOnboardBtn').text("Setting up account");
+    var requestData = {
+        name: newDevName
+    }
+
+    apiPOST(config.endpoint.base + config.path.onboard, JSON.stringify(requestData), onboardNewDeveloper_cb, onboardNewDeveloper_ecb)
+}
+function onboardNewDeveloper_cb() {
+    showPage("home");
+    getUserInfo();
+}
+function onboardNewDeveloper_ecb(data) {
+    showAlert("Failed to onboard user", "Something went wrong. Please try again shortly.");
+    $('#runNewDevOnboardBtn').text("Create Account");
+}
 
 // Helper functions
 
