@@ -651,6 +651,9 @@ input[type="checkbox"] {
   -webkit-background-clip: text;
   color: transparent;
 }
+.green-text {
+  color: var(--color-rebble-green) !important;
+}
 
 
 .steps li {

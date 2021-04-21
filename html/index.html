@@ -833,7 +833,7 @@
                 Cyclists, swimmers, and athletes of all types use these apps to support their active lifestyles & fitness goals.
 
                 <h2 class="mt-3 orange-text"> Games </h2>
-                Play on.
+                <i class="fas fa-gamepad mr-3"></i> <i class="fas fa-chess-pawn mr-3"></i> <i class="fas fa-dice mr-3"></i> <i class="fas fa-trophy mr-3"></i>
             </div>
             <div class="modal-footer float-left noborder">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1037,47 +1037,28 @@
                         <i id="subball-3" class="fas fa-at ball"></i> Misc. Info
                     </li>
                     <li onclick="progressAppSubmission(4)" class="pointer">
-                        <i id="subball-4" class="fas fa-folder-open ball"></i> Release Files
+                        <i id="subball-4" class="fas fa-paper-plane ball"></i> Release
                     </li>
-                    <li onclick="progressAppSubmission(5)" class="pointer">
-                        <i id="subball-4" class="fas fa-paper-plane ball"></i> Submit
-                    </li>
-
                 </ul>
             </div>
         </div>
         <div class="col-8">
         <!-- New App -->
-        <div class="ml-3 longForm" id="window-newApp">
+        <div class="ml-3 longForm animated fadeIn" id="window-newApp">
             <div class="row ml-1">
                 <h1 class="lite"> Submit a new app or face </h1>
             </div>
 
             <div id="substep-0" class="substep">
-                <div class="ml-1 small">
+                <div class="ml-1 small uploader">
                     So you're ready to publish your app or watchface to the Rebble store, how exciting!
-                    <h4 class="mt-3"> Required information </h4>
-                    For both Watchfaces and Watchapps, you must provide the following fields:
-                    <ul>
-                        <li> The name of your app or face </li>
-                        <li> Whether it's a watchface or app </li> 
-                        <li> A description of it's functionality </li>
-                        <li> A description of the release </li>
-                    </ul>
-                    Watch apps will also require you to pick a category for them. 
-                    <h4 class="mt-3"> Required files </h4>
-                    For both Watchfaces and Watchapps, you must provide the following files:
-                    <ul>
-                        <li> The .pbw </li>
-                        <li> At least one screenshot </li> 
-                    </ul>
-                    <h5> Watchapps only: </h5>
-                    <ul>
-                        <li> A large and small icon </li>
-                        <li> A banner for the appstore </li>
-                    </ul>
+                    <br>
+                    <div class="row">
+                        <img src="res/img/large_icon_launchpad.svg"></img>
+                    </div>
+                    <br><br>
                     For a cheatsheet on how each field maps to the appstore listing, <a href="/res/img/explain.png" target="_blank">click here.</a>
-                    <br>To download a set of templates for banners, screenshots etc. <a href="/res/zip/exampleImages.zip">Click here.</a><br>
+                    <br>To download a set of templates for banners, screenshots etc. <a href="/res/zip/exampleImages.zip">click here.</a><br>
                     If you have an issue with submission, the best place to ask for help is the <a href="https://rebble.io/discord">Rebble Discord Server</a>.
                 </div>
             </div>
@@ -1105,7 +1086,7 @@
                 <div class="mt-4 ml-2 animated fadeIn hidden" id="appCategory">
                     App Category*
                     <br> 
-                    <div class="small">For a description of each category, <a class="pointer underline" onclick="$('#categoryExplainModal').modal()">click here</a></div>
+                    <div class="small">For a description of each category, <a class="pointer underline" onclick="$('#categoryExplainModal').modal()">click here</a>.</div>
                     <div class="input-group mb-3">
                         <select class="custom-select niceInput" id="i-appCat">
                           <option selected value="">Choose...</option>
@@ -1494,25 +1475,29 @@
             </div>
 
             <div id="substep-4" class="substep">
-                <div class="mt-4 ml-2">
-                    The pbw file
-                    <br>
-                    <div class="small">Last but not least, your built pbw file.</div>
-                    <input class="mt-2" type="file" name="pbw" id="i-pbw"></input>
-                </div>
 
                 <div class="mt-4 ml-2">
                     Release Notes*
                     <br>
-                    <div class="small">What's changed with this release? Still required for a first release.</div>
+                    <div class="small">What's included with this release? (Still required for first upload.)</div>
                     <textarea class="niceInput mt-2" id="i-releaseNotes"></textarea>
                 </div> 
-                
-                <div>
-                    <input id="makeAppPublic" type="checkbox" value=True class="mt-4 ml-2" checked>Make my app public immediately</input>
+
+                <div class="mt-4 ml-2">
+                    App Binary
+                    <br>
+                    <div class="small">Last but not least, your built pbw file.</div>
+                    <input class="mt-2 green-text" type="file" name="pbw" id="i-pbw"></input>
                 </div>
                 
-                <button onclick="submitNewApp()" class="btn btn-primary mt-4" id="btn-newAppSubmit">Go</button>
+                <div class="ml-1 mt-5">
+                    <input id="makeAppPublic" type="checkbox" style="line-height: 20px" checked>Make my app public immediately</input>
+                </div>
+                
+                <div class="mt-5 ml-2 small">
+                    Have you checked all your fields? If so..
+                </div>
+                <button onclick="submitNewApp()" class="btn btn-primary" id="btn-newAppSubmit">Publish App to Store</button>
             </div>
                 
 

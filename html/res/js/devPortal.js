@@ -334,7 +334,8 @@ function showPage(pageID) {
     if (pageID == "submit") {
         $('#i-iswatchface').prop("checked",true);
         $('#usePlatformSpecificScreenshots').prop("checked",false);
-        progressAppSubmission(0)
+        progressAppSubmission(0);
+        syncScreenshotButtonPreviews();
     } else if (pageID == "profile") {
         updateProfileSubtitle();
     }
@@ -570,6 +571,17 @@ function showAppUploadingModal() {
     clearTimeout(funMessageIntervalTimer)
     setTimeout(startFunMessageTimer, 2000);
 }
+function syncScreenshotButtonPreviews() {
+    //If we refresh the page the file inputs retain the images, but the preview <img>s loose their values. This reloads those. Called by showPage()
+    ["a","b","c","d"].forEach(e => {
+        for (var i=1;i<6;i++) {
+            var fileInput = document.getElementById(`i-screenshot-${e}-${i}-f`)
+            if (fileInput.files.length > 0) {
+                document.getElementById(`i-screenshot-${e}-${i}-i`).src = window.URL.createObjectURL(fileInput.files[0])
+            }
+        }
+    });
+}
 function submitNewApp() {
 
     var shinyNewApp = {
@@ -586,21 +598,21 @@ function submitNewApp() {
     if (shinyNewApp.description == "") { newAppValidationError("Description cannot be blank"); return }
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
     //At least one screenshot
-    if ($('#usePlatformSpecificScreenshots').prop("checked")) {
+   // if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
-        if ($('#i-screenshot-a-1-f').prop('files')[0] == undefined && $('#i-screenshot-b-1-f').prop('files')[0] == undefined && $('#i-screenshot-c-1-f').prop('files')[0] == undefined && $('#i-screenshot-d-1-f').prop('files')[0] == undefined) {
-            newAppValidationError("Provide at least one screenshot")
-            return
-        }
-
-    } else {
-
-        if ($('#i-screenshot-1-f').prop('files')[0] == undefined) {
-            newAppValidationError("Provide at least one screenshot")
-            return
-        }
-
+    if ($('#i-screenshot-a-1-f').prop('files')[0] == undefined && $('#i-screenshot-b-1-f').prop('files')[0] == undefined && $('#i-screenshot-c-1-f').prop('files')[0] == undefined && $('#i-screenshot-d-1-f').prop('files')[0] == undefined) {
+        newAppValidationError("Provide at least one screenshot")
+        return
     }
+
+    //} else {
+
+    //     if ($('#i-screenshot-1-f').prop('files')[0] == undefined) {
+    //         newAppValidationError("Provide at least one screenshot")
+    //         return
+    //     }
+
+    // }
     //App specific fields
     if ($('#i-iswatchapp').prop("checked")) {
 
@@ -610,7 +622,7 @@ function submitNewApp() {
 
     }
 
-    if ($('#i-pbw').prop('files')[0] == undefined) { newAppValidationError("A banner is required"); return }
+    if ($('#i-pbw').prop('files')[0] == undefined) { newAppValidationError("You need to include a .pbw file!"); return }
 
     showAppUploadingModal();
 
@@ -630,9 +642,9 @@ function submitNewApp() {
         formData.append("banner", $('#i-ban-f').prop('files')[0]);
     }
     
-    var largeIcon = null
+    var largeIcon = null;
     //Collect screenshots, store the first valid one for use as largeIcon if we're a watchface
-    if ($('#usePlatformSpecificScreenshots').prop("checked")) {
+    //if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
         //The weird order here is order of preference for largeIcon platform. Basalt looks best
         ["basalt","aplite", "diorite", "chalk"].forEach(platform => {
@@ -645,16 +657,16 @@ function submitNewApp() {
             }
         })
 
-    } else {
+    // } else {
 
-        for (var i = 1; i < 6; i ++) {
-            if ($(`#i-screenshot-${i}-f`).prop("files")[0] != undefined) { 
-                formData.append(`screenshot-generic-${i}`, $(`#i-screenshot-${i}-f`).prop("files")[0]); 
-                if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${i}-f`).prop("files")[0] }
-            }
-        }
+    //     for (var i = 1; i < 6; i ++) {
+    //         if ($(`#i-screenshot-${i}-f`).prop("files")[0] != undefined) { 
+    //             formData.append(`screenshot-generic-${i}`, $(`#i-screenshot-${i}-f`).prop("files")[0]); 
+    //             if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${i}-f`).prop("files")[0] }
+    //         }
+    //     }
 
-    }
+    // }
 
     //append app-only fields
     if (shinyNewApp.type == "watchapp") {
@@ -713,7 +725,7 @@ function newAppValidationError(txt) {
     $('#btn-newAppSubmit').html(txt);
     $('#btn-newAppSubmit').addClass("btn-danger");
     setTimeout(function() {
-        $('#btn-newAppSubmit').html("GO");
+        $('#btn-newAppSubmit').html("Publish app to store");
         $('#btn-newAppSubmit').removeClass("btn-danger");
     }, 2000)
 }
