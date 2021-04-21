@@ -8,6 +8,7 @@ body {
   --color-rebble-red: #AF0000;
   --color-rebble-light-red: #FF7575;
   --color-rebble-light-grey: #5c5c5c;
+  --color-rebble-very-light-grey: #E0E0E0;
   /* --color-header: #f88f1d; */
   --color-background-dark: #9e6900;
   --color-foreground: #FFFFFF;
@@ -17,6 +18,14 @@ body {
   font-size: 1.3rem;
   font-weight: 400;
 }
+
+.green {
+  background-color: var(--color-rebble-green) !important;
+}
+.orange {
+  background-color: var(--color-rebble-orange) !important;
+}
+
 
 body.clear {
   background-color: #F9F9F9;
@@ -160,7 +169,7 @@ qr img {
   margin-bottom: 30px;
 }
 .highlight {
-  background-color: var(--color-header);
+  /* background-color: var(--color-header); */
 }
 .highlight-text {
   color: var(--color-rebble-orange);
@@ -323,6 +332,13 @@ div.email-signup input[type="submit"] {
 .active {
   background-color: rgba(0,0,0,0.1);
 }
+.tab-pane.active {
+  background-color: inherit !important;
+  padding: 15px;
+}
+.nav-link.active {
+  color: var(--color-rebble-orange) !important;
+}
 
 .nav-link {
   font-weight: 300;
@@ -429,12 +445,12 @@ textarea {
   padding-left: 0px;
 }
 .longForm input, .longForm input:focus, .longForm textarea, .longForm textarea:focus, .longForm select, .longForm select:focus {
-  width: 70%;
-  max-width: 70%;
+  width: 85%;
+  max-width: 85%;
   font-size: 1.3rem;
 }
 .longForm .image-upload {
-  width: 70%;
+  width: 85%;
 }
 .longForm .banner {
   width: 100%;
@@ -506,6 +522,11 @@ input[type="checkbox"] {
   font-size: 1rem;
 }
 
+.link {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 
 .largeText {
   font-size: 3rem;
@@ -565,7 +586,10 @@ input[type="checkbox"] {
   font-size: 1.1rem;
 }
 #profile-image {
-  background-image: url("/res/img/sketches.png");
+  background-image: url("/res/img/ptr_exploded.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  /* background-size: 85%; */
   height: 1000px;
 }
 #master-profile {
@@ -586,6 +610,9 @@ input[type="checkbox"] {
 }
 .capitalise, .capitalise li {
   text-transform: capitalize;
+}
+.underline {
+  border-bottom: 1px solid black;
 }
 
 
@@ -620,6 +647,28 @@ input[type="checkbox"] {
 }
 
 .rainbow-text {
-  background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);   -webkit-background-clip: text;
+  background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);   
+  -webkit-background-clip: text;
   color: transparent;
+}
+
+
+.steps li {
+  padding: 30px;
+  margin: 50px;
+  margin-left: 0px;
+  font-weight: 300;
+  font-size: 1rem;
+}
+.steps li i {
+  font-size: 20px;
+}
+.ball {
+  background-color: var(--color-rebble-very-light-grey);
+  padding: 20px;
+  border-radius: 50%;
+  color: white;
+  margin-right: 10px;
+  width: 60px;
+  height: 60px;
 }

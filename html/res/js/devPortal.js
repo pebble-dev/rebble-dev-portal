@@ -230,6 +230,75 @@ function updateDeveloperName_ecb(data) {
     showAlert("Name update failed", data.error);
 } 
 
+//  - Submit
+function getCurrentAppSumitStep() {
+    var currentStep = 1
+    $('.substep').each((i,e) => {
+        if (! $(e).hasClass("hidden")) {
+            currentStep = $(e).attr("id").toString().split("-")[1]
+        }
+    })
+    currentStep = parseInt(currentStep);
+    return currentStep
+}
+function validateThenProgressSubmission() {
+    var step = getCurrentAppSumitStep()
+
+    if (step == 1) {
+        //Validate step 1 data
+        if ($('#i-newapp-name').val().length < 1) { showValidationError("App name cannot be blank"); return }
+        if ($('#i-iswatchapp').prop("checked") && $('#i-appCat').val().length < 1) { showValidationError("Select an app category"); return }
+        if ($('#i-description').val().length < 1) { showValidationError("Description cannot be blank"); return }
+    }
+
+    if (step == 3) {
+        
+    }
+
+    progressAppSubmission()
+}
+function showValidationError(text) {
+    $('#btn_sub_next').addClass("btn-danger")
+    $('#btn_sub_next').text(text)
+    setTimeout(function() {
+        $('#btn_sub_next').removeClass("btn-danger")
+        $('#btn_sub_next').html("Next <i class='fas fa-forward'></i>")
+    }, 2000)
+}
+function progressAppSubmission(step) {
+    var maxStep = 4
+    var currentStep = getCurrentAppSumitStep()
+    if (step != null) {
+        currentStep = step
+    } else {
+        if (currentStep < maxStep) {
+            currentStep++
+        } else {
+            return
+        }
+    }
+
+    $('.substep').addClass("hidden");
+    $('#substep-' + currentStep).removeClass("hidden");
+    $('.ball').removeClass("green");
+    $('#subball-' + currentStep).addClass("green");
+    if (currentStep == 0) { $('#btn_sub_prev').addClass("hidden");  } else { $('#btn_sub_prev').removeClass("hidden"); }
+    if (currentStep == maxStep) { $('#btn_sub_next').addClass("hidden");  } else { $('#btn_sub_next').removeClass("hidden"); }
+}
+function reverseAppSubmission() {
+    var currentStep = getCurrentAppSumitStep()
+    if (currentStep > 0) {
+        currentStep--
+        progressAppSubmission(currentStep)
+    }
+}
+
+//  - New Release
+function showNewRelease() {
+    $('.data-release-app').text(currentAppCache.title);
+    showPage("release");
+}
+
 //  - Global UX
 function showAlert(title, text) {
     $('#mainAlert').removeClass("hidden");
@@ -259,12 +328,13 @@ function showPage(pageID) {
 
     $('.page').addClass("hidden");
 
-    var validPages = ["profile","home","submit"];
+    var validPages = ["profile","home","submit","release"];
 
     //Any weird custom per-window log goes here
     if (pageID == "submit") {
         $('#i-iswatchface').prop("checked",true);
         $('#usePlatformSpecificScreenshots').prop("checked",false);
+        progressAppSubmission(0)
     } else if (pageID == "profile") {
         updateProfileSubtitle();
     }
@@ -407,7 +477,9 @@ function getAppDetails_cb(data) {
 
     debugLog(data)
 
-    appinfostring = (data.category == "Faces") ? '<i class="far fa-clock ml-4"></i> Watchface' : '<i class="fas fa-mobile-alt ml-4"></i> Watchapp'
+    var appinfostring = (data.category == "Faces") ? '<i class="far fa-clock ml-4"></i> Watchface' : '<i class="fas fa-mobile-alt ml-4"></i> Watchapp'
+    var appOrFace = (data.category == "Faces") ? "Watchface" : "App"
+    $('.appOrFace').text(appOrFace)
 
     //Data
     $('#appinfo-appname').text(data.title);
@@ -630,7 +702,7 @@ function submitNewApp_ecb(data) {
     }
 
     var nicerMessages = {
-        "app.exists": "An application with the supplied UUID already exists. <br>If you are sure you have not uploaded this app already, please generate a new UUID in your appinfo.json."
+        "app.exists": "An application with the supplied UUID already exists. Did you mean to <a href='/release'>publish a new release?</a><br>If you are sure you have not uploaded this app already, please generate a new UUID in your appinfo.json."
     }
 
     var msg = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error;
