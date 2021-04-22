@@ -4,7 +4,7 @@ var path = require('path');
 
 var htmlPath = __dirname + "/html"
 
-var indexPaths = ["/","/profile","/submit","/release","/setup"];
+var indexPaths = ["/","/profile","/submit","/release","/setup","/recover-account"];
 
 app.use("/res", express.static(path.join(htmlPath + "/res")));
 

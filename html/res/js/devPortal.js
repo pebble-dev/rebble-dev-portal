@@ -298,6 +298,56 @@ function showNewRelease() {
     $('.data-release-app').text(currentAppCache.title);
     showPage("release");
 }
+function getCurrentAppReleaseStep() {
+    var currentStep = 1
+    $('.relstep').each((i,e) => {
+        if (! $(e).hasClass("hidden")) {
+            currentStep = $(e).attr("id").toString().split("-")[1]
+        }
+    })
+    currentStep = parseInt(currentStep);
+    return currentStep
+}
+function validateThenProgressRelease() {
+    var step = getCurrentAppReleaseStep()
+
+    progressAppRelease()
+}
+function showValidationError(text) {
+    $('#btn_rel_next').addClass("btn-danger")
+    $('#btn_rel_next').text(text)
+    setTimeout(function() {
+        $('#btn_rel_next').removeClass("btn-danger")
+        $('#btn_rel_next').html("Next <i class='fas fa-forward'></i>")
+    }, 2000)
+}
+function progressAppRelease(step) {
+    var maxStep = 3
+    var currentStep = getCurrentAppReleaseStep()
+    if (step != null) {
+        currentStep = step
+    } else {
+        if (currentStep < maxStep) {
+            currentStep++
+        } else {
+            return
+        }
+    }
+
+    $('.relstep').addClass("hidden");
+    $('#relstep-' + currentStep).removeClass("hidden");
+    $('.ball').removeClass("green");
+    $('#relball-' + currentStep).addClass("green");
+    if (currentStep == 1) { $('#btn_rel_prev').addClass("hidden");  } else { $('#btn_rel_prev').removeClass("hidden"); }
+    if (currentStep == maxStep) { $('#btn_rel_next').addClass("hidden");  } else { $('#btn_rel_next').removeClass("hidden"); }
+}
+function reverseAppRelease() {
+    var currentStep = getCurrentAppReleaseStep()
+    if (currentStep > 1) {
+        currentStep--
+        progressAppRelease(currentStep)
+    }
+}
 
 //  - Setup
 function showSetupStep(step) {
@@ -350,18 +400,28 @@ function showPage(pageID) {
 
     $('.page').addClass("hidden");
 
-    var validPages = ["profile","home","submit","release","setup"];
+    var validPages = ["profile","home","submit","release","setup","recover-account"];
 
     //Any weird custom per-window log goes here
     if (pageID == "submit") {
+
         $('#i-iswatchface').prop("checked",true);
         $('#usePlatformSpecificScreenshots').prop("checked",false);
         progressAppSubmission(0);
         syncScreenshotButtonPreviews();
+
+    } else if (pageID == "release") {
+
+        progressAppRelease(1);
+
     } else if (pageID == "profile") {
+
         updateProfileSubtitle();
+
     } else if (pageID == "setup") {
+
         $('#viewAllOn').addClass("hidden")
+
     }
 
     if (validPages.includes(pageID)) {
@@ -452,17 +512,21 @@ function getUserInfo_cb(data) {
         genericAPIErrorHandler("Failed to parse getUserInfo_cb data")
     }
 
+    var page = window.location.pathname;
+    debugLog("Init router detected path as " + page);
+
     if (! data.hasOwnProperty("name")) { data.name = "New User"}
 
-    if (data.needsSetup) {
-        showPage("setup");
-        return
+    if (data.hasOwnProperty("authName")) {
+        $(".data-rebbleUsername").text(data.authName);
     }
+   
 
     $(".data-username").text(data.name);
     $(".data-developerID").text(data.id);
     $(".data-userID").text(data.userid)
     $("#userAppList").html("");
+
 
     if (data.applications.length > 0) {
         //Reverse array so newest is first
@@ -478,9 +542,12 @@ function getUserInfo_cb(data) {
     } else {
         $('#appinfo-noapps').removeClass("hidden")
     }
+    
+    if (data.needsSetup && ! ["/setup","/recover-account"].includes(page)) {
+        showPage("setup");
+        return
+    }
 
-    var page = window.location.pathname;
-    debugLog("Init router detected path as " + page);
     showPage(page);
 }
 

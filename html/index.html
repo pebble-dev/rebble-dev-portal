@@ -873,7 +873,9 @@
                     </div>
                 </div>
                 <div class="col-sm">
-                    <h1 id="appinfo-appname"> </h1> 
+                    <div class="row">
+                        <h1 id="appinfo-appname"> </h1> <a target="_blank" class="ml-3 small pt-2 nodec" id="externalStoreListing"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
                     <ul class="nodec"> 
                         <li> 
                             <i class="far fa-heart" ></i> <span id="appinfo-hearts"> </span>
@@ -1114,7 +1116,6 @@
                 <br>
                 <div class="small"> 
                     Screenshots let users see what your <span class="appOrFace lcase">watchface</span> looks like. You must provide at least one.
-                    <br>You can provide one set of screenshots for all platforms, or platform specific ones.
                 </div>
             
                 <!-- <input id="usePlatformSpecificScreenshots" type="checkbox" value="" class="mt-3">Use platform specific screenshots</input> -->
@@ -1515,367 +1516,372 @@
 
 <div class="container page hidden" id="master-release">
         
-    <div class="row mt-5">
-        <!-- <div class="row col-3"></div>
-        <div class="row col-8"> -->
-        <!-- New App -->
-        <div class="col-1" id="menu-newAppSteps">
+        <div class="row mt-5">
+            <div class="col-3">
+                <div style="font-size:0.9rem;">
+                    <a onclick="showPage('home')"><i class="fas fa-chevron-left"></i> Back </a>
+                </div>
+                
+                <div class="submit-stepContainer">
+                    <ul class="nodec steps">
+                        <li onclick="progressAppRelease(1)" class="pointer">
+                            <i id="relball-1" class="fas fa-scroll ball"></i> Release Details
+                        </li>
+                        <li onclick="progressAppRelease(2)" class="pointer">
+                            <i id="relball-2" class="fas fa-images ball"></i> New Images
+                        </li>
+                        <li onclick="progressAppRelease(3)" class="pointer">
+                            <i id="relball-3" class="fas fa-paper-plane ball"></i> Release
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-8">
+            <!-- New App -->
+            <div class="ml-3 longForm animated fadeIn" id="window-newApp">
+                <div class="row ml-1">
+                    <h1 class="lite"> New release for <span class="data-release-app">your app</span> </h1>
+                </div>
     
-            <div style="font-size:0.9rem;">
-                <a onclick="showPage('home')"><i class="fas fa-chevron-left"></i> Back </a>
-            </div>
+                <div id="relstep-1" class="relstep hidden">
 
-        </div>
-        <div class="col-10 ml-3 longForm" id="window-newApp">
-            <div class="row ml-1">
-                <h1 class="lite"> New release for <span class="data-release-app"></span> </h1>
-            </div>
-
-            <div class="ml-1 small">
-                A new release lets you publish an update for your <span class="appOrFace lcase">app</span>, or upload new screenshots. <br>
-                If you want to change other attributes, edit your store listing instead.
-            </div>
-            
-            <div class="mt-4 ml-2">
-                Release Notes*
-                <br>
-                <div class="small">What's changed with this release? Still required for a first release.</div>
-                <textarea class="niceInput mt-2" id="i-releaseNotes"></textarea>
-            </div>  
-        
-            <div class="mt-4 ml-2">
-                Screenshots
-                <br>
-                <div class="small"> 
-                    Screenshots let users see what your <span class="appOrFace lcase">watchface</span> looks like. You must provide at least one.
-                </div>
-            
-                <input id="usePlatformSpecificScreenshots" type="checkbox" value="" class="mt-3">Use platform specific screenshots</input>
-
-                <br>
-                <div class="" id="platformAgnosticScreenshots">
-                    <div class="row">
-                    
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-1-f">
-                                <img id = "i-screenshot-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-1-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-1-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-2-f">
-                                <img id = "i-screenshot-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-2-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-2-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-3-f">
-                                <img id = "i-screenshot-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-3-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-3-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-4-f">
-                                <img id = "i-screenshot-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-4-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-4-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-5-f">
-                                <img id = "i-screenshot-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-5-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-5-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- <div class="hidden" id="platformSpecificScreenshots">
-
-                    <h4 class="m-0 highlight-text mt-4"> Aplite screenshots</h4>
-                    <div class="row">
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-a-1-f">
-                                <img id = "i-screenshot-a-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-a-1-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-a-1-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-a-2-f">
-                                <img id = "i-screenshot-a-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-a-2-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-a-2-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-a-3-f">
-                                <img id = "i-screenshot-a-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-a-3-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-a-3-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-a-4-f">
-                                <img id = "i-screenshot-a-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-a-4-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-a-4-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-a-5-f">
-                                <img id = "i-screenshot-a-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-a-5-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-a-5-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    </div>
-
-                    <h4 class="m-0 highlight-text mt-5"> Basalt screenshots</h4>
-                    <div class="row">
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-b-1-f">
-                                <img id = "i-screenshot-b-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-b-1-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-b-1-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-b-2-f">
-                                <img id = "i-screenshot-b-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-b-2-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-b-2-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-b-3-f">
-                                <img id = "i-screenshot-b-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-b-3-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-b-3-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-b-4-f">
-                                <img id = "i-screenshot-b-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-b-4-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-b-4-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-b-5-f">
-                                <img id = "i-screenshot-b-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-b-5-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-b-5-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    </div>
-
-                    <h4 class="m-0 highlight-text mt-5"> Chalk screenshots</h4>
-                    <div class="row">
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-c-1-f">
-                                <img id = "i-screenshot-c-1-i" class="card-img-top" src="/res/img/screenshotRound.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-c-1-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-c-1-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-c-2-f">
-                                <img id = "i-screenshot-c-2-i" class="card-img-top" src="/res/img/screenshotRound.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-c-2-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-c-2-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-c-3-f">
-                                <img id = "i-screenshot-c-3-i" class="card-img-top" src="/res/img/screenshotRound.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-c-3-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-c-3-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-c-4-f">
-                                <img id = "i-screenshot-c-4-i" class="card-img-top" src="/res/img/screenshotRound.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-c-4-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-c-4-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-c-5-f">
-                                <img id = "i-screenshot-c-5-i" class="card-img-top" src="/res/img/screenshotRound.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-c-5-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-c-5-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    </div>
-
-                      <h4 class="m-0 highlight-text mt-5"> Diorite screenshots </h4>
-                      <div class="row">
-                          <div class="card img-card noshadow border-lite ml-3 mt-3">
-                              <label for="i-screenshot-d-1-f">
-                                  <img id = "i-screenshot-d-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                  <div class="card-body wide">
-                                      <a  class="btn btn-primary">Add</a>
-                                  </div>
-                              </label>
-                              <input id="i-screenshot-d-1-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-d-1-i').src = window.URL.createObjectURL(this.files[0])">
-                          </div>
-                      
-                          <div class="card img-card noshadow border-lite ml-3 mt-3">
-                              <label for="i-screenshot-d-2-f">
-                                  <img id = "i-screenshot-d-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                  <div class="card-body wide">
-                                      <a  class="btn btn-primary">Add</a>
-                                  </div>
-                              </label>
-                              <input id="i-screenshot-d-2-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-d-2-i').src = window.URL.createObjectURL(this.files[0])">
-                          </div>
-                      
-                          <div class="card img-card noshadow border-lite ml-3 mt-3">
-                              <label for="i-screenshot-d-3-f">
-                                  <img id = "i-screenshot-d-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                  <div class="card-body wide">
-                                      <a  class="btn btn-primary">Add</a>
-                                  </div>
-                              </label>
-                              <input id="i-screenshot-d-3-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-d-3-i').src = window.URL.createObjectURL(this.files[0])">
-                          </div>
-                      
-                          <div class="card img-card noshadow border-lite ml-3 mt-3">
-                              <label for="i-screenshot-d-4-f">
-                                  <img id = "i-screenshot-d-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                  <div class="card-body wide">
-                                      <a  class="btn btn-primary">Add</a>
-                                  </div>
-                              </label>
-                              <input id="i-screenshot-d-4-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-d-4-i').src = window.URL.createObjectURL(this.files[0])">
-                          </div>
-                      
-                          <div class="card img-card noshadow border-lite ml-3 mt-3">
-                              <label for="i-screenshot-d-5-f">
-                                  <img id = "i-screenshot-d-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                  <div class="card-body wide">
-                                      <a  class="btn btn-primary">Add</a>
-                                  </div>
-                              </label>
-                              <input id="i-screenshot-d-5-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-d-5-i').src = window.URL.createObjectURL(this.files[0])">
-                          </div>
-                      </div>
-                </div> -->
-            
-                <div class="mt-5 ml-2">
-                    Appstore Banner
-                    <br>
                     <div class="small">
-                        This is the banner that is displayed above your <span class="apptype lcase">app</span> screenshots in the store.<br>
-                        It is required for apps, and options for watchfaces.
+                        Publishing a new release lets you update your app, upload new screenshots or a new banner, or both. <br>
+                        To update other data such as the app name or website link, select 'Edit store listing' instead.
                     </div>
-                    <div class="image-upload br-sm border-lite curve">
-                        <label for="i-ban-f">
-                          <img id="i-ban-i" class="screenshot banner" src="/res/img/newappbanner.png">
-                        </label>
-                    
-                        <input class="hidden" id="i-ban-f" type="file" onchange="document.getElementById('i-ban-i').src = window.URL.createObjectURL(this.files[0]);">
-                      </div>
-                </div>
-
-                <div class="mt-5 ml-2 hidden" id="appIconContainer">
-                    App icons
-                    <div class="small">App icons are shown in the user's app locker</div>
-                    <br>
-                    <label for="i-icon-large-f">
-                        <img id="i-icon-large-i" class="card-img-top border-lite" src="/res/img/largeicon.png" style="height:144px;width:144px;" />
-                    </label>
-                    <input id="i-icon-large-f" type="file" class="hidden" onchange="document.getElementById('i-icon-large-i').src = window.URL.createObjectURL(this.files[0])">
-                    <br><br>
-                    <label for="i-icon-small-f">
-                        <img id="i-icon-small-i" class="card-img-top border-lite" src="/res/img/smallicon.png" style="height:96px;width:96px;" />
-                    </label>
-                    <input id="i-icon-small-f" type="file" class="hidden" onchange="document.getElementById('i-icon-small-i').src = window.URL.createObjectURL(this.files[0])">
-                </div>
-
-                <div class="mt-4 ml-2">
-                    PBW file
-                    <br>
-                    <div class="small">Last but not least, your built pbw file.</div>
-                    <input class="mt-2" type="file" name="pbw" id="i-pbw"></input>
-                </div>
-
-                <div>
-                    <input id="makeAppPublic" type="checkbox" value=True class="mt-4 ml-2" checked>Make my app public immediately</input>
-                </div>
-
-                <button onclick="submitNewApp()" class="btn btn-primary mt-4" id="btn-newAppSubmit">Go</button>
             
-                <br><br><br><br>
-            </div>  
-
-
+                    <div class="mt-4 ml-2">
+                        Release Notes
+                        <br>
+                        <div class="small">What's changed with this release? </div>
+                        <textarea class="niceInput mt-2" id="release-releaseNotes"></textarea>
+                    </div> 
+    
+                    <div class="mt-4 ml-2">
+                        App Binary
+                        <br>
+                        <div class="small">If you're updating your app, provide the .pbw here</div>
+                        <input class="mt-2 green-text" type="file" name="pbw" id="release-pbw"></input>
+                    </div>
+    
+                </div>
+            
+                <div id="relstep-2" class="mt-4 ml-2 relstep hidden">
+                    Screenshots
+                    <br>
+                    <div class="small"> 
+                        Here you can add new screenshots for your app or watchface. To delete existing screenshots, select 'Edit appstore listing' from the main menu.
+                    </div>
+                
+                    <!-- <input id="usePlatformSpecificScreenshots" type="checkbox" value="" class="mt-3">Use platform specific screenshots</input> -->
+                    
+                    <div class="mt-3" id="platformSpecificScreenshots">
+    
+                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                              <a class="nav-link active" id="scr-aplite-tab" data-toggle="tab" href="#scr-aplite" role="tab" aria-controls="scr-aplite" aria-selected="true">Aplite</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="scr-basalt-tab" data-toggle="tab" href="#scr-basalt" role="tab" aria-controls="scr-basalt" aria-selected="false">Basalt</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" id="scr-chalk-tab" data-toggle="tab" href="#scr-chalk" role="tab" aria-controls="scr-chalk" aria-selected="false">Chalk</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="scr-diorite-tab" data-toggle="tab" href="#scr-diorite" role="tab" aria-controls="scr-diorite" aria-selected="false">Diorite</a>
+                              </li>
+                          </ul>
+                          <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="scr-aplite" role="tabpanel" aria-labelledby="scr-aplite-tab">
+    
+                                <!-- <h4 class="m-0 highlight-text"> Aplite screenshots</h4> -->
+                                <div class="row">
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-a-1-f">
+                                            <img id = "r-screenshot-a-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-a-1-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-a-1-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-a-2-f">
+                                            <img id = "r-screenshot-a-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-a-2-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-a-2-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-a-3-f">
+                                            <img id = "r-screenshot-a-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-a-3-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-a-3-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-a-4-f">
+                                            <img id = "r-screenshot-a-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-a-4-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-a-4-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-a-5-f">
+                                            <img id = "r-screenshot-a-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-a-5-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-a-5-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <div class="tab-pane fade" id="scr-basalt" role="tabpanel" aria-labelledby="scr-basalt-tab">
+    
+                                <!-- Basalt specific screenshots -->
+                                <!-- <h4 class="m-0 highlight-text"> Basalt screenshots</h4> -->
+                                <div class="row">
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-b-1-f">
+                                            <img id = "r-screenshot-b-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-b-1-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-b-1-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-b-2-f">
+                                            <img id = "r-screenshot-b-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-b-2-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-b-2-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-b-3-f">
+                                            <img id = "r-screenshot-b-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-b-3-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-b-3-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-b-4-f">
+                                            <img id = "r-screenshot-b-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-b-4-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-b-4-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-b-5-f">
+                                            <img id = "r-screenshot-b-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-b-5-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-b-5-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <div class="tab-pane fade" id="scr-chalk" role="tabpanel" aria-labelledby="scr-chalk-tab">
+    
+                                <!-- Chalk specific screenshots -->
+                                <!-- <h4 class="m-0 highlight-text"> Chalk screenshots</h4> -->
+                                <div class="row">
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-c-1-f">
+                                            <img id = "r-screenshot-c-1-i" class="card-img-top" src="/res/img/screenshotRound.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-c-1-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-c-1-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-c-2-f">
+                                            <img id = "r-screenshot-c-2-i" class="card-img-top" src="/res/img/screenshotRound.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-c-2-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-c-2-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-c-3-f">
+                                            <img id = "r-screenshot-c-3-i" class="card-img-top" src="/res/img/screenshotRound.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-c-3-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-c-3-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-c-4-f">
+                                            <img id = "r-screenshot-c-4-i" class="card-img-top" src="/res/img/screenshotRound.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-c-4-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-c-4-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-c-5-f">
+                                            <img id = "r-screenshot-c-5-i" class="card-img-top" src="/res/img/screenshotRound.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-c-5-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-c-5-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                </div>
+    
+                            </div>
+                            <div class="tab-pane fade" id="scr-diorite" role="tabpanel" aria-labelledby="scr-diorite-tab">
+                               
+                                <!-- Diorite specific screenshots -->
+                                <!-- <h4 class="m-0 highlight-text"> Diorite screenshots </h4> -->
+                                <div class="row">
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-d-1-f">
+                                            <img id = "r-screenshot-d-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-d-1-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-d-1-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-d-2-f">
+                                            <img id = "r-screenshot-d-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-d-2-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-d-2-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-d-3-f">
+                                            <img id = "r-screenshot-d-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-d-3-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-d-3-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-d-4-f">
+                                            <img id = "r-screenshot-d-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-d-4-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-d-4-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                
+                                    <div class="card img-card noshadow border-lite ml-3 mt-3">
+                                        <label for="r-screenshot-d-5-f">
+                                            <img id = "r-screenshot-d-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
+                                            <div class="card-body wide">
+                                                <a  class="btn btn-primary">Add</a>
+                                            </div>
+                                        </label>
+                                        <input id="r-screenshot-d-5-f" type="file" class="hidden" onchange="document.getElementById('r-screenshot-d-5-i').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>
+                                </div>
+    
+                            </div>
+                          </div>
+    
+                    </div>
+                
+                    <div class="mt-5 ml-2">
+                        Appstore Banner
+                        <br>
+                        <div class="small">
+                            This is the banner that is displayed above your <span class="apptype lcase">app</span> screenshots in the store.<br>
+                            Providing a new one will overwrite the old one.
+                        </div>
+                        <div class="image-upload br-sm border-lite curve">
+                            <label for="r-ban-f">
+                              <img id="r-ban-i" class="screenshot banner" src="/res/img/newappbanner.png">
+                            </label>
+                        
+                            <input class="hidden" id="r-ban-f" type="file" onchange="document.getElementById('r-ban-i').src = window.URL.createObjectURL(this.files[0]);">
+                          </div>
+                    </div>
+    
+                    <div class="mt-5 ml-2 hidden" id="appIconContainer">
+                        App icons
+                        <div class="small">App icons are shown in the user's app locker</div>
+                        <br>
+                        <label for="r-icon-large-f">
+                            <img id="r-icon-large-i" class="card-img-top border-lite" src="/res/img/largeicon.png" style="height:144px;width:144px;" />
+                        </label>
+                        <input id="r-icon-large-f" type="file" class="hidden" onchange="document.getElementById('r-icon-large-i').src = window.URL.createObjectURL(this.files[0])">
+                        <br><br>
+                        <label for="r-icon-small-f">
+                            <img id="r-icon-small-i" class="card-img-top border-lite" src="/res/img/smallicon.png" style="height:96px;width:96px;" />
+                        </label>
+                        <input id="r-icon-small-f" type="file" class="hidden" onchange="document.getElementById('r-icon-small-i').src = window.URL.createObjectURL(this.files[0])">
+                    </div>
+                    
+                </div>  
+    
+                <div id="relstep-3" class="relstep hidden">
+    
+                    <h4 class="mt-3 ml-1 mb-3"> Changes that will be made to <span class="data-release-app">your app</span>:</h4>
+                   
+                    <ul id="newReleaseChanges">
+                        <li> None </li>
+                    </ul>
+                    
+                    <div class="mt-5 ml-2 small">
+                        Does that look right? If so..
+                    </div>
+                    <button onclick="LINKNEEDED()" class="btn btn-primary" id="btn-newAppSubmit">Publish release to Store</button>
+                </div>
+                    
+    
+    
+            </div>
+            <div class="ml-4 mt-5" id="navButtons">
+    
+                <button class="previousstep" onclick="reverseAppRelease()" id="btn_rel_prev"> <i class="fas fa-backward"></i> Back </button>
+                <button class="previousstep highlight" onclick="validateThenProgressRelease()" id="btn_rel_next"> Next <i class="fas fa-forward"></i> </button>
+                <br><br><br>
+            </div>
         </div>
-    </div>  
-    <!-- </div>         -->
+        </div>          
+    
 </div>
 
 <div class="container-flex hidden page small" id="master-profile">
@@ -1925,7 +1931,7 @@
                 <button class="btn btn-primary" style="width:150px;" onclick="showSetupStep('firstrun')"> Yes </button> - I have never uploaded a Pebble app before, and I need to setup my developer account.
             </p>
             <p class="mt-3 small">
-                <button class="btn btn-secondary" style="width:150px;"> No </button> - I have uploaded Pebble apps before, either before the Pebble shutdown or after.
+                <button class="btn btn-secondary" style="width:150px;" onclick="showPage('recover-account')"> No </button> - I have uploaded Pebble apps before, either before the Pebble shutdown or after.
             </p>
             
             
@@ -1951,6 +1957,50 @@
         </div>
 
       
+
+    </div>
+
+</div>
+
+<div class="container page hidden" id="master-recover-account">        
+    <div class="row mt-5">
+        <div class="col-2" id="menu-applistContainer">
+            
+        </div>
+
+        <div class="col-10 ml-3 setupWindow" id="setup-inital">
+            <div class="row pl-2">
+                <h1 class="largeText"> Account Recovery </h1>
+            </div>
+            <p class="mt-3 pl-0 small">
+                Before the Pebble shutdown in 2018, we asked you to <a target="_blank" href="https://rebble.io/2018/06/13/get-ready-to-rebble.html"> link your Pebble account</a>. If you didn't manage to do that before Pebble shut down, or if you have become a developer using the old rebble.io/submit tool, your Rebble account won't be linked
+                to your Developer Account. <br>
+                <h5> Things you will need </h5>
+                <ul>
+                    <li> Your Rebble auth ID </li>
+                    <li> Your original developer ID </li>
+                    <li> Proof of ownership </li>
+                </ul>
+            </p>
+            <p class="small">
+                If you don't know your developer ID, <a href="LINKNEEDED">follow this guide.</a><br>
+                If you became a developer using the rebble.io/submit tool, then the proof of your ownership is your email account.
+            </p>
+            <h5> Rebble Auth ID </h5>
+            <p class="small">
+                You are logged in as <span class="data-rebbleUsername">an unknown user</span>, your Rebble auth ID is <span class="data-userID">unknown</span>
+            </p>
+            <h5> Get in touch </h5>
+            <p class="small">
+                Once you have these three, get in touch. <br>
+                Either send us an email at <a href="mailto:support@rebble.io">support@rebble.io</a>, or chat to us in #app-dev on the <a href="https://rebble.io/discord">Rebble discord server</a>.
+            </p>
+            <h5> Other options </h5>
+            <p class="small">
+                Recovering your account shouldn't take long (especially via Discord), but if you want to get uploading straight away you can <a class="underline" onclick="showPage('setup')">go back</a> and create a new developer account in seconds.
+            </p>
+            
+        </div>
 
     </div>
 
