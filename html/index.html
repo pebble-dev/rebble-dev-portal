@@ -947,15 +947,33 @@
                     </tr>
                     <tr>
                         <td class="font-weight-bold"> Screenshots: 
-                            <select id="screenshot-platform" onchange="alert('Todo');">
-                                <option value="aplite">Aplite</option>
-                                <option value="basalt">Basalt</option>
-                                <option value="chalk">Chalk</option>
-                                <option value="diorite">Diorite</option>
-                                <option value="emery">Emery</option>
-                              </select>
                         </td>
-                        <td> <div class="row" id="edit-screenshotContainer"></div>  </td>  <td><i id="change-screenshots" class="fas fa-asterisk hidden change"></i></td>
+                        <!-- <td> <div class="row" id="edit-screenshotContainer"></div>  </td>  <td><i id="change-screenshots" class="fas fa-asterisk hidden change"></i></td> -->
+                        <td>
+
+                        <div class="" id="platformSpecificScreenshots">
+
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                 <li class="nav-item">
+                                   <a onclick="getEditScreenshotsForPlatform('aplite')" class="nav-link active" id="e-scr-aplite-tab" data-toggle="tab" href="#e-scr-aplite" role="tab" aria-controls="e-scr-aplite" aria-selected="true">Aplite</a>
+                                 </li>
+                                 <li class="nav-item">
+                                   <a onclick="getEditScreenshotsForPlatform('basalt')" class="nav-link" id="e-scr-basalt-tab" data-toggle="tab" href="#e-scr-basalt" role="tab" aria-controls="e-scr-basalt" aria-selected="false">Basalt</a>
+                                 </li>
+                                 <li class="nav-item">
+                                   <a onclick="getEditScreenshotsForPlatform('chalk')" class="nav-link" id="e-scr-chalk-tab" data-toggle="tab" href="#e-scr-chalk" role="tab" aria-controls="e-scr-chalk" aria-selected="false">Chalk</a>
+                                 </li>
+                                 <li class="nav-item">
+                                     <a onclick="getEditScreenshotsForPlatform('diorite')" class="nav-link" id="e-scr-diorite-tab" data-toggle="tab" href="#e-scr-diorite" role="tab" aria-controls="e-scr-diorite" aria-selected="false">Diorite</a>
+                                   </li>
+                            </ul>
+                            <div class="tab-content" id="editScreenshotTabContent">
+                                <!-- rendered by html_populateScreenshotTabList -->
+                            </div>
+
+                </div>
+
+                        </td>
                     </tr>
                 </table>
                 <div class="row" >
@@ -1121,63 +1139,7 @@
                 <!-- <input id="usePlatformSpecificScreenshots" type="checkbox" value="" class="mt-3">Use platform specific screenshots</input> -->
 
                 <br>
-                <div class="hidden" id="platformAgnosticScreenshots">
-                    <div class="row">
-                    
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-1-f">
-                                <img id = "i-screenshot-1-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-1-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-1-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-2-f">
-                                <img id = "i-screenshot-2-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-2-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-2-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-3-f">
-                                <img id = "i-screenshot-3-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-3-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-3-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-4-f">
-                                <img id = "i-screenshot-4-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-4-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-4-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-                    
-                        <div class="card img-card noshadow border-lite ml-3 mt-3">
-                            <label for="i-screenshot-5-f">
-                                <img id = "i-screenshot-5-i" class="card-img-top" src="/res/img/screenshotSquare.png" />
-                                <div class="card-body wide">
-                                    <a  class="btn btn-primary">Add</a>
-                                </div>
-                            </label>
-                            <input id="i-screenshot-5-f" type="file" class="hidden" onchange="document.getElementById('i-screenshot-5-i').src = window.URL.createObjectURL(this.files[0])">
-                        </div>
-
-                    </div>
-                </div>
-
+                
                 <div class="" id="platformSpecificScreenshots">
 
                       <ul class="nav nav-tabs" id="myTab" role="tablist">

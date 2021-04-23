@@ -657,6 +657,9 @@ input[type="checkbox"] {
 .green-text {
   color: var(--color-rebble-green) !important;
 }
+.dark-red-text {
+  color: var(--color-rebble-red) !important;
+}
 
 
 .steps li {

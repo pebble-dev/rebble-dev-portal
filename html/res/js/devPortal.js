@@ -52,6 +52,7 @@ function searchUserApps(searchText) {
 //  - Edit appstore listing
 function showAppListingEditor(sender) {
     if ($('#editStoreListingBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }
+    html_populateScreenshotTabList();
 
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary-listingcontrol').removeClass("hidden");
@@ -65,29 +66,11 @@ function showAppListingEditor(sender) {
     $('#edit-website').val(currentAppCache.website);
     $('#edit-source').val(currentAppCache.source);
 
-
     //Screenshots
-    $('#edit-screenshotContainer').html("");
-    var extra = 5 - currentAppCache.screenshot_images.length
-    currentAppCache.screenshot_images.forEach((screenshot, index) => {
-        $('#edit-screenshotContainer').append('\
-        <div class="card img-card ml-3 mt-3">\
-            <img class="card-img-top" src="' + screenshot["144x168"] + '" alt="Card image cap" />\
-            <div class="card-body">\
-                <a href="#" class="btn btn-primary">Delete</a>\
-            </div>\
-        </div>');
-    });
-    for (var i = 0; i < extra; i++) {
-        $('#edit-screenshotContainer').append('\
-        <div class="card img-card ml-3 mt-3">\
-            <img class="card-img-top" src="https://rebble.io/submit/img/add.png" alt="Card image cap" />\
-            <div class="card-body">\
-                <a href="#" class="btn btn-primary">Add</a>\
-            </div>\
-        </div>');
-    }
-    $('#screenshot-platform').val(currentAppCache.screenshot_hardware);
+    var platform = currentAppCache.screenshot_hardware
+    $('#e-scr-' + platform + "-tab").tab("show");
+    getEditScreenshotsForPlatform(platform)
+
 }
 function updateAppField(field) {
     $('#change-' + field).removeClass("hidden")
@@ -155,6 +138,69 @@ function returnToMainSecondaryWindow() {
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary').removeClass("hidden");
     $('.appinfobtn').removeClass("btn-active");
+}
+function getEditScreenshotsForPlatform(platform) {
+    apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/screenshots/" + platform, getEditScreenshotsForPlatform_cb, genericAPIErrorHandler, platform);
+    // $('#e-scr-' + currentAppCache.screenshot_hardware + "-tab").tab("show");
+}
+function getEditScreenshotsForPlatform_cb(data, platform) {
+    var data = JSON.parse(data);
+
+    if (! currentAppCache.hasOwnProperty("screenshotCache")) { currentAppCache.screenshotCache = {} }
+    currentAppCache.screenshotCache[platform] = data
+    //Screenshots
+    var shortPlatform = platform.substr(0,1)
+    var numScreenshots = data.length
+    var extra = 5 - numScreenshots
+
+    data.forEach((screenshotID, index) => {
+        $(`#e-screenshot-${shortPlatform}-${index+1}-i`).attr("src", config.misc.screenshotAsset + screenshotID)
+        $(`#e-screenshot-${shortPlatform}-${index+1}-btn-add`).addClass("hidden");
+        $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete`).removeClass("hidden");
+    });
+
+    for (var i = numScreenshots; i <= extra; i++) {
+        var srclink = (platform == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
+        $(`#e-screenshot-${shortPlatform}-${i+1}-i`).attr("src", srclink);
+        $(`#e-screenshot-${shortPlatform}-${i+1}-btn-add`).removeClass("hidden");
+        $(`#e-screenshot-${shortPlatform}-${i+1}-btn-delete`).addClass("hidden");
+    }
+
+}
+function newScreenshotForUpload(imgHolderID, file) {
+    $('#' + imgHolderID).attr("src", window.URL.createObjectURL(file));
+}
+function html_populateScreenshotTabList() {
+    //Create the HTML for the edit dialogue screenshot list
+    var platforms = ["aplite","basalt","chalk","diorite"]
+    var maxScreenshots = 5
+    var output = ""
+
+    platforms.forEach(p => {
+        pshort = p.substr(0,1)
+        output += `<div class="tab-pane fade" id="e-scr-${p}" role="tabpanel" aria-labelledby="e-scr-${p}-tab">`
+        output += `<div class="row">`
+
+        var placeholder = (p == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
+        
+        for (var i = 1; i <= maxScreenshots; i++) {
+            output += `<div class="card img-card noshadow border-lite ml-3 mt-3">
+                        <img id = "e-screenshot-${pshort}-${i}-i" class="card-img-top" src="${placeholder}" />
+                        <div class="card-body wide hidden" id="e-screenshot-${pshort}-${i}-btn-delete">
+                                <button class="btn btn-danger">Delete</button>
+                        </div>
+                        <label for="e-screenshot-${pshort}-${i}-f" class="mt-1">
+                            <div class="card-body wide" id="e-screenshot-${pshort}-${i}-btn-add">
+                                <a  class="btn btn-primary">Add</a>
+                            </div>
+                        </label>
+                        <input id="e-screenshot-${pshort}-${i}-f" type="file" class="hidden" onchange="newScreenshotForUpload('e-screenshot-${pshort}-${i}-i', this.files[0])">
+                    </div>`
+        }
+        output += '</div></div>'
+    })
+
+    $('#editScreenshotTabContent').html(output)
 }
 
 //  - More options
@@ -312,14 +358,6 @@ function validateThenProgressRelease() {
     var step = getCurrentAppReleaseStep()
 
     progressAppRelease()
-}
-function showValidationError(text) {
-    $('#btn_rel_next').addClass("btn-danger")
-    $('#btn_rel_next').text(text)
-    setTimeout(function() {
-        $('#btn_rel_next').removeClass("btn-danger")
-        $('#btn_rel_next').html("Next <i class='fas fa-forward'></i>")
-    }, 2000)
 }
 function progressAppRelease(step) {
     var maxStep = 3
@@ -556,8 +594,7 @@ function getAppDetails(appID) {
     changePreviewWatchPlatform("basalt")
     $('#userAppList .active').removeClass("active");
     $('#appselector_' + appID).addClass("active");
-
-    // $('#appinfo-main-loader').removeClass("hidden");
+    returnToMainSecondaryWindow();
 
     apiGET(config.endpoint.base + config.path.appInfo + appID, getAppDetails_cb, genericAPIErrorHandler, $('#appinfo-main-loader'))
 }
