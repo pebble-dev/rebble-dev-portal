@@ -10,7 +10,7 @@ config = {
         onboard: "/api/v2/onboard"
     },
     misc: {
-        appstoreUrl: "https://apps.rebble.io/en_US/application/",
+        appstoreUrl: "https://apps.rebble.watch/app/",
         screenshotAsset: "https://assets.rebble.io/144x168/filters:upscale()/"
     }
 }
