@@ -68,6 +68,9 @@ function showAppListingEditor(sender) {
 
     //Screenshots
     var platform = currentAppCache.screenshot_hardware
+    //There seems to be a bug in the .tab() function. Sometimes the tab selector changes but not the tabcontent.
+    //Switching to aplite then the desired fixes this
+    $('#e-scr-aplite-tab').tab("show");
     $('#e-scr-' + platform + "-tab").tab("show");
     getEditScreenshotsForPlatform(platform)
 
@@ -175,10 +178,11 @@ function html_populateScreenshotTabList() {
     var platforms = ["aplite","basalt","chalk","diorite"]
     var maxScreenshots = 5
     var output = ""
+    var exClass = "show active"
 
     platforms.forEach(p => {
         pshort = p.substr(0,1)
-        output += `<div class="tab-pane fade" id="e-scr-${p}" role="tabpanel" aria-labelledby="e-scr-${p}-tab">`
+        output += `<div class="tab-pane fade ${exClass}" id="e-scr-${p}" role="tabpanel" aria-labelledby="e-scr-${p}-tab">`
         output += `<div class="row">`
 
         var placeholder = (p == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
@@ -198,6 +202,7 @@ function html_populateScreenshotTabList() {
                     </div>`
         }
         output += '</div></div>'
+        exClass = ""
     })
 
     $('#editScreenshotTabContent').html(output)
