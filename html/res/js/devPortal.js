@@ -46,7 +46,6 @@ function searchUserApps(searchText) {
     })
 }
 
-
 // UX functions
 
 //  - Edit appstore listing
@@ -160,9 +159,12 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
         $(`#e-screenshot-${shortPlatform}-${index+1}-i`).attr("src", config.misc.screenshotAsset + screenshotID)
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-add`).addClass("hidden");
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete`).removeClass("hidden");
+        
+        // Set the data attrs to the screenshot UUID for the delete button and modal delete button
+        $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete-btn`).attr("data-uuid", screenshotID);
     });
 
-    for (var i = numScreenshots; i <= extra; i++) {
+    for (var i = numScreenshots; i < 5; i++) {
         var srclink = (platform == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
         $(`#e-screenshot-${shortPlatform}-${i+1}-i`).attr("src", srclink);
         $(`#e-screenshot-${shortPlatform}-${i+1}-btn-add`).removeClass("hidden");
@@ -170,8 +172,49 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
     }
 
 }
-function newScreenshotForUpload(imgHolderID, file) {
-    $('#' + imgHolderID).attr("src", window.URL.createObjectURL(file));
+function newScreenshotForUpload(imgHolderID, file, platform) {
+    $('#' + imgHolderID).attr("src", "/res/img/screenshotUploading.png");
+    var btnID = imgHolderID.replace("-i", "-btn-add");
+    $('#' + btnID).addClass("hidden")
+    var formData = new FormData();
+    formData.append("screenshot", file)
+    apiPOST(config.endpoint.base + config.path.editApp + `${currentAppCache.id}/screenshots/${platform}`, formData, newScreenshotForUpload_cb, newScreenshotForUpload_ecb, null, true, null)
+}
+function newScreenshotForUpload_cb(data) {
+    data = JSON.parse(data)
+    getEditScreenshotsForPlatform(data.platform)
+}
+function newScreenshotForUpload_ecb(data) {
+    alert(data)
+}
+function deleteScreenshotFromButton(screenshotID, platform) {
+    var warnBeforeDeletion = true
+
+    if (warnBeforeDeletion) {
+        $('#deleteScreenshotModalPreviewImg').attr("src", config.misc.screenshotAsset + screenshotID)
+        $(`#delete-screenshot-modal-btn`).attr("data-appID", currentAppCache.id);
+        $(`#delete-screenshot-modal-btn`).attr("data-platform", platform);
+        $(`#delete-screenshot-modal-btn`).attr("data-uuid", screenshotID);
+        $('#confirmDeleteScreenshotModal').modal("show")
+    } else {
+        deleteScreenshot(currentAppCache.id, platform, screenshotID)
+    }
+}
+function deleteScreenshot(appID, platform, screenshotID) {
+    apiDELETE(config.endpoint.base + config.path.editApp + appID + `/screenshots/${platform}/${screenshotID}`, deleteScreenshot_cb, deleteScreenshot_ecb);
+}
+function deleteScreenshot_cb(data) {
+    data = JSON.parse(data);
+    getEditScreenshotsForPlatform(data.platform);
+}
+function deleteScreenshot_ecb(data) {
+    data = JSON.parse(data)
+    if (data.hasOwnProperty("message")) {
+        showAlert("Failed to delete screenshot", data.message);
+    } else {
+        showAlert("Failed to delete screenshot", data.error);
+    }
+    jumpToTopOfPage();
 }
 function html_populateScreenshotTabList() {
     //Create the HTML for the edit dialogue screenshot list
@@ -189,16 +232,16 @@ function html_populateScreenshotTabList() {
         
         for (var i = 1; i <= maxScreenshots; i++) {
             output += `<div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img id = "e-screenshot-${pshort}-${i}-i" class="card-img-top" src="${placeholder}" />
+                        <img id="e-screenshot-${pshort}-${i}-i" class="card-img-top" src="${placeholder}" />
                         <div class="card-body wide hidden" id="e-screenshot-${pshort}-${i}-btn-delete">
-                                <button class="btn btn-danger">Delete</button>
+                            <button class="btn btn-danger" id="e-screenshot-${pshort}-${i}-btn-delete-btn" onclick="deleteScreenshotFromButton(this.getAttribute('data-uuid'), '${p}')">Delete</button>
                         </div>
                         <label for="e-screenshot-${pshort}-${i}-f" class="mt-1">
                             <div class="card-body wide" id="e-screenshot-${pshort}-${i}-btn-add">
                                 <a  class="btn btn-primary">Add</a>
                             </div>
                         </label>
-                        <input id="e-screenshot-${pshort}-${i}-f" type="file" class="hidden" onchange="newScreenshotForUpload('e-screenshot-${pshort}-${i}-i', this.files[0])">
+                        <input id="e-screenshot-${pshort}-${i}-f" type="file" class="hidden" onchange="newScreenshotForUpload('e-screenshot-${pshort}-${i}-i', this.files[0], '${p}')">
                     </div>`
         }
         output += '</div></div>'
@@ -542,6 +585,10 @@ function startFunMessageTimer() {
 function stopFunMessageTimer() {
     clearInterval(funMessageIntervalTimer);
 }
+function jumpToTopOfPage() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+} 
 
 // Data functions
 
@@ -938,7 +985,7 @@ function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disabl
 	}
     }
     xmlHttp.onprogress = function (e) {
-        if (e.lengthComputable) {
+        if (e.lengthComputable && percentageCallback != null) {
             percentageCallback(e.loaded, e.total)
         }
     }
@@ -970,6 +1017,30 @@ function apiGET(url, callback, errorCallback, callBackObject) {
       }
     }
     xmlHttp.open("GET", url, true); // true for asynchronous
+    if (getUserToken() != null) {
+      xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
+    }
+    xmlHttp.send(null);
+}
+
+function apiDELETE(url, callback, errorCallback, callBackObject) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+      if (xmlHttp.readyState == 4 && RegExp('2.*').test(xmlHttp.status)) {
+        if (callBackObject != null) {
+          callback(xmlHttp.responseText, callBackObject);
+        } else {
+          callback(xmlHttp.responseText);
+        }
+        console.log(url);
+  
+      } else if (xmlHttp.readyState == 4) {
+        if (errorCallback != null) {
+            errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
+        }
+      }
+    }
+    xmlHttp.open("DELETE", url, true);
     if (getUserToken() != null) {
       xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
     }

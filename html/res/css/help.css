@@ -462,6 +462,9 @@ input[type="checkbox"] {
   width: inherit !important; 
   margin-right: 10px;
 }
+.cbxLbl {
+  margin-top: 7px;
+}
 
 .custom-control-input:checked ~ .custom-control-label::before {
   border-color: var(--color-rebble-orange);
@@ -516,6 +519,9 @@ input[type="checkbox"] {
 }
 .text-danger {
   color: var(--color-rebble-red) !important;
+}
+.text-warning {
+  color: #FF7575 !important;
 }
 .close {
   height: 100%;
@@ -680,4 +686,8 @@ input[type="checkbox"] {
   margin-right: 10px;
   width: 60px;
   height: 60px;
+}
+
+table.nodec td {
+  border: none !important;
 }

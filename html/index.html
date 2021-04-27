@@ -719,7 +719,6 @@
 </header>
 
 <!-- Modals -->
-<!-- data-backdrop="static" -->
 <div class="modal fade bd-example-modal-lg mt-5 uploader" data-backdrop="static" tabindex="-1" role="dialog" id="submitModal" aria-hidden="true">
     <div class="modal-dialog modal-lg square uploader">
       <div class="modal-content square p-4 uploader pl-5">
@@ -844,6 +843,36 @@
     </div>
 </div>
 
+<div class="modal fade bd-example-modal-lg mt-5" tabindex="-1" role="dialog" id="confirmDeleteScreenshotModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content p-4">
+        
+        <div>
+            <div class="row ml-3 mt-3">
+                <h1> Delete Screenshot? </h1>
+            </div>
+            <div class="ml-3" style="font-size: 1rem;">
+                <img id="deleteScreenshotModalPreviewImg" class="card-img-top mt-2 ml-5"></img>
+                <div class="mt-4">
+                    <span class="dark-red-text">
+                        This will happen immediately and cannot be undone.
+                    </span>
+                    <div class="row">
+                        <input id="deleteImmediatelyCheckbox" type="checkbox" class="ml-3"></input>
+                        <label for="deleteImmediatelyCheckbox" class="cbxLbl">Do not warn before deletion in the future</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer float-left noborder">
+                <button id="delete-screenshot-modal-btn" type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteScreenshot(this.getAttribute('data-appID'), this.getAttribute('data-platform'), this.getAttribute('data-uuid'))">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+
 <div class="container page hidden" id="master-home">        
     <div class="row mt-5">
         <div class="col-3" id="menu-applistContainer">
@@ -945,41 +974,45 @@
                     <tr>
                         <td class="font-weight-bold"> Source: </td><td> <input class="simple p-2 appUpdateField" id="edit-source" onkeyup="updateAppField('source')"></input> </td> <td><i id="change-source" class="fas fa-asterisk hidden change"></i></td>
                     </tr>
-                    <tr>
-                        <td class="font-weight-bold"> Screenshots: 
-                        </td>
-                        <!-- <td> <div class="row" id="edit-screenshotContainer"></div>  </td>  <td><i id="change-screenshots" class="fas fa-asterisk hidden change"></i></td> -->
-                        <td>
-
-                        <div class="" id="platformSpecificScreenshots">
-
-                            <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                 <li class="nav-item">
-                                   <a onclick="getEditScreenshotsForPlatform('aplite')" class="nav-link active" id="e-scr-aplite-tab" data-toggle="tab" href="#e-scr-aplite" role="tab" aria-controls="e-scr-aplite" aria-selected="true">Aplite</a>
-                                 </li>
-                                 <li class="nav-item">
-                                   <a onclick="getEditScreenshotsForPlatform('basalt')" class="nav-link" id="e-scr-basalt-tab" data-toggle="tab" href="#e-scr-basalt" role="tab" aria-controls="e-scr-basalt" aria-selected="false">Basalt</a>
-                                 </li>
-                                 <li class="nav-item">
-                                   <a onclick="getEditScreenshotsForPlatform('chalk')" class="nav-link" id="e-scr-chalk-tab" data-toggle="tab" href="#e-scr-chalk" role="tab" aria-controls="e-scr-chalk" aria-selected="false">Chalk</a>
-                                 </li>
-                                 <li class="nav-item">
-                                     <a onclick="getEditScreenshotsForPlatform('diorite')" class="nav-link" id="e-scr-diorite-tab" data-toggle="tab" href="#e-scr-diorite" role="tab" aria-controls="e-scr-diorite" aria-selected="false">Diorite</a>
-                                   </li>
-                            </ul>
-                            <div class="tab-content" id="editScreenshotTabContent">
-                                <!-- rendered by html_populateScreenshotTabList -->
-                            </div>
-
-                </div>
-
-                        </td>
-                    </tr>
                 </table>
                 <div class="row" >
                     <btn class="btn btn-primary noshadow" onclick="saveAndPublishAppEdits()"> <i class="fas fa-save"></i> Update &  Publish </btn>
                     <btn class="btn btn-secondary noshadow" onclick="returnToMainSecondaryWindow()"> <i class="fas fa-ban"></i> Cancel </btn>
                 </div>
+                <table class="table nodec mt-3">
+                    <tr>
+                        <td class="font-weight-bold"> Screenshots: 
+                        </td>
+                        <!-- <td> <div class="row" id="edit-screenshotContainer"></div>  </td>  <td><i id="change-screenshots" class="fas fa-asterisk hidden change"></i></td> -->
+                        <td>
+                            
+                            <div class="" id="platformSpecificScreenshots">
+                                
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a onclick="getEditScreenshotsForPlatform('aplite')" class="nav-link active" id="e-scr-aplite-tab" data-toggle="tab" href="#e-scr-aplite" role="tab" aria-controls="e-scr-aplite" aria-selected="true">Aplite</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a onclick="getEditScreenshotsForPlatform('basalt')" class="nav-link" id="e-scr-basalt-tab" data-toggle="tab" href="#e-scr-basalt" role="tab" aria-controls="e-scr-basalt" aria-selected="false">Basalt</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a onclick="getEditScreenshotsForPlatform('chalk')" class="nav-link" id="e-scr-chalk-tab" data-toggle="tab" href="#e-scr-chalk" role="tab" aria-controls="e-scr-chalk" aria-selected="false">Chalk</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a onclick="getEditScreenshotsForPlatform('diorite')" class="nav-link" id="e-scr-diorite-tab" data-toggle="tab" href="#e-scr-diorite" role="tab" aria-controls="e-scr-diorite" aria-selected="false">Diorite</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="editScreenshotTabContent">
+                                    <!-- rendered by html_populateScreenshotTabList -->
+                                </div>
+                                
+                            </div>
+                            
+                        </td>
+                    </tr>
+                </table>
+                <div class="small red-text mt-1 ml-2">Screenshot changes are reflected immediately, tread carefully!</div>
+                
             </div>
 
             <!-- More options -->
