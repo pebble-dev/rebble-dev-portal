@@ -188,16 +188,16 @@ function newScreenshotForUpload_ecb(data) {
     alert(data)
 }
 function deleteScreenshotFromButton(screenshotID, platform) {
-    var warnBeforeDeletion = true
+    var deleteImmediately = getSettingSafeBool("disableWarnBeforeScreenshotDelete")
 
-    if (warnBeforeDeletion) {
+    if (deleteImmediately) {
+        deleteScreenshot(currentAppCache.id, platform, screenshotID)
+    } else {
         $('#deleteScreenshotModalPreviewImg').attr("src", config.misc.screenshotAsset + screenshotID)
         $(`#delete-screenshot-modal-btn`).attr("data-appID", currentAppCache.id);
         $(`#delete-screenshot-modal-btn`).attr("data-platform", platform);
         $(`#delete-screenshot-modal-btn`).attr("data-uuid", screenshotID);
         $('#confirmDeleteScreenshotModal').modal("show")
-    } else {
-        deleteScreenshot(currentAppCache.id, platform, screenshotID)
     }
 }
 function deleteScreenshot(appID, platform, screenshotID) {
@@ -210,7 +210,7 @@ function deleteScreenshot_cb(data) {
 function deleteScreenshot_ecb(data) {
     data = JSON.parse(data)
     if (data.hasOwnProperty("message")) {
-        showAlert("Failed to delete screenshot", data.message);
+        showWarning("Cannot delete screenshot", data.message);
     } else {
         showAlert("Failed to delete screenshot", data.error);
     }
@@ -465,6 +465,14 @@ function showAlert(title, text) {
 }
 function hideMainAlert() {
     $('#mainAlert').addClass("hidden");
+}
+function showWarning(title, text) {
+    $('#mainWarning').removeClass("hidden");
+    $('#mainWarning-topic').html(title);
+    $('#mainWarning-text').html(text);
+}
+function hideMainWarning() {
+    $('#mainWarning').addClass("hidden");
 }
 
 function wiggleButton(id) {
@@ -964,6 +972,18 @@ function onboardNewDeveloper_ecb(data) {
     showAlert("Failed to onboard user", "Something went wrong. Please try again shortly.");
     $('#runNewDevOnboardBtn').text("Create Account");
 }
+function setSetting(setting, value) {
+    debugLog("Setting " + setting + " to " + value);
+    localStorage.setItem("SETTING_" + setting, value);
+}
+function getSetting(setting) {
+  return localStorage.getItem("SETTING_" + setting);
+}
+function getSettingSafeBool(setting) {
+    var setting = localStorage.getItem("SETTING_" + setting);
+    setting = (setting == null) ? false : setting
+    return setting
+}
 
 // Helper functions
 
@@ -1088,6 +1108,11 @@ function initDevPortal() {
             $('#platformAgnosticScreenshots').removeClass("hidden");
         }
     });
+
+    $('#deleteImmediatelyCheckbox').on('change', function(e) {
+        var dwbsd = $('#deleteImmediatelyCheckbox').prop("checked");
+        setSetting("disableWarnBeforeScreenshotDelete", dwbsd)
+    })
 
     
     //Start up. Router and other special stuff runs on callback. Follow this.
