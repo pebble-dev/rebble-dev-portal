@@ -599,7 +599,7 @@ input[type="checkbox"] {
   background-size: contain;
   background-repeat: no-repeat;
   /* background-size: 85%; */
-  height: 1000px;
+  height: 77vh;
 }
 #master-profile {
   overflow-x: hidden;

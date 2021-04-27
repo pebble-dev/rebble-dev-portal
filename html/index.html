@@ -1581,7 +1581,7 @@
 <div class="container-flex hidden page small" id="master-profile">
     <div class="row">
     </div>
-    <div class="row">
+    <div class="row" >
         <div class="col-2 mt-5 nopad">&nbsp</div>
         <div class="col-4 mt-5 nopad">
             <div id="profile-username-display">
@@ -1601,11 +1601,26 @@
                     <tr><td>User ID</td><td class="data-userID">Unknown</td></tr>
                 </table>
             </div>
+
+            <h4 class="mt-5"> Settings </h4>
+            <div class="ml-2">
+                <div class="row">
+                    <input id="deleteImmediatelyCheckbox_settings" type="checkbox" class="ml-3"></input>
+                    <label for="deleteImmediatelyCheckbox_settings" class="cbxLbl">Skip confirmation for deleting screenshots</label>
+                </div>
+
+            </div>
+
         </div>
-        <div class="col-5 mt-5 nopad" id="profile-image" >
+        <div class="col-5 mt-5 nopad" id="profile-image" style="overflow-x: hidden;">
             
         </div>
     </div>
+    <footer>
+        <div class="row">
+            Rebble Dev Portal - Built with <i class="fas fa-heart ml-2 mt-1 mr-2" onclick="beatElement(this)" id="attrHeart"></i> by Will Murphy
+        </div>
+    </footer>
 </div>
 
 <div class="container page hidden" id="master-setup">        

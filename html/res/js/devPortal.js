@@ -277,7 +277,7 @@ function updateProfileSubtitle() {
         "Prolific publisher",
         "Watchface wizard",
         "Assembler of apps",
-        "<span class='rainbow-text'>Thanks for being here!</span>"
+        "<span class='rainbow-text'>You're amazing!</span>"
     ]
     $('#developer-subtitle').html(subtitles[Math.floor(Math.random() * subtitles.length)])
 }
@@ -487,6 +487,17 @@ function flipElement(id) {
         $(id).removeClass("animated flip");
     }, 1000)
 }
+function launchElement(id) {
+    $(id).addClass("animated zoomOutUp");
+}
+function beatElement(id) {
+    $(id).addClass("animated heartBeat");
+    $(id).addClass("red-text");
+    setTimeout(function() {
+        $(id).removeClass("animated heartBeat");
+        $(id).removeClass("red-text");
+    }, 1000)
+}
 
 function showPage(pageID) {
 
@@ -517,6 +528,8 @@ function showPage(pageID) {
         $('#viewAllOn').addClass("hidden")
 
     }
+
+    syncSettings()
 
     if (validPages.includes(pageID)) {
         $('#viewAllOn').removeClass("hidden")
@@ -981,8 +994,22 @@ function getSetting(setting) {
 }
 function getSettingSafeBool(setting) {
     var setting = localStorage.getItem("SETTING_" + setting);
-    setting = (setting == null) ? false : setting
-    return setting
+    return setting == "true"
+}
+function syncSettings() {
+    // Set checkboxes to match their settings
+    setting_to_checkbox_map = [
+        {
+            "setting": "disableWarnBeforeScreenshotDelete",
+            "checkboxes": ["deleteImmediatelyCheckbox", "deleteImmediatelyCheckbox_settings"]
+        }
+    ]
+
+    setting_to_checkbox_map.forEach((x, i) => {
+        x.checkboxes.forEach((y,j) => {
+            $('#' + y).prop("checked", getSettingSafeBool(x.setting))
+        });
+    });
 }
 
 // Helper functions
@@ -1111,6 +1138,10 @@ function initDevPortal() {
 
     $('#deleteImmediatelyCheckbox').on('change', function(e) {
         var dwbsd = $('#deleteImmediatelyCheckbox').prop("checked");
+        setSetting("disableWarnBeforeScreenshotDelete", dwbsd)
+    })
+    $('#deleteImmediatelyCheckbox_settings').on('change', function(e) {
+        var dwbsd = $('#deleteImmediatelyCheckbox_settings').prop("checked");
         setSetting("disableWarnBeforeScreenshotDelete", dwbsd)
     })
 
