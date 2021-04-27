@@ -703,8 +703,15 @@
     
           </ul>
           <ul class="navbar-nav navbar-dark nav-flex-icons">
+            <li class="nav-item hidden" id="notif_container">
+                <div class="dropdown show">
+                    <a class="nav-link" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="notif_dropdown"><i class="fas fa-bell"></i><span class="badge badge-danger" id="notif_count">1</span></a>
+                    <div class="dropdown-menu" aria-labelledby="notif_dropdown" id="notif_list">
+                    </div>
+                </div>
+            </li>
             <li class="nav-item " id="viewAllOn">
-              <a class="nav-link" onclick="showPage('profile')"> <span class="data-username"></span> <i class="fas fa-user"></i></a>
+              <a class="nav-link" onclick="showPage('profile')"> <span class="data-username"></span> <i class="fas fa-cogs"></i></a>
           </li>
           </ul>
         </div>
@@ -878,6 +885,27 @@
       </div>
     </div>
 </div>
+
+<div class="modal fade bd-example-modal-lg mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="notificationModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content p-4">
+        
+        <div>
+            <div class="row ml-3 mt-3">
+                <h1 id="notif_modal_title"> {{ Title }} </h1>
+            </div>
+            <div class="ml-3" id="notif_modal_body">
+                {{ Text }}
+            </div>
+        </div>
+
+        <div class="modal-footer float-left noborder">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 
 <div class="container page hidden" id="master-home">        
     <div class="row mt-5">
@@ -1124,7 +1152,7 @@
 
             <div id="substep-1" class="substep">
                 <div class="mt-3 ml-2">
-                    <span class="appOrFace ">Watchface</span> Name* 
+                    <span class="appOrFace">Watchface</span> Name* 
                     <br>
                     <input class="niceInput mt-2" name="appname" id="i-newapp-name"></input>
                 </div>
@@ -1597,7 +1625,7 @@
             </div>
             <div class="col-7 mt-3 nopad">
                 <table class="table noborder">
-                    <tr><td>Developer ID</td><td class="data-developerID">Unknown</td></tr>
+                    <tr><td>Developer ID</td><td class="data-developerID">Unknown</td><td class="pointer" onclick="showPage('recover-account')">(Not you?)</td></tr>
                     <tr><td>User ID</td><td class="data-userID">Unknown</td></tr>
                 </table>
             </div>

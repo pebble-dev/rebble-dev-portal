@@ -1,5 +1,8 @@
 //Global variables
 currentAppCache = {}
+notifications = {
+    count: 0
+}
 funMessageIntervalTimer = null;
 
 // Worker functions
@@ -610,6 +613,38 @@ function jumpToTopOfPage() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 } 
+function addNotification(title, text, cb) {
+    var notifID = uuidv4()
+
+    notifications[notifID] = {
+        title: title,
+        content: text,
+        cb: cb
+    }
+    notifications.count++
+
+    $('#notif_container').removeClass("hidden");
+    $('#notif_count').removeClass("hidden");
+    $('#notif_count').text(notifications.count)
+    $('#notif_list').append(`<a class="dropdown-item" href="#" onclick="showNotification('${notifID}')">${title}</a>`)
+}
+function showNotification(id) {
+    if (! notifications.hasOwnProperty(id)) { return }
+    var n = notifications[id];
+    $('#notif_modal_title').text(n.title);
+    $('#notif_modal_body').html(n.content);
+    $('#notificationModal').modal("show");
+    notifications.count--
+    $('#notif_count').text(notifications.count);
+
+    if (n.cb != null) {
+        n.cb()
+    }
+
+    if (notifications.count < 1) {
+        $('#notif_count').addClass("hidden");
+    }
+}
 
 // Data functions
 
@@ -1094,8 +1129,41 @@ function apiDELETE(url, callback, errorCallback, callBackObject) {
     xmlHttp.send(null);
 }
   
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+}
+
 function getUserToken() {
     return sessionStorage.getItem("access_token");
+}
+
+function populateChangeLog() {
+    var release = {
+        version: 0.1,
+        logTitle: "Dev Portal 1.2 Released",
+        logMessage: `\
+        The Rebble Developer Portal has been updated to version 1.2. This change brings the following features: <br>\
+        <ul>\
+        <li> Depression </li>\
+        </ul>\
+        `
+    }
+    var lastSeenChangeLog = parseFloat(getSetting("changelog"));
+    if (isNaN(lastSeenChangeLog)) {
+        // If they don't have a setting, skip this announcement
+        // We only want to notify existing users to new versions
+        setSetting("changelog", release.version)
+    }
+    
+    if (lastSeenChangeLog < release.version) {
+        addNotification(release.logTitle, release.logMessage, function() {
+            setSetting("changelog", release.version)
+        })
+    }
+
 }
 
 function initDevPortal() {
@@ -1145,13 +1213,12 @@ function initDevPortal() {
         setSetting("disableWarnBeforeScreenshotDelete", dwbsd)
     })
 
+    populateChangeLog();
     
     //Start up. Router and other special stuff runs on callback. Follow this.
     getUserInfo();
 
-    // $('#submitModal').modal('show');
-    // $('#updateModal').modal('show');
-
 }
+
 
 initDevPortal();
