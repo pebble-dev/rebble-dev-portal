@@ -124,7 +124,7 @@ function saveAndPublishAppEdits_cb(data) {
 
     }
 
-    $('#updateModal-inProgress').addClass("hidden");
+    $('.updateModalPage').addClass("hidden");
     $('#updateModal-success').removeClass("hidden");
     $('.change').addClass("hidden");
     returnToMainSecondaryWindow();
@@ -133,7 +133,7 @@ function saveAndPublishAppEdits_cb(data) {
 }
 function saveAndPublishAppEdits_ecb(data) {
     $('#updateModal').modal('hide');
-    window.scrollTo(0,0);
+    jumpToTopOfPage()
 
     try {
         data = JSON.parse(data)
@@ -289,7 +289,26 @@ function updateProfileSubtitle() {
         "Assembler of apps",
         "<span class='rainbow-text'>You're amazing!</span>"
     ]
-    $('#developer-subtitle').html(subtitles[Math.floor(Math.random() * subtitles.length)])
+
+    var seasonal = {
+        "25-12": "Merry Christmas",
+        "31-10": "Happy Halloween",
+        "25-11": "Happy Thanksgiving",
+        "19-12": "<a href='https://rebble.io/2016/12/19/rebble-community-update-1.html'>Happy Birthday Rebble</a>",
+        "28-4": "Ed Balls",
+        "31-12": "Happy New Year",
+        "1-1": "Happy New Year"
+    }
+
+    var today = new Date()
+    var dString = today.getDate().toString() + "-" + (today.getMonth()+1).toString();
+
+    if (seasonal.hasOwnProperty(dString)) {
+        $('#developer-subtitle').html(seasonal[dString]);
+    } else {
+        $('#developer-subtitle').text(subtitles[Math.floor(Math.random() * subtitles.length)])
+    }
+
 }
 
 function toggleUsernameEdit(operation) {
@@ -444,6 +463,68 @@ function reverseAppRelease() {
         progressAppRelease(currentStep)
     }
 }
+function submitRelease() {
+    var formData = new FormData();
+
+    var newRelease = {
+        notes: $('#release-releaseNotes').val(),
+        file: $('#release-pbw').prop('files')[0]
+    }
+
+    if (newRelease.notes == null || newRelease.notes.length < 1) {
+        submitReleaseValidationError("Release notes cannot be blank");
+        return
+    }
+
+    if (newRelease.file == null) {
+        submitReleaseValidationError("Select a .pbw file");
+        return
+    }
+
+    formData.append("release_notes", newRelease.notes);
+    formData.append("pbw", newRelease.file);
+
+    $('.updateModalPage').addClass("hidden");
+    $('#updateModal-inProgress').removeClass("hidden");
+    $('#updateAppName').html(currentAppCache.title)
+    $('#updateChangedFields').html("")
+    $('#updateChangedFields').append("<li> New Release </li>")
+    $('#updateModal').modal('show');
+
+    setTimeout(function() {
+        apiPOST(config.endpoint.base + config.path.editApp + currentAppCache.id + '/release', formData, submitRelease_cb, submitRelease_ecb, null, true)
+    }, 500);
+
+}
+function submitRelease_cb(data) {
+    $('.updateModalPage').addClass("hidden");
+    $('#updateModal-release-success').removeClass("hidden");
+    $('.change').addClass("hidden");
+}
+function submitRelease_ecb(data) {
+    $('#updateModal').modal('hide');
+    jumpToTopOfPage()
+
+    try {
+        data = JSON.parse(data)
+    } catch (e) {
+        showAlert("Failed to publish release", "Something went wrong. Tell someone.");
+        console.log(e);
+        return
+    }
+
+    var errmsg = (data.hasOwnProperty("message")) ? data.message : data.error
+    showAlert("Failed to publish release", errmsg);
+    console.log(data)
+}
+function submitReleaseValidationError(txt) {
+    $('#btn-newReleaseSubmit').html(txt);
+    $('#btn-newReleaseSubmit').addClass("btn-danger");
+    setTimeout(function() {
+        $('#btn-newReleaseSubmit').html("Publish release to store");
+        $('#btn-newReleaseSubmit').removeClass("btn-danger");
+    }, 2000)
+}
 
 //  - Setup
 function showSetupStep(step) {
@@ -526,6 +607,8 @@ function showPage(pageID, isFreshLoad = false) {
     } else if (pageID == "release") {
 
         progressAppRelease(1);
+        $('#release-releaseNotes').val("");
+        $('#release-pbw').val(null)
         if (isFreshLoad) {
             $('#appPickerModal').modal("show");
         }
@@ -700,6 +783,11 @@ function getUserInfo_cb(data) {
     if (data.needsSetup && ! ["/setup","/recover-account"].includes(page)) {
         showPage("setup");
         return
+    }
+    if (! data.needsSetup) {
+        //Show the 'how did you get here' screen on /setup for users who should never go there
+        $('.setupWindow').addClass("hidden")
+        $('#setup-notNeeded').removeClass("hidden")
     }
 
     showPage(page, true);
@@ -1051,7 +1139,7 @@ function syncSettings() {
 // Helper functions
 
 function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disableContentTypeSet = false, percentageCallback) {
-	console.log("POST: " + rurl + " - Data: " + postdata)
+	debugLog("POST: " + rurl + " - Data: " + postdata)
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
 	if (xmlHttp.readyState == 4 && RegExp('2.*').test(xmlHttp.status)) {
@@ -1080,6 +1168,33 @@ function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disabl
       xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
     }
     xmlHttp.send(postdata);
+}
+
+function apiPUT(rurl, putdata, callback, errorCallback, callBackObject, disableContentTypeSet = false) {
+	debugLog("PUT: " + rurl + " - Data: " + putdata)
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.onreadystatechange = function() {
+	if (xmlHttp.readyState == 4 && RegExp('2.*').test(xmlHttp.status)) {
+		if (callBackObject != null) {
+			callback(xmlHttp.responseText, callBackObject);
+		} else {
+			callback(xmlHttp.responseText);
+        }
+	} else if (xmlHttp.readyState == 4) {
+           console.log("Error Code: " + xmlHttp.status)
+           if (errorCallback != null) {
+	   	        errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
+       	   }
+	}
+    }
+    xmlHttp.open("PUT", rurl, true);
+    if (! disableContentTypeSet) {
+        xmlHttp.setRequestHeader("Content-Type", "application/json");
+    }
+    if (getUserToken() != null) {
+      xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
+    }
+    xmlHttp.send(putdata);
 }
 
 function apiGET(url, callback, errorCallback, callBackObject) {

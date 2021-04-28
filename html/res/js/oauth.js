@@ -77,6 +77,10 @@ function localLogout() {
     sessionStorage.clear();
     checkAuthState();
 }
+function logout() {
+    sessionStorage.clear();
+    window.location = config.endpoint.ssoLogout
+}
 
 // Helper functions
 
