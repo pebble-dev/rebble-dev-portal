@@ -1329,6 +1329,13 @@ function initDevPortal() {
         setSetting("disableWarnBeforeScreenshotDelete", dwbsd)
     })
 
+    
+    $(window).on('popstate', function() {
+        // Back button pressed
+        var page = window.location.pathname;
+        showPage(page)
+    });
+    
     populateChangeLog();
     
     //Start up. Router and other special stuff runs on callback. Follow this.
