@@ -32,6 +32,13 @@ function addUserApp(app, isActive) {
     </li>';
 
     $('#userAppList').append(html);
+
+    html = '\
+    <li class="nav-item">\
+        <a class="nav-link" data-dismiss="modal" href="#" onclick="getAppDetails(\'' + app.id + '\')"><span class="ml-2">' + app.title + '</span></a>\
+    </li>';
+
+    $('#appPickerList').append(html)
     if (isActive) { getAppDetails(app.id) }
 }
 function searchUserApps(searchText) {
@@ -502,7 +509,7 @@ function beatElement(id) {
     }, 1000)
 }
 
-function showPage(pageID) {
+function showPage(pageID, isFreshLoad = false) {
 
     pageID = pageID.replace("/","");
 
@@ -513,14 +520,15 @@ function showPage(pageID) {
     //Any weird custom per-window log goes here
     if (pageID == "submit") {
 
-        $('#i-iswatchface').prop("checked",true);
-        $('#usePlatformSpecificScreenshots').prop("checked",false);
         progressAppSubmission(0);
         syncScreenshotButtonPreviews();
 
     } else if (pageID == "release") {
 
         progressAppRelease(1);
+        if (isFreshLoad) {
+            $('#appPickerModal').modal("show");
+        }
 
     } else if (pageID == "profile") {
 
@@ -694,7 +702,7 @@ function getUserInfo_cb(data) {
         return
     }
 
-    showPage(page);
+    showPage(page, true);
 }
 
 function getAppDetails(appID) {
@@ -776,6 +784,8 @@ function getAppDetails_cb(data) {
 
     $('#externalStoreListing').attr("href", config.misc.appstoreUrl + data.id)
 
+    $('.data-release-app').text(currentAppCache.title);
+
     $('#appinfo-main').addClass("animated fadeIn");
     $('#appinfo-main').removeClass("hidden");
     $('#appinfo-main-loader').addClass("hidden");
@@ -847,21 +857,12 @@ function submitNewApp() {
     if (shinyNewApp.description == "") { newAppValidationError("Description cannot be blank"); return }
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
     //At least one screenshot
-   // if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
     if ($('#i-screenshot-a-1-f').prop('files')[0] == undefined && $('#i-screenshot-b-1-f').prop('files')[0] == undefined && $('#i-screenshot-c-1-f').prop('files')[0] == undefined && $('#i-screenshot-d-1-f').prop('files')[0] == undefined) {
         newAppValidationError("Provide at least one screenshot")
         return
     }
 
-    //} else {
-
-    //     if ($('#i-screenshot-1-f').prop('files')[0] == undefined) {
-    //         newAppValidationError("Provide at least one screenshot")
-    //         return
-    //     }
-
-    // }
     //App specific fields
     if ($('#i-iswatchapp').prop("checked")) {
 
@@ -1186,11 +1187,11 @@ function initDevPortal() {
         if ($('#i-iswatchface').prop("checked")) {
             $('#appCategory').addClass("hidden");
             $('#appIconContainer').addClass("hidden");
-            $('.appOrFace').html("Watchface");
+            $('.newappOrFace').html("Watchface");
         } else {
             $('#appCategory').removeClass("hidden");
             $('#appIconContainer').removeClass("hidden");
-            $('.appOrFace').html("App")
+            $('.newappOrFace').html("App")
         }
     });
 
