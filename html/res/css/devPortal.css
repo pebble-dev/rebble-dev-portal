@@ -462,9 +462,6 @@ input[type="checkbox"] {
   width: inherit !important; 
   margin-right: 10px;
 }
-.cbxLbl {
-  margin-top: 7px;
-}
 
 .custom-control-input:checked ~ .custom-control-label::before {
   border-color: var(--color-rebble-orange);
@@ -495,6 +492,10 @@ input[type="checkbox"] {
   height: 168px;
   object-fit: fill;
   max-width: 100%;
+}
+.roundScr {
+  width: 180px !important;
+  height: auto !important;
 }
 
 .change {

@@ -12,6 +12,7 @@ config = {
     },
     misc: {
         appstoreUrl: "https://apps.rebble.watch/app/",
-        screenshotAsset: "https://assets.rebble.io/144x168/filters:upscale()/"
+        screenshotAsset: "https://assets.rebble.io/144x168/filters:upscale()/",
+        screenshotAssetRound: "https://assets.rebble.io/180x180/filters:upscale()/"
     }
 }

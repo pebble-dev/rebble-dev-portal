@@ -153,7 +153,6 @@ function returnToMainSecondaryWindow() {
 }
 function getEditScreenshotsForPlatform(platform) {
     apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/screenshots/" + platform, getEditScreenshotsForPlatform_cb, genericAPIErrorHandler, platform);
-    // $('#e-scr-' + currentAppCache.screenshot_hardware + "-tab").tab("show");
 }
 function getEditScreenshotsForPlatform_cb(data, platform) {
     var data = JSON.parse(data);
@@ -162,16 +161,17 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
     currentAppCache.screenshotCache[platform] = data
     //Screenshots
     var shortPlatform = platform.substr(0,1)
+    var assetCfgType = (platform == "chalk") ? "screenshotAssetRound" : "screenshotAsset"
     var numScreenshots = data.length
-    var extra = 5 - numScreenshots
 
     data.forEach((screenshotID, index) => {
-        $(`#e-screenshot-${shortPlatform}-${index+1}-i`).attr("src", config.misc.screenshotAsset + screenshotID)
+        $(`#e-screenshot-${shortPlatform}-${index+1}-i`).attr("src", config.misc[assetCfgType] + screenshotID)
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-add`).addClass("hidden");
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete`).removeClass("hidden");
         
         // Set the data attrs to the screenshot UUID for the delete button and modal delete button
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete-btn`).attr("data-uuid", screenshotID);
+        
     });
 
     for (var i = numScreenshots; i < 5; i++) {
@@ -203,7 +203,13 @@ function deleteScreenshotFromButton(screenshotID, platform) {
     if (deleteImmediately) {
         deleteScreenshot(currentAppCache.id, platform, screenshotID)
     } else {
-        $('#deleteScreenshotModalPreviewImg').attr("src", config.misc.screenshotAsset + screenshotID)
+        if (platform == "chalk") {
+            $('#deleteScreenshotModalPreviewImg').attr("src", config.misc.screenshotAssetRound + screenshotID);
+            $('#deleteScreenshotModalPreviewImg').addClass("roundScr");
+        } else {
+            $('#deleteScreenshotModalPreviewImg').attr("src", config.misc.screenshotAsset + screenshotID);
+            $('#deleteScreenshotModalPreviewImg').removeClass("roundScr");
+        }
         $(`#delete-screenshot-modal-btn`).attr("data-appID", currentAppCache.id);
         $(`#delete-screenshot-modal-btn`).attr("data-platform", platform);
         $(`#delete-screenshot-modal-btn`).attr("data-uuid", screenshotID);
@@ -239,10 +245,11 @@ function html_populateScreenshotTabList() {
         output += `<div class="row">`
 
         var placeholder = (p == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
+        var exImgClass = (p == "chalk") ? "roundScr" : ""
         
         for (var i = 1; i <= maxScreenshots; i++) {
             output += `<div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img id="e-screenshot-${pshort}-${i}-i" class="card-img-top" src="${placeholder}" />
+                        <img id="e-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass}" src="${placeholder}" />
                         <div class="card-body wide hidden" id="e-screenshot-${pshort}-${i}-btn-delete">
                             <button class="btn btn-danger" id="e-screenshot-${pshort}-${i}-btn-delete-btn" onclick="deleteScreenshotFromButton(this.getAttribute('data-uuid'), '${p}')">Delete</button>
                         </div>
@@ -306,7 +313,7 @@ function updateProfileSubtitle() {
     if (seasonal.hasOwnProperty(dString)) {
         $('#developer-subtitle').html(seasonal[dString]);
     } else {
-        $('#developer-subtitle').text(subtitles[Math.floor(Math.random() * subtitles.length)])
+        $('#developer-subtitle').html(subtitles[Math.floor(Math.random() * subtitles.length)])
     }
 
 }
