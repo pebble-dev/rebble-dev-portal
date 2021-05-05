@@ -4,6 +4,7 @@ notifications = {
     count: 0
 }
 funMessageIntervalTimer = null;
+isWizard = false
 
 // Worker functions
 
@@ -555,6 +556,100 @@ function showSetupStep(step) {
     $('#newDevName').attr("placeholder",placeholderNames[Math.floor(Math.random() * placeholderNames.length)]);
 }
 
+// -  Wizard
+function wizardLoadAppInfo() {
+    appID = $('#wizard_app_string').val()
+
+    if (appID.includes("/")) {
+        if (appID.substr(-1) == "/") { appID = appID.substr(0, appID.length -1) }
+        appID = appID.split("/")
+        appID = appID[appID.length-1]
+    }
+    if (appID.includes("?")) {
+        appID = appID.split("?")[0]
+    }
+    $('#wizard_app_string').val(appID)
+
+    apiGET(config.endpoint.base + config.path.appInfo + appID, wizardLoadAppInfo_cb, wizardLoadAppInfo_ecb);
+}
+function wizardLoadAppInfo_cb(data) {
+
+    console.log(data)
+    data = JSON.parse(data)
+    if (data.data.length < 1) {
+        showWarning("Not found", "App or face not found");
+        return
+    }
+    data = data.data
+    $('#wizard_lookup_title').text(data[0].title)
+    $('#wizard_lookup_author').text(data[0].author)
+    $('#wizard_current_dev_name').text(data[0].author)
+    $('#wizardUpdateDeveloperNameBtn').attr("data-id",data[0].developer_id);
+    $('#wizard_lookup_version').text(data[0].latest_release.version)
+    $('#wizard_lookup_category').text(data[0].category)
+    $('#wizard_lookup_uuid').text(data[0].uuid)
+    $('#wizard_lookup_id').text(data[0].id)
+    $('#wizardDeleteAppBtn').attr("data-id", data[0].id)
+    $('#wizardGetS3ResourcesBtn').attr("data-id", data[0].id)
+    $('#wizard_lookup_image').attr("src", data[0].list_image["144x144"])
+    $('#wizard_lookup_added').text(friendlyTimeAgo(data[0].created_at) + ` (${data[0].created_at})`)
+    $('#wizard_lookup_updated').text(friendlyTimeAgo(data[0].latest_release.published_date) + ` (${data[0].latest_release.published_date})`)
+
+    $('.data-wizard_app_name').text(data[0].title)
+    $('.data-wizard_app_id').text(data[0].id)
+
+    $('#wizardDeleteCbConfirm').prop("checked",false)
+
+    $('#wizard_load_info').removeClass("hidden");
+
+
+}
+function wizardLoadAppInfo_ecb(data) {
+    data = JSON.parse(data)
+    showAlert("Oops", data.error);
+}
+function wizardUpdateDeveloperName(id) {
+
+    if ($('#wizard_new_dev_name').val().length < 1) {
+        return
+    }
+
+    var postData = {
+        name: $('#wizard_new_dev_name').val()
+    }
+    apiPOST(config.endpoint.base + config.path.wizardUpdateDevName + id, JSON.stringify(postData), function() {
+        wizardLoadAppInfo();
+        $('#wizardChangeDevModal').modal("hide");
+        alert("Done")
+    }, genericAPIErrorHandler);
+}
+function wizardDeleteAppBtnPush(id) {
+
+    if (! $('#wizardDeleteCbConfirm').prop("checked")) {
+        $('#wizardDeleteAppBtn').text("Tick the box");
+        setTimeout(function() {
+            $('#wizardDeleteAppBtn').text("Delete App");
+        }, 2000);
+        return
+    }
+
+    apiDELETE(config.endpoint.base + config.path.wizardApp + id, function() {
+        $('#wizard_load_info').addClass("hidden");
+        $('#wizardDeleteAppModal').modal("hide")
+        showWarning("App Delete Successful", "Deleted app " + id);
+    }, genericAPIErrorHandler)
+    
+}
+function wizardGetS3Info(id) {
+    apiGET(config.endpoint.base + config.path.wizardApp + id, wizardGetS3Info_cb, genericAPIErrorHandler)
+}
+function wizardGetS3Info_cb(data) {
+    data = JSON.parse(data);
+    $('#wizard_s3_images').text(JSON.stringify(data.images))
+    $('#wizard_s3_pbws').text(JSON.stringify(data.pbws))
+    $('#wizardS3InfoModal').modal("show")
+}
+
 //  - Global UX
 function showAlert(title, text) {
     $('#mainAlert').removeClass("hidden");
@@ -603,7 +698,7 @@ function showPage(pageID, isFreshLoad = false) {
 
     $('.page').addClass("hidden");
 
-    var validPages = ["profile","home","submit","release","setup","recover-account"];
+    var validPages = ["profile","home","submit","release","setup","recover-account", "wizard"];
 
     //Any weird custom per-window log goes here
     if (pageID == "submit") {
@@ -627,6 +722,15 @@ function showPage(pageID, isFreshLoad = false) {
     } else if (pageID == "setup") {
 
         $('#viewAllOn').addClass("hidden")
+
+    } else if (pageID == "wizard") {
+
+        if (! isWizard) {
+            $('#viewAllOn').removeClass("hidden")
+            $('#master-wizard-noaccess').removeClass("hidden");
+            window.history.pushState(pageID, 'Rebble Developer Portal - ' + pageID, '/' + pageID);
+            return
+        }
 
     }
 
@@ -795,6 +899,11 @@ function getUserInfo_cb(data) {
         //Show the 'how did you get here' screen on /setup for users who should never go there
         $('.setupWindow').addClass("hidden")
         $('#setup-notNeeded').removeClass("hidden")
+    }
+
+    if (data.w) {
+        $('#wizard_nav_button').removeClass("hidden")
+        isWizard = true
     }
 
     showPage(page, true);
@@ -1059,7 +1168,8 @@ function submitNewApp_ecb(data) {
     }
 
     var nicerMessages = {
-        "app.exists": "An application with the supplied UUID already exists. Did you mean to <a href='/release'>publish a new release?</a><br>If you are sure you have not uploaded this app already, please generate a new UUID in your appinfo.json."
+        "app.exists": "An application with the supplied UUID already exists. Did you mean to <a href='/release'>publish a new release?</a><br>If you are sure you have not uploaded this app already, please generate a new UUID in your appinfo.json.",
+        "screenshots.illegalvalue": "One or more screenshots provided are an invalid format. Please use .jpg, .jpeg, .png or .gif"
     }
 
     var msg = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error;
@@ -1288,6 +1398,36 @@ function populateChangeLog() {
     }
 
 }
+
+function friendlyTimeAgo(lc) {
+    var then = new Date(lc);
+    var now = new Date();
+    var delta = now - then;
+    var out = 99;
+    var units = "??";
+    delta = delta / 1000;
+    if (delta < 60) {
+        out = Math.floor(delta);
+        units = "seconds"
+    } else if (delta < 3600) {
+        out = Math.floor(delta / 60);
+        units = "minutes"
+    } else if (delta < 86400) {
+        out = Math.floor(delta / 3600)
+        units = "hours"
+    } else if (delta < 2592000) {
+        out = Math.floor(delta / 86400)
+        units = "days"
+    } else if (delta < 31536000) {
+        out = Math.floor(delta / 2592000)
+        units = "months"
+    } else {
+        out = Math.floor(delta / 31536000)
+        units = "years"
+    }
+    return out + " " + units + " ago";
+}
+
 
 function initDevPortal() {
     //Check if we need to log in

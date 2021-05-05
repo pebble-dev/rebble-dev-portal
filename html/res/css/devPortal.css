@@ -436,6 +436,13 @@ input.simple, input.niceInput:focus, input.niceInput:active, textarea.simple, te
   box-shadow:none;
   outline: 0 none;
 }
+input.bold, input.bold:hover  {
+  border-radius: 0px !important;
+  border: 3px solid var(--color-header);
+  padding-left: 10px;
+  box-shadow:none;
+  outline: 0 none;
+}
 .w-40 {
   max-width: 400px;
 }
@@ -504,6 +511,10 @@ input[type="checkbox"] {
 
 .btn-danger, .btn-danger:hover {
   background-color: var(--color-rebble-red) !important;
+}
+.btn-warning, .btn-warning:hover {
+  background-color: var(--color-rebble-amber) !important;
+  color: black;
 }
 .alert-large.alert-danger {
   background-color: var(--color-rebble-light-red) !important;
@@ -624,7 +635,9 @@ input[type="checkbox"] {
 .underline {
   border-bottom: 1px solid black;
 }
-
+.font-weight-light {
+  font-weight: 200;
+}
 
 .image-container {
   background-image: url("/res/img/screenshot_slider_background_time.png");

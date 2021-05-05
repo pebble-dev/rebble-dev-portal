@@ -118,6 +118,7 @@ function findGetParameter(parameterName) {
     return result;
 }
 
+
 // UI/UX functions
 
 function part2Error(errortext, errorcode) {

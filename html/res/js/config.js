@@ -8,7 +8,9 @@ config = {
         appInfo: "/api/v1/apps/id/",
         submitApp: "/api/v2/submit",
         editApp: "/api/v2/app/",
-        onboard: "/api/v2/onboard"
+        onboard: "/api/v2/onboard",
+        wizardUpdateDevName: "/api/v2/wizard/rename/",
+        wizardApp: "/api/v2/wizard/app/"
     },
     misc: {
         appstoreUrl: "https://apps.rebble.watch/app/",

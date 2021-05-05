@@ -706,6 +706,11 @@
                     <li class="nav-item " id="viewAllOn">
                         <a class="nav-link" onclick="showPage('profile')"> <span class="data-username"></span> <i class="fas fa-cogs"></i></a>
                     </li>
+                    <li class="nav-item hidden" id="wizard_nav_button">
+                        <div class="dropdown show">
+                            <a class="nav-link" onclick="showPage('wizard')"><i class="fas fa-hat-wizard"></i></a>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -927,6 +932,102 @@
 
         <div class="modal-footer float-left noborder">
             <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="showPage('home')">Cancel</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="wizardChangeDevModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content p-4">
+        
+        <div class="modal-body">
+            <div class="row ml-3 mt-3">
+                <h3> <i class="far fa-id-card text-info"></i> Force rename developer </h3>
+            </div>
+            <div class="col-6 mt-3">
+                <span class="font-weight-light">Current Name:</span> <span id="wizard_current_dev_name">Unknown</span>
+            </div>
+
+            <div class="col-12 mt-3 font-weight-light">
+                <input class="simple" style="max-width: 500px;" placeholder="New name" id="wizard_new_dev_name"></input>
+                <button class="btn btn-md btn-warning" onclick="wizardUpdateDeveloperName($(this).attr('data-id'))" id="wizardUpdateDeveloperNameBtn">Update developer name</button>
+            </div>
+
+            <div class="small ml-3 text-warning"> This will take effect immediately </div>
+        </div>
+        
+        <div class="modal-footer float-left noborder">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="wizardDeleteAppModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content p-4">
+        
+        <div class="modal-body">
+            <div class="row ml-3 mt-3">
+                <h3> <i class="fas fa-exclamation-triangle text-danger mr-2"></i> Delete App </h3>
+            </div>
+            <div class="col-12 mt-2 small">
+                You are about to delete the app <strong><span class="data-wizard_app_name">unknown</span></strong> (ID: <span class="data-wizard_app_id">???</span>). <br>
+                Deleting an app does the following:
+                <ul class="">
+                    <li> Removes all assetcollections from the DB </li>
+                    <li> Removes all releases from the DB </li>
+                    <li> Removes all binary entries from the DB </li>
+                    <li> Removes all likes from the DB </li>
+                    <li> Removes the app entry from the DB </li>
+                    <li> Updates agolia to remove from search results </li>
+                </ul>
+                It does not remove any assets from S3. <br> Use the 'list assets' button to get a list of assets that need removing from S3. 
+                <br>
+                <span class="text-danger"> Deleting an app is immediate and irrevocable </span>
+                
+            </div>
+
+            <div class="mt-3 ml-3">
+                <input type="checkbox" id="wizardDeleteCbConfirm">I confirm I want to delete <span class="data-wizard_app_name"></span> forever, and will clean up S3 myself</input>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-md btn-danger" onclick="wizardDeleteAppBtnPush($(this).attr('data-id'))" id="wizardDeleteAppBtn">Delete app</button>
+            </div>
+            
+        </div>
+        
+        <div class="modal-footer float-left noborder">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<div class="modal fade mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="wizardS3InfoModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content p-4">
+        
+        <div class="modal-body">
+            <div class="row ml-3 mt-3">
+                <h3> <i class="fas fa-hat-wizard text-info  mr-2"></i> S3 Assets </h3>
+            </div>
+            <div class="col-12 mt-2 small">
+                Below is a list of S3 assets IDs for the app '<span class="data-wizard_app_name"></span>' <br>
+
+                Images:
+                <textarea id="wizard_s3_images"></textarea>
+                <br>
+                PBWs:
+                <textarea id="wizard_s3_pbws"></textarea>
+            </div>
+
+        </div>
+        
+        <div class="modal-footer float-left noborder">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -1677,7 +1778,7 @@
     </div>
     <footer>
         <div class="row">
-            Rebble Dev Portal - Built with <i class="fas fa-heart ml-2 mt-1 mr-2" onclick="beatElement(this)" id="attrHeart"></i> by Will Murphy
+            Rebble Dev Portal - Built with <i class="fas fa-heart ml-2 mt-1 mr-2" onmouseover="beatElement(this)" id="attrHeart"></i> by Will
         </div>
     </footer>
 </div>
@@ -1785,6 +1886,73 @@
                 Recovering your account shouldn't take long (especially via Discord), but if you want to get uploading straight away you can <a class="underline" onclick="showPage('setup')">go back</a> and create a new developer account in seconds.
             </p>
             
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container page hidden background-dark" id="master-wizard">        
+    <div class="row mt-5">
+        <div class="col-2" id="menu-applistContainer">
+            
+        </div>
+
+        <div class="col-12 ml-3">
+            <div class="row pl-2">
+                <h4 class="largeText"> Wizard Mode </h4>
+            </div>
+            
+
+            <div class="mt-3 font-weight-light">
+                <input class="simple" placeholder="App ID or appstore link" style="max-width: 500px;" id="wizard_app_string"></input>
+                <button class="btn btn-md btn-info" onclick="wizardLoadAppInfo()">Load</button>
+            </div>
+
+            <div class="mt-3 blue-text hidden" id="wizard_load_info" >
+                <hr>
+                <h2 id="wizard_lookup_title">{{ app.title }}</h2>
+                <div id="wizard_lookup_author">{{ app.author }}</div>
+                <img class="card-img-top mt-2" id="wizard_lookup_image" style="width:144px;height:144px;"></image>
+                <div class="small mt-1"><span class="black-text">Version:</span> <span id="wizard_lookup_version">{{ app.version }}</span></div>
+                <div class="small mt-1"><span class="black-text">Added:</span> <span id="wizard_lookup_added">{{ app.added }}</span></div>
+                <div class="small mt-1"><span class="black-text">Last updated:</span> <span id="wizard_lookup_updated">{{ app.updated }}</span></div>
+                <div class="small mt-1"><span class="black-text">Category:</span> <span id="wizard_lookup_category">{{ app.category }}</span></div>
+                <div class="small mt-1"><span class="black-text">PBW UUID:</span> <span id="wizard_lookup_uuid">{{ app.uuid }}</span></div>
+                <div class="small mt-1"><span class="black-text">DB ID:</span> <span id="wizard_lookup_id">{{ app.id }}</span></div>
+                <hr>
+                <div class="mt-2 p-2 black-text">
+                    Wizard Operations:<br>
+                    <button class="btn btn-warning mt-2" onclick="$('#wizardChangeDevModal').modal('show')"><i class="fas fa-user"></i> Rename Developer </button>
+                    <button class="btn btn-warning mt-2" onclick="alert('To link a Rebble auth account to a developer account, please use the auth wizard instead')"><i class="fas fa-user"></i> Reprovision Developer </button>
+                    <button class="btn btn-info" id="wizardGetS3ResourcesBtn" onclick="wizardGetS3Info($(this).attr('data-id'))">List S3 assets</button>
+                    <button class="btn btn-danger mt-2" onclick="$('#wizardDeleteAppModal').modal('show')"><i class="fas fa-trash-alt"></i> Delete App from appstore </button>
+                </div>
+
+                <hr>                
+            </div>
+            
+            
+        </div>
+
+    </div>
+
+</div>
+
+<div class="container page hidden" id="master-wizard-noaccess">        
+    <div class="row mt-5">
+        <div class="col-2" id="menu-applistContainer">
+            
+        </div>
+
+        <div class="col-10 ml-3" id="setup-inital">
+            <div class="row pl-2">
+                <h1 class="largeText"> Unauthorized </h1>
+            </div>
+            <div class="pl-2">
+                How did you get here, muggle? <br><br>
+                <a href="#" onclick="showPage('home')"> Go Home </a>
+            </div>
         </div>
 
     </div>
