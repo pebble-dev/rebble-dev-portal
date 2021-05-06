@@ -1087,7 +1087,7 @@
             <div class="row mt-4 lineup">
                 <btn class="btn btn-secondary noshadow appinfobtn" onclick="showNewRelease()"> <i class="fas fa-upload"></i> New Release </btn>
                 <btn class="btn btn-secondary noshadow appinfobtn" onclick="showAppListingEditor(this)" id="editStoreListingBtn"> <i class="fas fa-align-justify"></i> Edit Store Listing </btn>
-                <btn class="btn btn-secondary noshadow appinfobtn" onclick="showMoreOptions(this)" id="moreOptionsBtn"> <i class="fas fa-cogs"></i> More Options </btn>
+                <!-- <btn class="btn btn-secondary noshadow appinfobtn" onclick="showMoreOptions(this)" id="moreOptionsBtn"> <i class="fas fa-cogs"></i> More Options </btn> -->
             </div>
             
             <div class="row mt-5 ml-1 appinfoscreen animated fadeIn" id="appinfo-secondary">
@@ -1178,14 +1178,15 @@
 
             <!-- More options -->
             <div id="appinfo-secondary-moreoptions" class="hidden mt-4 appinfoscreen animated fadeIn">
-                <h4 class="mt-4"> App status </h4>
+                <!-- <h4 class="mt-4"> App status </h4>
                 <div class="row pl-4">
                     <p class="small"> Your app is currently Public, and can be downloaded. <a >Make Unlisted.</a> </p>
                 </div>
                 <h4 class="mt-3"> Danger Zone </h4>
                 <div class="row pl-4">
                     <btn class="btn btn-danger noshadow"> <i class="fas fa-dumpster-fire"></i> Delete App </btn>
-                </div>
+                </div> -->
+                <span class="small">Nothing here but dust</span>
             </div>
         </div>
 
@@ -1761,9 +1762,9 @@
             <a class="ml-5" href="#" onclick="logout()"> Log out </a>
 
             <h4 class="mt-5"> Settings </h4>
-            <div class="ml-2">
+            <div class="">
                 <div class="">
-                    <input id="deleteImmediatelyCheckbox_settings" type="checkbox" class="ml-3"></input>
+                    <input id="deleteImmediatelyCheckbox_settings" type="checkbox" class=""></input>
                     <label for="deleteImmediatelyCheckbox_settings" class="cbxLbl">Skip confirmation for deleting screenshots</label>
                 </div>
 
