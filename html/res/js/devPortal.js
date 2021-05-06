@@ -705,6 +705,9 @@ function showPage(pageID, isFreshLoad = false) {
 
         progressAppSubmission(0);
         syncScreenshotButtonPreviews();
+        if ($('#i-iswatchface').prop("checked") == false && $('#i-iswatchapp').prop("checked") == false) {
+            $('#i-iswatchface').prop("checked", true)
+        } 
 
     } else if (pageID == "release") {
 
