@@ -5,7 +5,7 @@ const authconfig = {
     },
     clientID: "WtE2fAXm2vLTYn5vFFr1MetE",
     redirectURI: "https://dev-portal.rebble.watch/auth/complete",
-    scopes: "pebble_token pebble profile"
+    scopes: "pebble_token+pebble+profile"
 }
 
 const debugOauth = true;
@@ -16,7 +16,7 @@ function debugLog(txt) {
 }
 
 function initAuth() {
-    var authURL = authconfig.url.auth + "?response_type=code&client_id=" + authconfig.clientID + "&redirect_uri=" + authconfig.redirectURI + "&scope=" + authconfig.scopes + "&state=" + generateAndStoreState();
+    var authURL = authconfig.url.auth + "?response_type=code&client_id=" + authconfig.clientID + "&redirect_uri=" + encodeURIComponent(authconfig.redirectURI) + "&scope=" + authconfig.scopes + "&state=" + generateAndStoreState();
     debugLog("Redirect to " + authURL);
     window.location = authURL;
 }
