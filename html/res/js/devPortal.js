@@ -423,6 +423,67 @@ function reverseAppSubmission() {
         progressAppSubmission(currentStep)
     }
 }
+function submitAddImage(imagePrefix, imageFile) {
+    document.getElementById(`${imagePrefix}-i`).src = window.URL.createObjectURL(imageFile);
+    $(`#${imagePrefix}-addbtn`).addClass("hidden");
+    $(`#${imagePrefix}-removebtn`).removeClass("hidden");
+}
+function submitRemoveImage(imagePrefix) {
+    var srclink = (imagePrefix.split("-")[2] == "c") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png";
+    $(`#${imagePrefix}-f`).val("");
+    $(`#${imagePrefix}-i`).attr("src",srclink);
+    $(`#${imagePrefix}-addbtn`).removeClass("hidden");
+    $(`#${imagePrefix}-removebtn`).addClass("hidden");
+}
+function html_populateAddImageTabList() {
+    //Create the HTML for the add images screenshot list
+    var platforms = ["aplite","basalt","chalk","diorite"]
+    var maxScreenshots = 5
+    var output = ""
+    var exClass = "show active"
+
+    platforms.forEach(p => {
+        pshort = p.substr(0,1)
+        output += `<div class="tab-pane fade ${exClass}" id="scr-${p}" role="tabpanel" aria-labelledby="scr-${p}-tab">`
+        output += `<div class="row">`
+
+        var placeholder = (p == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
+        var exImgClass = (p == "chalk") ? "roundScr" : ""
+        
+        for (var i = 1; i <= maxScreenshots; i++) {
+            output += `<div class="card img-card noshadow border-lite ml-3 mt-3">
+                            <label for="i-screenshot-${pshort}-${i}-f">
+                                <img id = "i-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass}" src="${placeholder}" />
+                                <div class="card-body wide">
+                                    <a  class="btn btn-primary" id="i-screenshot-${pshort}-${i}-addbtn">Add</a>
+                                    <button  class="btn btn-primary hidden" id="i-screenshot-${pshort}-${i}-removebtn" onclick="submitRemoveImage('i-screenshot-${pshort}-${i}')">Remove</button>
+                                </div>
+                            </label>
+                            <input id="i-screenshot-${pshort}-${i}-f" type="file" class="hidden" onchange="submitAddImage('i-screenshot-${pshort}-${i}', this.files[0])">
+                        </div>`
+        }
+        output += '</div></div>'
+        exClass = ""
+    })
+
+    $('#submitScreenshotTabContent').html(output)
+}
+function clearSubmitFields() {
+    // Reset everything
+    inputs = [
+        "i-newapp-name",
+        "i-description",
+        "i-website",
+        "i-source",
+        "i-releaseNotes",
+        "i-pbw"
+    ]
+
+    inputs.forEach(x => {
+        $(`#${x}`).val("")
+    })
+
+}
 
 //  - New Release
 function showNewRelease() {
@@ -703,11 +764,15 @@ function showPage(pageID, isFreshLoad = false) {
     //Any weird custom per-window log goes here
     if (pageID == "submit") {
 
+        html_populateAddImageTabList();
         progressAppSubmission(0);
         syncScreenshotButtonPreviews();
         if ($('#i-iswatchface').prop("checked") == false && $('#i-iswatchapp').prop("checked") == false) {
             $('#i-iswatchface').prop("checked", true)
-        } 
+        }
+        if (! isFreshLoad) {
+            clearSubmitFields()
+        }
 
     } else if (pageID == "release") {
 
@@ -1042,7 +1107,7 @@ function syncScreenshotButtonPreviews() {
     ["a","b","c","d"].forEach(e => {
         for (var i=1;i<6;i++) {
             var fileInput = document.getElementById(`i-screenshot-${e}-${i}-f`)
-            if (fileInput.files.length > 0) {
+            if (fileInput != null && fileInput.files.length > 0) {
                 document.getElementById(`i-screenshot-${e}-${i}-i`).src = window.URL.createObjectURL(fileInput.files[0])
             }
         }
