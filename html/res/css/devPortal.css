@@ -705,3 +705,10 @@ input[type="checkbox"] {
 table.nodec td {
   border: none !important;
 }
+
+.nav-indicator {
+  display: none;
+}
+.showChevron .nav-indicator {
+  display: inline-block !important;
+}

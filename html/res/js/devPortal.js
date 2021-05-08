@@ -36,7 +36,7 @@ function addUserApp(app, isActive) {
 
     html = '\
     <li class="nav-item">\
-        <a class="nav-link" data-dismiss="modal" href="#" onclick="getAppDetails(\'' + app.id + '\')"><span class="ml-2">' + app.title + '</span></a>\
+        <a class="nav-link" data-dismiss="modal" href="#" onclick="getAppDetails(\'' + app.id + '\')" onmouseover="$(this).addClass(\'showChevron\')" onmouseout="$(this).removeClass(\'showChevron\')"><i class="fas fa-chevron-right nav-indicator"></i><span class="ml-2">' + app.title + '</span></a>\
     </li>';
 
     $('#appPickerList').append(html)
