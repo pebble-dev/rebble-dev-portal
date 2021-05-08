@@ -132,8 +132,11 @@ function saveAndPublishAppEdits_cb(data) {
     //Make sure we refresh our updated app
     getAppDetails(data.id);
 }
-function saveAndPublishAppEdits_ecb(data) {
+function saveAndPublishAppEdits_ecb(data, code) {
     $('#updateModal').modal('hide');
+
+    if (code == 429) { return }
+
     jumpToTopOfPage()
 
     try {
@@ -570,8 +573,9 @@ function submitRelease_cb(data) {
     $('#updateModal-release-success').removeClass("hidden");
     $('.change').addClass("hidden");
 }
-function submitRelease_ecb(data) {
+function submitRelease_ecb(data, code) {
     $('#updateModal').modal('hide');
+    if (code == 429) { return }
     jumpToTopOfPage()
 
     try {
@@ -1095,6 +1099,10 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
     }
 }
 
+function rateLimitErrorHandler() {
+    $('#rateLimitModal').modal("show");
+}
+
 function showAppUploadingModal() {
     $('.submitModal-section').addClass("hidden");
     $('#submitModal-uploading').removeClass("hidden");
@@ -1327,17 +1335,19 @@ function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disabl
 	debugLog("POST: " + rurl + " - Data: " + postdata)
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
-	if (xmlHttp.readyState == 4 && RegExp('2.*').test(xmlHttp.status)) {
+	if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
 		if (callBackObject != null) {
 			callback(xmlHttp.responseText, callBackObject);
 		} else {
 			callback(xmlHttp.responseText);
         }
 	} else if (xmlHttp.readyState == 4) {
-           console.log("Error Code: " + xmlHttp.status)
-           if (errorCallback != null) {
-	   	        errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
-       	   }
+        if (xmlHttp.status == 429) {
+            rateLimitErrorHandler()
+        }
+        if (errorCallback != null) {
+	   	    errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
+        }
 	}
     }
     xmlHttp.onprogress = function (e) {
@@ -1359,17 +1369,20 @@ function apiPUT(rurl, putdata, callback, errorCallback, callBackObject, disableC
 	debugLog("PUT: " + rurl + " - Data: " + putdata)
 	var xmlHttp = new XMLHttpRequest();
 	xmlHttp.onreadystatechange = function() {
-	if (xmlHttp.readyState == 4 && RegExp('2.*').test(xmlHttp.status)) {
+	if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
 		if (callBackObject != null) {
 			callback(xmlHttp.responseText, callBackObject);
 		} else {
 			callback(xmlHttp.responseText);
         }
 	} else if (xmlHttp.readyState == 4) {
-           console.log("Error Code: " + xmlHttp.status)
-           if (errorCallback != null) {
-	   	        errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
-       	   }
+        console.log("Error Code: " + xmlHttp.status)
+        if (xmlHttp.status == 429) {
+            rateLimitErrorHandler()
+        } 
+        if (errorCallback != null) {
+            errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
+       	}
 	}
     }
     xmlHttp.open("PUT", rurl, true);
@@ -1385,7 +1398,7 @@ function apiPUT(rurl, putdata, callback, errorCallback, callBackObject, disableC
 function apiGET(url, callback, errorCallback, callBackObject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
-      if (xmlHttp.readyState == 4 && RegExp('2.*').test(xmlHttp.status)) {
+      if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
         if (callBackObject != null) {
           callback(xmlHttp.responseText, callBackObject);
         } else {
@@ -1394,6 +1407,9 @@ function apiGET(url, callback, errorCallback, callBackObject) {
         console.log(url);
   
       } else if (xmlHttp.readyState == 4) {
+        if (xmlHttp.status == 429) {
+            rateLimitErrorHandler()
+        } 
         if (errorCallback != null) {
             errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
         }
@@ -1409,7 +1425,7 @@ function apiGET(url, callback, errorCallback, callBackObject) {
 function apiDELETE(url, callback, errorCallback, callBackObject) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() {
-      if (xmlHttp.readyState == 4 && RegExp('2.*').test(xmlHttp.status)) {
+      if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
         if (callBackObject != null) {
           callback(xmlHttp.responseText, callBackObject);
         } else {
@@ -1418,6 +1434,9 @@ function apiDELETE(url, callback, errorCallback, callBackObject) {
         console.log(url);
   
       } else if (xmlHttp.readyState == 4) {
+        if (xmlHttp.status == 429) {
+            rateLimitErrorHandler()
+        } 
         if (errorCallback != null) {
             errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
         }
