@@ -5,7 +5,7 @@ const authconfig = {
     },
     clientID: "WtE2fAXm2vLTYn5vFFr1MetE",
     redirectURI: "https://dev-portal.rebble.watch/auth/complete",
-    scopes: "pebble_token+pebble+profile"
+    scopes: "pebble+profile"
 }
 
 const debugOauth = true;
