@@ -192,14 +192,17 @@ function newScreenshotForUpload(imgHolderID, file, platform) {
     $('#' + btnID).addClass("hidden")
     var formData = new FormData();
     formData.append("screenshot", file)
-    apiPOST(config.endpoint.base + config.path.editApp + `${currentAppCache.id}/screenshots/${platform}`, formData, newScreenshotForUpload_cb, newScreenshotForUpload_ecb, null, true, null)
+    apiPOST(config.endpoint.base + config.path.editApp + `${currentAppCache.id}/screenshots/${platform}`, formData, newScreenshotForUpload_cb, newScreenshotForUpload_ecb, platform, true, null)
 }
 function newScreenshotForUpload_cb(data) {
     data = JSON.parse(data)
     getEditScreenshotsForPlatform(data.platform)
 }
-function newScreenshotForUpload_ecb(data) {
-    alert(data)
+function newScreenshotForUpload_ecb(data, httpCode, platform) {
+    console.log(data);
+    showAlert("Failed to upload screenshot", "Please try again later");
+    jumpToTopOfPage();
+    getEditScreenshotsForPlatform(platform);
 }
 function deleteScreenshotFromButton(screenshotID, platform) {
     var deleteImmediately = getSettingSafeBool("disableWarnBeforeScreenshotDelete")
@@ -878,7 +881,7 @@ function updateFunMessage() {
     }, 500)
 }
 function startFunMessageTimer() {
-    funMessageIntervalTimer = setInterval(updateFunMessage, 7000);
+    funMessageIntervalTimer = setInterval(updateFunMessage, 4000);
 }
 function stopFunMessageTimer() {
     clearInterval(funMessageIntervalTimer);
@@ -900,7 +903,7 @@ function addNotification(title, text, cb) {
     $('#notif_container').removeClass("hidden");
     $('#notif_count').removeClass("hidden");
     $('#notif_count').text(notifications.count)
-    $('#notif_list').append(`<a class="dropdown-item" href="#" onclick="showNotification('${notifID}')">${title}</a>`)
+    $('#notif_list').append(`<a class="dropdown-item" href="#" onclick="showNotification('${notifID}')"><i class="far fa-envelope"></i> ${title}</a>`)
 }
 function showNotification(id) {
     if (! notifications.hasOwnProperty(id)) { return }
@@ -1461,16 +1464,10 @@ function getUserToken() {
 }
 
 function populateChangeLog() {
-    var release = {
-        version: 0.1,
-        logTitle: "Dev Portal 1.2 Released",
-        logMessage: `\
-        The Rebble Developer Portal has been updated to version 1.2. This change brings the following features: <br>\
-        <ul>\
-        <li> Depression </li>\
-        </ul>\
-        `
-    }
+    apiGET('/res/js/release.json', populateChangeLog_cb, null);
+}
+function populateChangeLog_cb(releaseInfo) {
+    var release = JSON.parse(releaseInfo)
     var lastSeenChangeLog = parseFloat(getSetting("changelog"));
     if (isNaN(lastSeenChangeLog)) {
         // If they don't have a setting, skip this announcement
@@ -1528,7 +1525,6 @@ function initDevPortal() {
     //Bind other events
     $('#master-profile').on('classChange', function(e) {
         // Change subtitle on visiblity change
-        alert("F")
         updateProfileSubtitle();
      });
 

@@ -1241,8 +1241,16 @@
                 Something wrong?
             </p>
             <ul class="nodec smallInput">
-                <li> <a href="#" onclick="showPage('recover-account')">I have submitted apps before but they're not here</a> </li>
+                <li> <a href="" onclick="showPage('recover-account')">I have submitted apps before but they're not here</a> </li>
+                <li> <a target="_blank" href="https://help.rebble.io">I want to change my developer name</a> </li>
             </ul>
+
+            <p class="mt-5 pl-0">
+                Something else?
+            </p>
+            <p>
+                Come and talk to us on the <a href="https://rebble.io/discord">Rebble Discord server</a>!
+            </p>
         </div>
 
       
@@ -1442,9 +1450,9 @@
                     <input class="mt-2 green-text" type="file" name="pbw" id="i-pbw"></input>
                 </div>
                 
-                <div class="ml-1 mt-5">
+                <!-- <div class="ml-1 mt-5">
                     <input id="makeAppPublic" type="checkbox" style="line-height: 20px" checked>Make my app public immediately</input>
-                </div>
+                </div> -->
                 
                 <div class="mt-5 ml-2 small">
                     Have you checked all your fields? If so..
@@ -1452,7 +1460,6 @@
                 <button onclick="submitNewApp()" class="btn btn-primary" id="btn-newAppSubmit">Publish App to Store</button>
             </div>
                 
-
 
         </div>
         <div class="ml-4 mt-5" id="navButtons">
@@ -1586,10 +1593,10 @@
 
         <div class="col-10 ml-3 setupWindow" id="setup-inital">
             <div class="row pl-2">
-                <h1 class="largeText"> You made it 🎉 </h1>
+                <h1 class="largeText row"> You made it <p class="ml-3 animated tada">🎉</p> </h1>
             </div>
             <p class="mt-3 pl-0">
-                Before we get started - It appears you don't yet have a developer account. Is this correct? <br>
+                Welcome to the Rebble Developer Portal. <br> Before we get started - It appears you don't yet have a developer account. Is this correct? <br>
             </p>
             <p class="mt-5 small">
                 <button class="btn btn-primary" style="width:150px;" onclick="showSetupStep('firstrun')"> Yes </button> - I have never uploaded a Pebble app before, and I need to setup my developer account.
@@ -1627,8 +1634,7 @@
             <p>
                 What name should we publish your apps or watchfaces under? 
             </p>
-            <div class="mt-2 ml-2 col-5 longForm">
-                Developer Name:
+            <div class="mt-2 col-5 longForm">
                 <input class="niceInput" placeholder="" id="newDevName"></input>
             </div>
 
@@ -1660,16 +1666,16 @@
                 <ul>
                     <li> Your original developer ID </li>
                     <li> Proof of ownership </li>
-                    <li> Your Rebble account auth ID </li>
+                    <li> Your Rebble account login ID </li>
                 </ul>
             </p>
             <p class="small">
                 If you don't know your original developer ID, <a href="LINKNEEDED">follow this guide.</a><br>
                 If you became a developer using the rebble.io/submit tool, then the proof of your ownership is your email account.
             </p>
-            <h5> Rebble Auth ID </h5>
+            <h5> Rebble Login ID </h5>
             <p class="small">
-                You are logged in as <span class="data-rebbleUsername">an unknown user</span>, your Rebble auth ID is <span class="data-userID">unknown</span>
+                You are logged in as <span class="data-rebbleUsername">an unknown user</span>, your login providers can be found by <a href="https://auth.rebble.io/account/" target="_blank">clicking here</a>. If you have multiple you only need to supply one.
             </p>
             <h5> Get in touch </h5>
             <p class="small">
@@ -1759,7 +1765,6 @@
 <script src="/res/js/devPortal.js"></script>
 
 
-       <!--  -->
     </body>
     <script src="/res/js/svg.js"></script>
 </html>
