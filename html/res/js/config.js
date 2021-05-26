@@ -13,8 +13,9 @@ config = {
         wizardApp: "/api/v2/wizard/app/"
     },
     misc: {
-        appstoreUrl: "https://apps.rebble.watch/app/",
-        screenshotAsset: "https://assets.rebble.io/144x168/filters:upscale()/",
-        screenshotAssetRound: "https://assets.rebble.io/180x180/filters:upscale()/"
+        //appstoreUrl: "https://apps.rebble.watch/app/",
+        appstoreUrl: "https://apps.rebble.io/en_US/application/",
+        screenshotAsset: "https://assets2.rebble.io/144x168/",
+        screenshotAssetRound: "https://assets2.rebble.io/180x180/"
     }
 }
