@@ -837,26 +837,17 @@
         
         <div>
             <div class="row ml-3 mt-3">
-                <h1> App Categories Explained </h1>
+                <h1> App Categories </h1>
             </div>
             <div class="ml-3" style="font-size: 1rem;">
-                <h2 class="mt-3 orange-text"> Daily </h2>
-                Apps in Daily provide quick access to stocks, weather, news and other timely data Rebblers check everyday.
-
-                <h2 class="mt-3 orange-text"> Tools & Utilities </h2>
-                Need an app to count, measure or calculate something? Or quickly find your parked car or your ride home? It's a tool.
-
-                <h2 class="mt-3 orange-text"> Notifications </h2>
-                A Pebble notifications app helps users get customized notifications from their favourite apps & web services right to Pebble.
-
-                <h2 class="mt-3 orange-text"> Remotes </h2>
-                Does your app control other products like a camera, thermostat or vehicle right from Pebble? It's a remote app.
-
-                <h2 class="mt-3 orange-text"> Health & Fitness </h2>
-                Cyclists, swimmers, and athletes of all types use these apps to support their active lifestyles & fitness goals.
-
-                <h2 class="mt-3 orange-text"> Games </h2>
-                <i class="fas fa-gamepad mr-3"></i> <i class="fas fa-chess-pawn mr-3"></i> <i class="fas fa-dice mr-3"></i> <i class="fas fa-trophy mr-3"></i>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong class="orange-text"> Daily </strong><br> Apps in Daily provide quick access to stocks, weather, news and other timely data Rebblers check everyday.</li>
+                    <li class="list-group-item"><strong class="orange-text"> Tools & Utilities  </strong><br> Need an app to count, measure or calculate something? Or quickly find your parked car or your ride home? It's a tool.</li>
+                    <li class="list-group-item"><strong class="orange-text"> Notifications </strong><br> A Pebble notifications app helps users get customized notifications from their favourite apps & web services right to Pebble.</li>
+                    <li class="list-group-item"><strong class="orange-text"> Remotes </strong><br> Does your app control other products like a camera, thermostat or vehicle right from Pebble? It's a remote app.</li>
+                    <li class="list-group-item"><strong class="orange-text"> Health & Fitness </strong><br> Cyclists, swimmers, and athletes of all types use these apps to support their active lifestyles & fitness goals.</li>
+                    <li class="list-group-item"><strong class="orange-text"> Games </strong><br> <i class="fas fa-chess-pawn mr-3" onclick="launchElement(this)"></i> <i class="fas fa-dice mr-3" onclick="launchElement(this)"></i> <i class="fas fa-trophy mr-3" onclick="launchElement(this)"></i> <i class="fas fa-ghost mr-3" onclick="launchElement(this)"></i></li>
+                  </ul>
             </div>
             <div class="modal-footer float-left noborder">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -1138,6 +1129,9 @@
                     <tr>
                         <td class="font-weight-bold"> Latest Release Notes: </td><td class="pl-3" id="appinfo-releasenotes"> </td>
                     </tr>
+                    <tr>
+                        <td class="font-weight-bold">  Release History: </td><td class="pl-3"><a id="appinfo-releasehistory" target="_blank"> View <i class="fas fa-external-link-alt"></i> </a></td>
+                    </tr>
                 </table>
             </div>
 
@@ -1242,7 +1236,7 @@
             </p>
             <ul class="nodec smallInput">
                 <li> <a href="" onclick="showPage('recover-account')">I have submitted apps before but they're not here</a> </li>
-                <li> <a target="_blank" href="https://help.rebble.io">I want to change my developer name</a> </li>
+                <li> <a target="_blank" href="https://help.rebble.io/developer-changename/">I want to change my developer name</a> </li>
             </ul>
 
             <p class="mt-5 pl-0">
@@ -1555,20 +1549,21 @@
             <div class="col-7 mt-3 nopad">
                 <table class="table noborder">
                     <tr><td>Developer ID</td><td class="data-developerID">Unknown</td></tr>
-                    <tr><td>User ID</td><td class="data-userID">Unknown</td></tr>
+                    <!-- <tr><td>User ID</td><td class="data-userID">Unknown</td></tr> -->
                 </table>
             </div>
 
             <a href="#" onclick="showPage('recover-account')"> Account problem? </a>
             <a class="ml-5" href="#" onclick="logout()"> Log out </a>
-
-            <h4 class="mt-5"> Settings </h4>
+            <br><br>
+            <a class="mt-3" href="https://help.rebble.io/LINKNEEDED"> View Developer Resources</a><br>
+            <h4 class="mt-4"> Settings </h4>
             <div class="">
                 <div class="">
                     <input id="deleteImmediatelyCheckbox_settings" type="checkbox" class=""></input>
                     <label for="deleteImmediatelyCheckbox_settings" class="cbxLbl">Skip confirmation for deleting screenshots</label>
                 </div>
-
+                
             </div>
 
         </div>
