@@ -712,3 +712,7 @@ table.nodec td {
 .showChevron .nav-indicator {
   display: inline-block !important;
 }
+
+.hr-top {
+  border-top: 2px solid black;
+}
