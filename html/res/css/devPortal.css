@@ -18,7 +18,6 @@ body {
   font-size: 1.3rem;
   font-weight: 400;
 }
-
 .green {
   background-color: var(--color-rebble-green) !important;
 }
@@ -29,18 +28,6 @@ body {
   background-color: var(--color-rebble-red) !important;
 }
 
-
-body.clear {
-  background-color: #F9F9F9;
-}
-.body.clear > .navbar {
-  background-color: var(--color-background);
-}
-.percbar {
-  border-bottom: 5px solid var(--color-background-dark);
-  width: var(--percentage-complete)
-
-}
 
 .lite {
   font-weight: 300;
@@ -54,7 +41,6 @@ body.clear {
   background-color: var(--color-header) !important;
   z-index: 1;
 }
-
 .navbar.navbar-dark .navbar-nav .nav-item .nav-link {
   color: var(--color-foreground-dark) !important;
 }
@@ -73,60 +59,13 @@ header {
   width: 80%;
   padding-left: 0px;
 }
-
-.option-section {
-  text-align: center;
-  font-size: 2rem;
-}
-.option-section .col-sm {
-    margin-bottom: 40px;
-}
-.option-section .col-6:hover {
-  background-color: rgba(0,0,0,0.1);
-  cursor: pointer;
-}
 .pointer {
   cursor: pointer;
 }
-
 h1 {
   font-size: 2rem;
   font-weight: 400;
 }
-.hugeText {
-  font-size: 3rem;
-}
-.question {
-  font-size: 3rem;
-}
-.title {
-  font-size: 3rem;
-  width: 100%;
-  text-align: center;
-}
-.subtitle {
-  margin-top: 30px;
-}
-
-.linklist li {
-  list-style-type: none;
-  font-size: 2rem;
-  margin-bottom: 25px;
-}
-.linklist {
-  padding-left: 0;
-  background-color: var(--color-background);
-}
-.linklist a {
-  color: inherit;
-}
-.linklist a:hover {
-  border-bottom: 5px solid black;
-}
-.dark {
-  color: var(--color-background-dark);
-}
-
 .search {
   border-radius: 0px;
   border: 5px solid black;
@@ -134,10 +73,6 @@ h1 {
   font-size: 2rem;
   width: inherit;
   max-width: 100%;
-}
-
-.icon-huge {
-  font-size: 10rem;
 }
 .wide {
   width: 100%;
@@ -152,7 +87,6 @@ a.nodec {
   text-decoration: none !important;
   display: inline !important;
 }
-
 button {
   border-radius: 0px;
   border: 3px solid black;
@@ -163,81 +97,18 @@ button {
 input.previousstep {
   font-size: 1rem;
 }
-
-qr img {
-  /* border: 3px solid black; */
-}
-qr img {
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
-.highlight {
-  /* background-color: var(--color-header); */
-}
-.highlight-text {
-  color: var(--color-rebble-orange);
-}
-
-.helpcontent h1 {
-  margin-bottom: 60px;
-}
-.post img {
-  border: 6px solid black;
-}
-qr img {
-  border: none !important;
-  margin-left: 30px;
-}
-/* Hide notmobile stuff on mobile */
-@media screen and (max-width: 600px) {
-  notmobile {
-    visibility: hidden;
-    clear: both;
-    display: none;
-  }
-  li {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-  }
-  p {
-    font-size: 1.2rem;
-  }
-  .question {
-    font-size: 1.3rem;
-  }
-  .icon-huge {
-    font-size: 5rem;
-  }
-  .hugeText {
-    font-size: 2rem;
-  }
-}
-
 .hidden, .hiddenSearchResult {
   display: none !important;
 }
 
-img[alt=icon] { 
-  width: 50px !important; 
-  border: none !important;
-}
-img[alt=noborder] { 
-  border: none !important;
-}
 .noborder, .noborder td {
   border: none !important;
 }
 .nopad, .nopad td {
   padding: 0px !important;
 }
-
 strong {
   font-weight: bolder;
-}
-
-center {
-  align-items: center;
-  text-align: center;
 }
 footer {
   display: flex;
@@ -256,43 +127,6 @@ footer {
   height: 30px;
   width: 30px;
   margin-left: 10px;
-}
-div.email-signup {
-  text-align: center;
-  margin: 1rem 0 .5rem;
-}
-div.email-signup input[type="email"] {
-  margin: 0;
-  padding: 0.6rem;
-  line-height: normal;
-  font-size: 0.8em;
-  border-radius: 0;
-      border-top-left-radius: 0px;
-      border-bottom-left-radius: 0px;
-  border: 1px solid #777;
-      border-right-color: rgb(119, 119, 119);
-      border-right-style: solid;
-      border-right-width: 1px;
-  border-right: none;
-  border-top-left-radius: 0.2em;
-  border-bottom-left-radius: 0.2em;
-}
-div.email-signup input[type="submit"] {
-    margin: 0;
-    padding: 0.6rem;
-    line-height: normal;
-    font-size: 0.8em;
-    border-radius: 0;
-        border-top-right-radius: 0px;
-        border-bottom-right-radius: 0px;
-    background: #D40 !important;
-    cursor: pointer;
-    color: #fff;
-    border: 1px solid #910;
-    border-top-right-radius: 0.2em;
-    border-bottom-right-radius: 0.2em;
-    -webkit-appearance: none;
-
 }
 
 
@@ -324,10 +158,6 @@ div.email-signup input[type="submit"] {
   background-color: var(--color-rebble-light-grey) !important;
   border: 1px solid var(--color-rebble-light-grey) !important;
 }
-
-
-
-
 
 
 /* Home */
@@ -680,7 +510,6 @@ input[type="checkbox"] {
 .dark-red-text {
   color: var(--color-rebble-red) !important;
 }
-
 
 .steps li {
   padding: 30px;
