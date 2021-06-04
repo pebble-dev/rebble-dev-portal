@@ -10,12 +10,14 @@ config = {
         editApp: "/api/v2/app/",
         onboard: "/api/v2/onboard",
         wizardUpdateDevName: "/api/v2/wizard/rename/",
+        wizardUpdateDevID: "/api/v2/wizard/reassign/",
         wizardApp: "/api/v2/wizard/app/"
     },
     misc: {
         //appstoreUrl: "https://apps.rebble.watch/app/",
         appstoreUrl: "https://apps.rebble.io/en_US/application/",
         screenshotAsset: "https://assets2.rebble.io/144x168/",
-        screenshotAssetRound: "https://assets2.rebble.io/180x180/"
+        screenshotAssetRound: "https://assets2.rebble.io/180x180/",
+        developerUrl: "https://apps.rebble.io/en_US/developer/"
     }
 }

@@ -714,7 +714,6 @@
                 </ul>
             </div>
         </nav>
-        <!-- <div class="percbar" style="width: 0%"></div> -->
         <div class="alert alert-large alert-danger alert-dismissible animated slideInDown show hidden" role="alert" id="mainAlert">
           <strong class="text-danger" id="mainAlert-topic">[topic]</strong> - <span id="mainAlert-text">[text]</span>
           <button type="button" class="close" onclick="hideMainAlert()" aria-label="Close">
@@ -943,6 +942,33 @@
             <div class="col-12 mt-3 font-weight-light">
                 <input class="simple" style="max-width: 500px;" placeholder="New name" id="wizard_new_dev_name"></input>
                 <button class="btn btn-md btn-warning" onclick="wizardUpdateDeveloperName($(this).attr('data-id'))" id="wizardUpdateDeveloperNameBtn">Update developer name</button>
+            </div>
+
+            <div class="small ml-3 text-warning"> This will take effect immediately </div>
+        </div>
+        
+        <div class="modal-footer float-left noborder">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="wizardChangeDevIDModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content p-4">
+        
+        <div class="modal-body">
+            <div class="row ml-3 mt-3">
+                <h3> <i class="far fa-id-card text-info"></i> Assign app to new developer </h3>
+            </div>
+            <div class="col-6 mt-3">
+                <span class="font-weight-light">Current Owner ID:</span> <span id="wizard_current_developer_id">Unknown</span>
+            </div>
+
+            <div class="col-12 mt-3 font-weight-light">
+                <input class="simple" style="max-width: 500px;" placeholder="New developer ID" id="wizard_new_dev_id"></input>
+                <button class="btn btn-md btn-warning" onclick="wizardUpdateDeveloperID($(this).attr('data-id'))" id="wizardUpdateDeveloperIDBtn">Assign to developer</button>
             </div>
 
             <div class="small ml-3 text-warning"> This will take effect immediately </div>
@@ -1575,7 +1601,7 @@
     </div>
     <footer>
         <div class="row">
-            Built with <i class="fas fa-heart ml-2 mt-1 mr-2" onmouseover="beatElement(this)" id="attrHeart"></i> by Will Murphy
+            Built with <i class="fas fa-heart ml-2 mt-1 mr-2" onmouseover="beatElement(this)" id="attrHeart"></i> by <a class="ml-1" href="https://twitter.com/__will0__" target="_blank"> Will0</a>
         </div>
     </footer>
 </div>
@@ -1714,13 +1740,14 @@
                 <div class="small mt-1"><span class="black-text">Added:</span> <span id="wizard_lookup_added">{{ app.added }}</span></div>
                 <div class="small mt-1"><span class="black-text">Last updated:</span> <span id="wizard_lookup_updated">{{ app.updated }}</span></div>
                 <div class="small mt-1"><span class="black-text">Category:</span> <span id="wizard_lookup_category">{{ app.category }}</span></div>
+                <div class="small mt-1"><span class="black-text">Developer ID:</span> <span id="wizard_lookup_developerid">{{ app.developer_id }}</span></div>
                 <div class="small mt-1"><span class="black-text">PBW UUID:</span> <span id="wizard_lookup_uuid">{{ app.uuid }}</span></div>
                 <div class="small mt-1"><span class="black-text">DB ID:</span> <span id="wizard_lookup_id">{{ app.id }}</span></div>
                 <hr>
                 <div class="mt-2 p-2 black-text">
                     Wizard Operations:<br>
                     <button class="btn btn-warning mt-2" onclick="$('#wizardChangeDevModal').modal('show')"><i class="fas fa-user"></i> Rename Developer </button>
-                    <button class="btn btn-warning mt-2" onclick="alert('To link a Rebble auth account to a developer account, please use the auth wizard instead')"><i class="fas fa-user"></i> Reprovision Developer </button>
+                    <button class="btn btn-warning mt-2" onclick="$('#wizardChangeDevIDModal').modal('show')"><i class="fas fa-user-edit"></i> Assign to different developer </button>
                     <button class="btn btn-info" id="wizardGetS3ResourcesBtn" onclick="wizardGetS3Info($(this).attr('data-id'))">List S3 assets</button>
                     <button class="btn btn-danger mt-2" onclick="$('#wizardDeleteAppModal').modal('show')"><i class="fas fa-trash-alt"></i> Delete App from appstore </button>
                 </div>

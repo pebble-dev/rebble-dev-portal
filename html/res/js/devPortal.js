@@ -655,6 +655,9 @@ function wizardLoadAppInfo_cb(data) {
     $('#wizardUpdateDeveloperNameBtn').attr("data-id",data[0].developer_id);
     $('#wizard_lookup_version').text(data[0].latest_release.version)
     $('#wizard_lookup_category').text(data[0].category)
+    $('#wizard_lookup_developerid').html(`<a href="${config.misc.developerUrl}${data[0].developer_id}/1" target="_blank"> ${data[0].developer_id} </a>`)
+    $('#wizard_current_developer_id').html(`<a href="${config.misc.developerUrl}${data[0].developer_id}/1" target="_blank"> ${data[0].developer_id} </a>`)
+    $('#wizardUpdateDeveloperIDBtn').attr("data-id", data[0].id)
     $('#wizard_lookup_uuid').text(data[0].uuid)
     $('#wizard_lookup_id').text(data[0].id)
     $('#wizardDeleteAppBtn').attr("data-id", data[0].id)
@@ -688,6 +691,23 @@ function wizardUpdateDeveloperName(id) {
     apiPOST(config.endpoint.base + config.path.wizardUpdateDevName + id, JSON.stringify(postData), function() {
         wizardLoadAppInfo();
         $('#wizardChangeDevModal').modal("hide");
+        alert("Done")
+    }, genericAPIErrorHandler);
+}
+function wizardUpdateDeveloperID(appid) {
+
+    var developerID = $('#wizard_new_dev_id').val();
+
+    if (developerID.length < 1) {
+        return
+    }
+
+    var postData = {
+        developer_id: developerID
+    }
+    apiPOST(config.endpoint.base + config.path.wizardApp + appid, JSON.stringify(postData), function() {
+        wizardLoadAppInfo();
+        $('#wizardChangeDevIDModal').modal("hide");
         alert("Done")
     }, genericAPIErrorHandler);
 }
@@ -815,7 +835,7 @@ function showPage(pageID, isFreshLoad = false) {
         $('#viewAllOn').removeClass("hidden")
         $('#master-' + pageID).removeClass("hidden");
         if (pageID == "home") { pageID = "" }
-        window.history.pushState(pageID, 'Rebble Developer Portal - ' + pageID, '/' + pageID);
+        window.history.pushState(pageID, '/' + pageID, '/' + pageID);
     } else {
         $('#master-home').removeClass("hidden");
     }
@@ -1096,6 +1116,21 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
     if (statusCode == 500) {
         //Network error
         showAlert("Something went wrong", "Please retry. If the problem persists check the <a target='_blank' href='#'>rebble service status</a>, or ask on <a target='_blank' href='https://rebble.io/discord'>Discord</a>.")
+    }
+
+    if (statusCode == 400) {
+        try {
+            data = JSON.parse(data)
+            if (data.hasOwnProperty("message")) {
+                showAlert("Error", data.message)
+            } else if (data.hasOwnProperty("error")) {
+                showAlert("Error", data.error)
+            } else {
+                showAlert("Error","Something went wrong")
+            }
+        } catch (e) {
+            showAlert("Error","Something went wrong")
+        }
     }
     
     if (typeof cbo == "object") {
