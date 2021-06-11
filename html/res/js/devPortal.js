@@ -1110,7 +1110,7 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
 
     if (statusCode == 0) {
         //Network error
-        showAlert("Connection Error", "Check your connection, or the <a target='_blank' href='#'>rebble service status</a>.")
+        showAlert("Connection Error", "Failed to talk to Rebble. Please check your internet connection. If the problem persists check <a target='_blank' href='https://twitter.com/pebble_dev'>Twitter</a> or <a target='_blank' href='https://rebble.io/discord'>Discord</a>.")
     }
 
     if (statusCode == 500) {
