@@ -6,12 +6,12 @@ config = {
     path: {
         aboutme: "/api/v0/users/me/developer",
         appInfo: "/api/v1/apps/id/",
-        submitApp: "/api/v2/submit",
-        editApp: "/api/v2/app/",
-        onboard: "/api/v2/onboard",
-        wizardUpdateDevName: "/api/v2/wizard/rename/",
-        wizardUpdateDevID: "/api/v2/wizard/reassign/",
-        wizardApp: "/api/v2/wizard/app/"
+        submitApp: "/api/dp/submit",
+        editApp: "/api/dp/app/",
+        onboard: "/api/dp/onboard",
+        wizardUpdateDevName: "/api/dp/wizard/rename/",
+        wizardUpdateDevID: "/api/dp/wizard/reassign/",
+        wizardApp: "/api/dp/wizard/app/"
     },
     misc: {
         //appstoreUrl: "https://apps.rebble.watch/app/",
