@@ -1064,7 +1064,7 @@ function getAppDetails_cb(data) {
 
     // Preview icon
     if (favouriteSupportedPlatform == "chalk") {
-        $('#appinfo-icon').attr("src",data.screenshot_images[0]["144x168"].replace("144x168","144x144"));
+        $('#appinfo-icon').attr("src",data.screenshot_images[0]["180x180"]);
     } else {
         $('#appinfo-icon').attr("src",data.screenshot_images[0]["144x168"]);
     }
