@@ -200,7 +200,24 @@ function newScreenshotForUpload_cb(data) {
 }
 function newScreenshotForUpload_ecb(data, httpCode, platform) {
     console.log(data);
-    showAlert("Failed to upload screenshot", "Please try again later");
+    try {
+        data = JSON.parse(data)
+
+        var nicerMessages = {
+            "screenshots.illegaldimensions": "Your image is not the correct dimensions for the selected platform",
+            "screenshots.illegalvalue": "Invalid file type. Please use png, jpg or gif",
+        }
+        var err = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error
+
+        if (data.hasOwnProperty("message")) {
+            err += ". " + data.message
+        }
+
+        showAlert("Failed to upload screenshot", err);
+    } catch (e) {
+        showAlert("Failed to upload screenshot", "Please try again later");
+    }
+
     jumpToTopOfPage();
     getEditScreenshotsForPlatform(platform);
 }
