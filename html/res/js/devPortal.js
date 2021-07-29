@@ -29,17 +29,19 @@ function addUserApp(app, isActive) {
     var extraClasses = (isActive) ? "active" : ""
     let html = '\
     <li class="nav-item animated fadeIn searchResult" data-title="' + app.title + '" id="appselector_' + app.id + '">\
-        <a class="nav-link ' + extraClasses + '" href="#" onclick="getAppDetails(\'' + app.id + '\')"><span class="ml-2">' + app.title + '</span></a>\
+        <a class="nav-link ' + extraClasses + '" href="#" onclick="getAppDetails(\'' + app.id + '\')"><span class="ml-2" id="appselector_' + app.id + '_title"></span></a>\
     </li>';
 
     $('#userAppList').append(html);
+    $(`#appselector_${app.id}_title`).text(app.title)
 
     html = '\
     <li class="nav-item">\
-        <a class="nav-link" data-dismiss="modal" href="#" onclick="getAppDetails(\'' + app.id + '\')" onmouseover="$(this).addClass(\'showChevron\')" onmouseout="$(this).removeClass(\'showChevron\')"><i class="fas fa-chevron-right nav-indicator"></i><span class="ml-2">' + app.title + '</span></a>\
+        <a class="nav-link" data-dismiss="modal" href="#" onclick="getAppDetails(\'' + app.id + '\')" onmouseover="$(this).addClass(\'showChevron\')" onmouseout="$(this).removeClass(\'showChevron\')"><i class="fas fa-chevron-right nav-indicator"></i><span class="ml-2" id="appPickerList_' + app.id + '_title"></span></a>\
     </li>';
 
     $('#appPickerList').append(html)
+    $(`#appPickerList_${app.id}_title`).text(app.title);
     if (isActive) { getAppDetails(app.id) }
 }
 function searchUserApps(searchText) {
@@ -95,7 +97,7 @@ function saveAndPublishAppEdits() {
 
     $('#updateModal-inProgress').removeClass("hidden");
     $('#updateModal-success').addClass("hidden");
-    $('#updateAppName').html($('#edit-title').val())
+    $('#updateAppName').text($('#edit-title').val())
     $('#updateChangedFields').html("")
     $('.appUpdateField').each((i, e) => {
         var fieldName = $(e).prop("id").toString().split("-")[1];
@@ -578,8 +580,8 @@ function submitRelease() {
 
     $('.updateModalPage').addClass("hidden");
     $('#updateModal-inProgress').removeClass("hidden");
-    $('#updateAppName').html(currentAppCache.title)
-    $('#updateChangedFields').html("")
+    $('#updateAppName').text(currentAppCache.title)
+    $('#updateChangedFields').text("")
     $('#updateChangedFields').append("<li> New Release </li>")
     $('#updateModal').modal('show');
 
@@ -611,10 +613,10 @@ function submitRelease_ecb(data, code) {
     console.log(data)
 }
 function submitReleaseValidationError(txt) {
-    $('#btn-newReleaseSubmit').html(txt);
+    $('#btn-newReleaseSubmit').text(txt);
     $('#btn-newReleaseSubmit').addClass("btn-danger");
     setTimeout(function() {
-        $('#btn-newReleaseSubmit').html("Publish release to store");
+        $('#btn-newReleaseSubmit').text("Publish release to store");
         $('#btn-newReleaseSubmit').removeClass("btn-danger");
     }, 2000)
 }
@@ -1110,7 +1112,7 @@ function getAppDetails_cb(data) {
     //Update the app name in the lefthand menu if it doesn't match. This will happen if the user edits the listing and updates the app's name
     if ($('#appselector_' + data.id).data("title") != data.title) {
         $('#appselector_' + data.id).data("title",data.title);
-        $('#appselector_' + data.id).html('<a class="nav-link " href="#" onclick="getAppDetails(\'' + data.id + '\')"><span class="ml-2">' + data.title + '</span></a>');
+        $(`#appselector_${data.id}_title`).text(data.title)
     }
 }
 
@@ -1151,7 +1153,7 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
     }
     
     if (typeof cbo == "object") {
-        $(cbo).html("Something went wrong")
+        $(cbo).text("Something went wrong")
     }
 }
 
@@ -1306,13 +1308,13 @@ function submitNewApp_ecb(data) {
 
     var msg = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error;
 
-    $('#submitModal-error-text').html(msg)
+    $('#submitModal-error-text').text(msg)
 }
 function newAppValidationError(txt) {
-    $('#btn-newAppSubmit').html(txt);
+    $('#btn-newAppSubmit').text(txt);
     $('#btn-newAppSubmit').addClass("btn-danger");
     setTimeout(function() {
-        $('#btn-newAppSubmit').html("Publish app to store");
+        $('#btn-newAppSubmit').text("Publish app to store");
         $('#btn-newAppSubmit').removeClass("btn-danger");
     }, 2000)
 }
@@ -1585,11 +1587,11 @@ function initDevPortal() {
         if ($('#i-iswatchface').prop("checked")) {
             $('#appCategory').addClass("hidden");
             $('#appIconContainer').addClass("hidden");
-            $('.newappOrFace').html("Watchface");
+            $('.newappOrFace').text("Watchface");
         } else {
             $('#appCategory').removeClass("hidden");
             $('#appIconContainer').removeClass("hidden");
-            $('.newappOrFace').html("App")
+            $('.newappOrFace').text("App")
         }
     });
 
