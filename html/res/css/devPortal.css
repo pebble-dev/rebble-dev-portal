@@ -30,7 +30,7 @@ body {
 
 
 .lite {
-  font-weight: 300;
+  font-weight: 300 !important;
 }
 .default-color {
   background-color: var(--color-background) !important;
@@ -545,3 +545,4 @@ table.nodec td {
 .hr-top {
   border-top: 2px solid black;
 }
+

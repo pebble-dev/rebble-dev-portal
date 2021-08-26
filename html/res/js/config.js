@@ -1,7 +1,7 @@
 config = {
     endpoint: {
         base: "https://appstore-api.rebble.watch",
-        ssoLogout: "https://auth.rebble.watch/auth/logout"
+        ssoLogout: "https://auth.rebble.watch/auth/logout?from=dev_portal"
     },
     path: {
         aboutme: "/api/v0/users/me/developer",
