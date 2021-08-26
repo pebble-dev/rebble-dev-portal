@@ -942,7 +942,7 @@ function addNotification(title, text, cb) {
     $('#notif_container').removeClass("hidden");
     $('#notif_count').removeClass("hidden");
     $('#notif_count').text(notifications.count)
-    $('#notif_list').append(`<a class="dropdown-item" href="#" onclick="showNotification('${notifID}')"><i class="far fa-envelope"></i> ${title}</a>`)
+    $('#notif_list').append(`<a class="dropdown-item p-3" href="#" onclick="showNotification('${notifID}')"><i class="far fa-envelope"></i> ${title}</a>`)
 }
 function showNotification(id) {
     if (! notifications.hasOwnProperty(id)) { return }
