@@ -1308,7 +1308,11 @@ function submitNewApp_ecb(data) {
 
     var msg = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error;
 
-    $('#submitModal-error-text').text(msg)
+    if (nicerMessages.hasOwnProperty(data.e)) {
+        $('#submitModal-error-text').html(msg)
+    } else {
+        $('#submitModal-error-text').text(msg)
+    }
 }
 function newAppValidationError(txt) {
     $('#btn-newAppSubmit').text(txt);
