@@ -9,6 +9,7 @@ body {
   --color-rebble-light-red: #FF7575;
   --color-rebble-light-grey: #5c5c5c;
   --color-rebble-very-light-grey: #E0E0E0;
+  --color-rebble-blue: #00c3fd;
   /* --color-header: #f88f1d; */
   --color-background-dark: #9e6900;
   --color-foreground: #FFFFFF;
@@ -501,7 +502,7 @@ input[type="checkbox"] {
 
 .rainbow-text {
   background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);   
-  --webkit-background-clip: text;
+  -webkit-background-clip: text;
   color: transparent;
 }
 .green-text {
@@ -546,3 +547,9 @@ table.nodec td {
   border-top: 2px solid black;
 }
 
+.dropdown-item:hover {
+  background-color: var(--color-rebble-blue);
+}
+.btn-info {
+  background-color: var(--color-rebble-blue) !important;
+}

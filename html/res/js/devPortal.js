@@ -324,13 +324,13 @@ function updateProfileSubtitle() {
     ]
 
     var seasonal = {
-        "25-12": "Merry Christmas",
-        "31-10": "Happy Halloween",
-        "25-11": "Happy Thanksgiving",
-        "19-12": "<a href='https://rebble.io/2016/12/19/rebble-community-update-1.html'>Happy Birthday Rebble</a>",
+        "25-12": "Merry Christmas 🎄",
+        "31-10": "Happy Halloween 🎃",
+        "25-11": "Happy Thanksgiving 🥧",
+        "19-12": "<a target='_blank' href='https://rebble.io/2016/12/19/rebble-community-update-1.html' onclick='hugeTada()'>Happy Birthday Rebble 🎂</a>",
         "28-4": "Ed Balls",
-        "31-12": "Happy New Year",
-        "1-1": "Happy New Year"
+        "31-12": "Happy New Year 📅",
+        "1-1": "Happy New Year 🎆"
     }
 
     var today = new Date()
@@ -799,6 +799,49 @@ function beatElement(id) {
     }, 1000)
 }
 
+function randomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function tada() {
+    confetti({
+            angle: randomInRange(55, 125),
+            spread: randomInRange(50, 70),
+            particleCount: randomInRange(50, 100),
+            origin: { y: 0.6 },
+            zIndex: 2000,
+            disableForReducedMotion: true,
+    });
+}
+    
+function hugeTada() {
+    var end = Date.now() + (15 * 1000);
+    
+    var colors = ['#ff4700', '#373a3c'];
+    
+    (function frame() {
+        confetti({
+            particleCount: 2,
+            angle: 60,
+            spread: 55,
+            origin: { x: 0 },
+            colors: colors
+        });
+        confetti({
+            particleCount: 2,
+            angle: 120,
+            spread: 55,
+            origin: { x: 1 },
+            colors: colors
+        });
+    
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    }());
+}
+    
+
 function showPage(pageID, isFreshLoad = false) {
 
     pageID = pageID.replace("/","");
@@ -942,7 +985,7 @@ function addNotification(title, text, cb) {
     $('#notif_container').removeClass("hidden");
     $('#notif_count').removeClass("hidden");
     $('#notif_count').text(notifications.count)
-    $('#notif_list').append(`<a class="dropdown-item p-3" href="#" onclick="showNotification('${notifID}')"><i class="far fa-envelope"></i> ${title}</a>`)
+    $('#notif_list').append(`<a class="dropdown-item p-3" href="#" onclick="showNotification('${notifID}')"><i class="fas fa-info mr-2"></i> ${title}</a>`)
 }
 function showNotification(id) {
     if (! notifications.hasOwnProperty(id)) { return }
@@ -1245,17 +1288,6 @@ function submitNewApp() {
             }
         })
 
-    // } else {
-
-    //     for (var i = 1; i < 6; i ++) {
-    //         if ($(`#i-screenshot-${i}-f`).prop("files")[0] != undefined) { 
-    //             formData.append(`screenshot-generic-${i}`, $(`#i-screenshot-${i}-f`).prop("files")[0]); 
-    //             if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${i}-f`).prop("files")[0] }
-    //         }
-    //     }
-
-    // }
-
     //append app-only fields
     if (shinyNewApp.type == "watchapp") {
         console.log("Is an app, yo")
@@ -1286,6 +1318,7 @@ function submitNewApp_cb(data) {
     $('#submitModal-success').removeClass("hidden");
     data = JSON.parse(data);
     $('#submitModal-linkToApp').attr("href",config.misc.appstoreUrl + data.id);
+    tada();
 }
 function submitNewApp_ecb(data) {
     stopFunMessageTimer();
@@ -1525,6 +1558,7 @@ function getUserToken() {
 function populateChangeLog() {
     apiGET('/res/js/release.json', populateChangeLog_cb, null);
 }
+
 function populateChangeLog_cb(releaseInfo) {
     var release = JSON.parse(releaseInfo)
     var lastSeenChangeLog = parseFloat(getSetting("changelog"));
@@ -1570,7 +1604,6 @@ function friendlyTimeAgo(lc) {
     }
     return out + " " + units + " ago";
 }
-
 
 function initDevPortal() {
     //Check if we need to log in
