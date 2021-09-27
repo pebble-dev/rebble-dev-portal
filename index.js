@@ -24,8 +24,7 @@ app.get("/favicon.ico", (req, res) => {
 //The 404 Route (Keep this as the last route)
 app.get('*', function(req, res){
 	res.sendFile(path.join(htmlPath + '/404.html'));
-  });
-  
+});
 
 app.listen(8082, () => {
 	console.log("Started listening on port 8082");
