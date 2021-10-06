@@ -1,10 +1,10 @@
 const authconfig = {
     url: {
-        auth: "https://auth.rebble.watch/oauth/authorise",
-        token: "https://auth.rebble.watch/oauth/token",
+        auth: "https://auth.rebble.io/oauth/authorise",
+        token: "https://auth.rebble.io/oauth/token",
     },
-    clientID: "WtE2fAXm2vLTYn5vFFr1MetE",
-    redirectURI: "https://dev-portal.rebble.watch/auth/complete",
+    clientID: "MCNV2xmEjwUGj7wJYNA2SaO8",
+    redirectURI: "https://dev-portal.rebble.io/auth/complete",
     scopes: "pebble+profile"
 }
 
