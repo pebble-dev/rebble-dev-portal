@@ -8,7 +8,7 @@ const authconfig = {
     scopes: "pebble+profile"
 }
 
-const debugOauth = true;
+const debugOauth = false;
 function debugLog(txt) {
     if (debugOauth) {
         console.log(txt)
