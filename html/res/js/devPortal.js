@@ -1552,7 +1552,7 @@ function uuidv4() {
 }
 
 function getUserToken() {
-    return sessionStorage.getItem("access_token");
+    return localStorage.getItem("access_token");
 }
 
 function populateChangeLog() {

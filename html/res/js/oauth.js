@@ -58,11 +58,11 @@ function authPart3(data) {
     try {
 
         data = JSON.parse(data);
-        sessionStorage.setItem("access_token", data.access_token);
-        sessionStorage.setItem("refresh_token", data.refresh_token);
+        localStorage.setItem("access_token", data.access_token);
+        localStorage.setItem("refresh_token", data.refresh_token);
         var d = new Date()
         d.setTime(d.getTime() + data.expires_in);
-        sessionStorage.setItem("expires", d.toISOString());
+        localStorage.setItem("expires", d.toISOString());
         window.location = "/"
         
 
@@ -74,11 +74,11 @@ function authPart3(data) {
 
 function localLogout() {
     //This clears the oauth client data, but doesn't log out from auth.rebble.io
-    sessionStorage.clear();
+    localStorage.clear();
     checkAuthState();
 }
 function logout() {
-    sessionStorage.clear();
+    localStorage.clear();
     window.location = config.endpoint.ssoLogout
 }
 
@@ -86,7 +86,7 @@ function logout() {
 
 function generateAndStoreState() {
     var state = generateState();
-    sessionStorage.setItem('state', state);
+    localStorage.setItem('state', state);
     debugLog("Store state as " + state);
     return state
 }
@@ -99,8 +99,8 @@ function generateState() {
 }
 
 function isStateValid(state) {
-    var expectedState = sessionStorage.getItem("state");
-    sessionStorage.setItem("state", null);
+    var expectedState = localStorage.getItem("state");
+    localStorage.setItem("state", null);
     debugLog("Does local state '" + expectedState + "' match given state '" + state + "'?");
     return (state == expectedState)
 }
