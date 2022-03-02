@@ -905,7 +905,7 @@ function showPage(pageID, isFreshLoad = false) {
     
 }
 
-function changePreviewWatchPlatform(platform, sender) {
+function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
     //Sender is passed by tinyicons, ignore if bandw
     if (sender != null && $(sender).hasClass("bandw")) { return }
 
@@ -917,6 +917,18 @@ function changePreviewWatchPlatform(platform, sender) {
     }
     if (platformMap.hasOwnProperty(platform)) {
         $('#previewImageContainer').css("background-image", 'url("/res/img/' + platformMap[platform] + '")');
+    }
+
+    // forceFetch = true means we've been called by a user clicking the tiny icons.
+    //Try to get the platform specific screenshot
+    if (forceFetch) {
+        apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/screenshots/" + platform, res => {
+            res = JSON.parse(res);
+            if (res.length > 0) {
+                var platform_src_path = (platform == "chalk") ? config.misc.screenshotAssetRound : config.misc.screenshotAsset
+                $('#appinfo-icon').prop("src", platform_src_path + res[0])
+            }
+        }, null);
     }
 
     $('#previewImageContainer').removeClass("bandw");
