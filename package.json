@@ -1,0 +1,32 @@
+{
+  "name": "rebble-dev-portal",
+  "version": "1.0.0",
+  "description": "The developer portal server for the Rebble Alliance",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pebble-dev/rebble-dev-portal.git"
+  },
+  "keywords": [
+    "dev",
+    "portal",
+    "developer",
+    "rebble",
+    "pebble",
+    "apps"
+  ],
+  "author": "Will0",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pebble-dev/rebble-dev-portal/issues"
+  },
+  "homepage": "https://github.com/pebble-dev/rebble-dev-portal#readme"
+}
