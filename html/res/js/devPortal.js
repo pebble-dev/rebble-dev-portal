@@ -1041,9 +1041,12 @@ function getUserInfo_cb(data) {
 
     $(".data-username").text(data.name);
     $(".data-developerID").text(data.id);
-    $(".data-userID").text(data.userid)
+    $(".data-userID").text(data.userid);
     $("#userAppList").html("");
-
+    
+    if (window.FS) {
+        FS.identify(data.userid);
+    }
 
     if (data.applications.length > 0) {
         //Reverse array so newest is first
