@@ -335,6 +335,12 @@ input[type="checkbox"] {
   width: 180px !important;
   height: auto !important;
 }
+.banner {
+  width: 720px;
+  height: 320px;
+  max-width: 720px;
+  max-height: 320px;
+}
 
 .change {
   color: var(--color-rebble-orange)
