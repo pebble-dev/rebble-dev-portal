@@ -1107,17 +1107,17 @@
         <div class="col-3" id="menu-applistContainer">
             
             <input placeholder="Search" class="niceInput smallInput hidden animated fadeIn" onchange="searchUserApps(this.value)" id="appsearch"> </input>
-            <ul class="nav flex-column border-right" id="userAppList">
+            <ul class="nav flex-column border-right">
+                <li class="nav-item">
+                  <a class="nav-link"  onclick="showPage('submit')"> <i class="fas fa-plus"></i> New App</a>
+                </li>
+            </ul>
+            <ul class="nav flex-column tall border-right" id="userAppList">
                 
                 <li class="nav-item">
                     <a class="nav-link" ><span class="ml-2">Retrieving Apps</span></a>
                 </li>
                 
-            </ul>
-            <ul class="nav flex-column tall border-right">
-              <li class="nav-item">
-                <a class="nav-link"  onclick="showPage('submit')"> <i class="fas fa-plus"></i> New App</a>
-              </li>
             </ul>
 
         </div>
