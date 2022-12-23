@@ -887,6 +887,36 @@
     </div>
 </div>
 
+<div class="modal fade mt-5" tabindex="-1" role="dialog" id="confirmDeleteBannerModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content p-4">
+        
+        <div>
+            <div class="row ml-3 mt-3">
+                <h1> Delete Banner? </h1>
+            </div>
+            <div class="ml-3" style="font-size: 1rem;">
+                <img id="deleteBannerModalPreviewImg" class="card-img-top banner mt-2"></img>
+                <div class="mt-4">
+                    <span class="dark-red-text">
+                        This will happen immediately and cannot be undone.
+                    </span>
+                    <div class="">
+                        <input id="deleteImmediatelyCheckbox" type="checkbox" class="ml-1"></input>
+                        <label for="deleteImmediatelyCheckbox" class="cbxLbl">Do not warn before deletion in the future</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer float-left noborder">
+                <button id="delete-banner-modal-btn" type="button" class="btn btn-danger" data-dismiss="modal" onclick="deleteBanner(this.getAttribute('data-appID'), this.getAttribute('data-platform'), this.getAttribute('data-uuid'))">Delete</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+
 <div class="modal fade mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="notificationModal" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content p-4">
@@ -1180,37 +1210,72 @@
                     <btn class="btn btn-primary noshadow" onclick="saveAndPublishAppEdits()"> <i class="fas fa-save"></i> Update &  Publish </btn>
                     <btn class="btn btn-secondary noshadow" onclick="returnToMainSecondaryWindow()"> <i class="fas fa-ban"></i> Cancel </btn>
                 </div>
-                <table class="table nodec mt-3">
-                    <tr>
-                        <td class="font-weight-bold"> Screenshots: 
-                        </td>
-                        <td>
-                            
-                            <div class="" id="platformSpecificScreenshots">
+
+
+                <div class="mt-5" id="tabAndBannerEditZone">
                                 
-                                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                    <li class="nav-item">
-                                        <a onclick="getEditScreenshotsForPlatform('aplite')" class="nav-link active" id="e-scr-aplite-tab" data-toggle="tab" href="#e-scr-aplite" role="tab" aria-controls="e-scr-aplite" aria-selected="true">Aplite</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a onclick="getEditScreenshotsForPlatform('basalt')" class="nav-link" id="e-scr-basalt-tab" data-toggle="tab" href="#e-scr-basalt" role="tab" aria-controls="e-scr-basalt" aria-selected="false">Basalt</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a onclick="getEditScreenshotsForPlatform('chalk')" class="nav-link" id="e-scr-chalk-tab" data-toggle="tab" href="#e-scr-chalk" role="tab" aria-controls="e-scr-chalk" aria-selected="false">Chalk</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a onclick="getEditScreenshotsForPlatform('diorite')" class="nav-link" id="e-scr-diorite-tab" data-toggle="tab" href="#e-scr-diorite" role="tab" aria-controls="e-scr-diorite" aria-selected="false">Diorite</a>
-                                    </li>
-                                </ul>
-                                <div class="tab-content" id="editScreenshotTabContent">
-                                    <!-- rendered by html_populateScreenshotTabList -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="e-scr-tab" data-toggle="tab" href="#e-scr" role="tab" aria-controls="e-scr" aria-selected="true">Screenshots</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="e-banner-tab" data-toggle="tab" href="#e-banner" role="tab" aria-controls="e-banner" aria-selected="false">Banners</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        
+                        <div class="tab-pane fade active show" id="e-scr" role="tabpanel" aria-labelledby="e-scr-tab">
+                            <div class="row">
+                                <div class="" id="platformSpecificScreenshots">
+                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                        <li class="nav-item">
+                                            <a onclick="getEditScreenshotsForPlatform('aplite')" class="nav-link active" id="e-scr-aplite-tab" data-toggle="tab" href="#e-scr-aplite" role="tab" aria-controls="e-scr-aplite" aria-selected="true">Aplite</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="getEditScreenshotsForPlatform('basalt')" class="nav-link" id="e-scr-basalt-tab" data-toggle="tab" href="#e-scr-basalt" role="tab" aria-controls="e-scr-basalt" aria-selected="false">Basalt</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="getEditScreenshotsForPlatform('chalk')" class="nav-link" id="e-scr-chalk-tab" data-toggle="tab" href="#e-scr-chalk" role="tab" aria-controls="e-scr-chalk" aria-selected="false">Chalk</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="getEditScreenshotsForPlatform('diorite')" class="nav-link" id="e-scr-diorite-tab" data-toggle="tab" href="#e-scr-diorite" role="tab" aria-controls="e-scr-diorite" aria-selected="false">Diorite</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content" id="editScreenshotTabContent">
+                                        <!-- rendered by html_populateScreenshotTabList -->
+                                    </div>
                                 </div>
-                                
                             </div>
-                            
-                        </td>
-                    </tr>
-                </table>
+                        </div>
+
+
+                        <div class="tab-pane fade" id="e-banner" role="tabpanel" aria-labelledby="e-banner-tab">
+                            <div class="row">
+                                <div class="" id="appBanners">
+                                    <ul class="nav nav-tabs" id="bannersPlatformSelector" role="tablist">
+                                        <li class="nav-item">
+                                            <a onclick="getEditBannersForPlatform('aplite')" class="nav-link active" id="e-banner-aplite-tab" data-toggle="tab" href="#e-banner-aplite" role="tab" aria-controls="e-banner-aplite" aria-selected="true">Aplite</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="getEditBannersForPlatform('basalt')" class="nav-link" id="e-banner-basalt-tab" data-toggle="tab" href="#e-banner-basalt" role="tab" aria-controls="e-banner-basalt" aria-selected="false">Basalt</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="getEditBannersForPlatform('chalk')" class="nav-link" id="e-banner-chalk-tab" data-toggle="tab" href="#e-banner-chalk" role="tab" aria-controls="e-banner-chalk" aria-selected="false">Chalk</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a onclick="getEditBannersForPlatform('diorite')" class="nav-link" id="e-banner-diorite-tab" data-toggle="tab" href="#e-banner-diorite" role="tab" aria-controls="e-banner-diorite" aria-selected="false">Diorite</a>
+                                        </li>
+                                    </ul>
+                                
+                                    <div class="tab-content" id="editBannersTabContent">
+                                       <!-- rendered by html_populateBannerTabList -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
                 <div class="small red-text mt-1 ml-2">Screenshot changes are reflected immediately, tread carefully!</div>
                 
             </div>

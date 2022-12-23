@@ -65,6 +65,7 @@ function searchUserApps(searchText) {
 function showAppListingEditor(sender) {
     if ($('#editStoreListingBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }
     html_populateScreenshotTabList();
+    html_populateBannerTabList();
 
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary-listingcontrol').removeClass("hidden");
@@ -85,6 +86,10 @@ function showAppListingEditor(sender) {
     $('#e-scr-aplite-tab').tab("show");
     $('#e-scr-' + platform + "-tab").tab("show");
     getEditScreenshotsForPlatform(platform)
+
+    $('#e-banner-aplite-tab').tab("show");
+    $('#e-banner-' + platform + "-tab").tab("show");
+    getEditBannersForPlatform(platform)
 
 }
 function updateAppField(field) {
@@ -157,11 +162,14 @@ function returnToMainSecondaryWindow() {
     $('#appinfo-secondary').removeClass("hidden");
     $('.appinfobtn').removeClass("btn-active");
 }
+
+
 function getEditScreenshotsForPlatform(platform) {
     apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/screenshots/" + platform, getEditScreenshotsForPlatform_cb, genericAPIErrorHandler, platform);
 }
 function getEditScreenshotsForPlatform_cb(data, platform) {
     var data = JSON.parse(data);
+    console.log(data)
 
     if (! currentAppCache.hasOwnProperty("screenshotCache")) { currentAppCache.screenshotCache = {} }
     currentAppCache.screenshotCache[platform] = data
@@ -292,6 +300,134 @@ function html_populateScreenshotTabList() {
     })
 
     $('#editScreenshotTabContent').html(output)
+}
+
+
+function getEditBannersForPlatform(platform) {
+    apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/banners/" + platform, getEditBannersForPlatform_cb, genericAPIErrorHandler, platform);
+}
+function getEditBannersForPlatform_cb(data, platform) {
+    var data = JSON.parse(data);
+    console.log(data)
+
+    if (! currentAppCache.hasOwnProperty("bannerCache")) { currentAppCache.bannerCache = {} }
+    currentAppCache.bannerCache[platform] = data
+    //Banners
+    var shortPlatform = platform.substr(0,1)
+    var numBanners = data.length
+
+    data.forEach((bannerID, index) => {
+        console.log("SET " + `#e-banner-${shortPlatform}-${index+1}-i`)
+        $(`#e-banner-${shortPlatform}-${index+1}-i`).attr("src", config.misc.bannerAsset + bannerID)
+        $(`#e-banner-${shortPlatform}-${index+1}-btn-add`).addClass("hidden");
+        $(`#e-banner-${shortPlatform}-${index+1}-btn-delete`).removeClass("hidden");
+        
+        // Set the data attrs to the screenshot UUID for the delete button and modal delete button
+        $(`#e-banner-${shortPlatform}-${index+1}-btn-delete-btn`).attr("data-uuid", bannerID);
+        
+    });
+
+    for (var i = numBanners; i < 3; i++) {
+        $(`#e-banner-${shortPlatform}-${i+1}-i`).attr("src", "/res/img/newappbanner.png");
+        $(`#e-banner-${shortPlatform}-${i+1}-btn-add`).removeClass("hidden");
+        $(`#e-banner-${shortPlatform}-${i+1}-btn-delete`).addClass("hidden");
+    }
+}
+function newBannerForUpload(imgHolderID, file, platform) {
+    $('#' + imgHolderID).attr("src", "/res/img/bannerUploading.png");
+    var btnID = imgHolderID.replace("-i", "-btn-add");
+    $('#' + btnID).addClass("hidden")
+    var formData = new FormData();
+    formData.append("banner", file)
+    apiPOST(config.endpoint.base + config.path.editApp + `${currentAppCache.id}/banners/${platform}`, formData, newBannerForUpload_cb, newBannerForUpload_ecb, platform, true, null)
+}
+function newBannerForUpload_cb(data) {
+    data = JSON.parse(data)
+    getEditBannersForPlatform(data.platform)
+}
+function newBannerForUpload_ecb(data, httpCode, platform) {
+    try {
+        data = JSON.parse(data)
+
+        var nicerMessages = {
+            "banner.illegaldimensions": "Your image is not the correct dimensions for the selected platform",
+            "banner.illegalvalue": "Invalid file type. Please use png, jpg or gif",
+        }
+        var err = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error
+
+        if (data.hasOwnProperty("message")) {
+            err += ". " + data.message
+        }
+
+        showAlert("Failed to upload banner", err);
+    } catch (e) {
+        showAlert("Failed to upload banner", "Please try again later");
+    }
+
+    jumpToTopOfPage();
+    getEditBannersForPlatform(platform);
+}
+function deleteBannerFromButton(bannerID, platform) {
+    var deleteImmediately = getSettingSafeBool("disableWarnBeforeScreenshotDelete")
+
+    if (deleteImmediately) {
+        deleteBanner(currentAppCache.id, platform, bannerID)
+    } else {
+        $('#deleteBannerModalPreviewImg').attr("src", config.misc.bannerAsset + bannerID);
+        $('#deleteBannerModalPreviewImg').removeClass("roundScr");
+        $(`#delete-banner-modal-btn`).attr("data-appID", currentAppCache.id);
+        $(`#delete-banner-modal-btn`).attr("data-platform", platform);
+        $(`#delete-banner-modal-btn`).attr("data-uuid", bannerID);
+        $('#confirmDeleteBannerModal').modal("show")
+    }
+}
+function deleteBanner(appID, platform, bannerID) {
+    apiDELETE(config.endpoint.base + config.path.editApp + appID + `/banners/${platform}/${bannerID}`, deleteBanner_cb, deleteBanner_ecb);
+}
+function deleteBanner_cb(data) {
+    data = JSON.parse(data);
+    getEditBannersForPlatform(data.platform);
+}
+function deleteBanner_ecb(data) {
+    data = JSON.parse(data)
+    if (data.hasOwnProperty("message")) {
+        showWarning("Cannot delete banner", data.message);
+    } else {
+        showAlert("Failed to delete banner", data.error);
+    }
+    jumpToTopOfPage();
+}
+function html_populateBannerTabList() {
+    //Create the HTML for the edit dialogue banner list
+    var platforms = ["aplite","basalt","chalk","diorite"]
+    var maxBanners = 3
+    var output = ""
+    var exClass = "show active"
+
+    platforms.forEach(p => {
+        pshort = p.substr(0,1)
+        output += `<div class="tab-pane fade ${exClass}" id="e-banner-${p}" role="tabpanel" aria-labelledby="e-banner-${p}-tab">`
+        output += `<div class="row">`
+        
+        for (var i = 1; i <= maxBanners; i++) {         
+            output += `<div class="card noshadow border-lite ml-3 mt-3">
+                        <img id="e-banner-${pshort}-${i}-i" class="card-img-top banner" src="/res/img/newappbanner.png">
+                        <div class="card-body wide hidden" id="e-banner-${pshort}-${i}-btn-delete">
+                            <button class="btn btn-danger" id="e-banner-${pshort}-${i}-btn-delete-btn" onclick="deleteBannerFromButton(this.getAttribute('data-uuid'), '${p}')">Delete</button>
+                        </div>
+                        <label for="e-banner-${pshort}-${i}-f" class="mt-1">
+                            <div class="card-body wide" id="e-banner-${pshort}-${i}-btn-add">
+                                <a class="btn btn-primary">Add</a>
+                            </div>
+                        </label>
+                        <input id="e-banner-${pshort}-${i}-f" type="file" class="hidden" onchange="newBannerForUpload('e-banner-${pshort}-${i}-i', this.files[0], '${p}')">
+                    </div>`
+        }
+        output += '</div></div>'
+        exClass = ""
+    })
+
+    $('#editBannersTabContent').html(output)
 }
 
 //  - More options
