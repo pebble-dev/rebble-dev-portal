@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="/res/css/svg.css?version=1.0.0">
     <link rel="stylesheet" href="/res/css/devPortal.css"></link>
+    <link rel="stylesheet" href="/res/css/duo.css"></link>
     <script type="text/javascript" src="/res/js/config.js"></script>
     <script type="text/javascript" src="/res/js/oauth.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
@@ -1104,7 +1105,7 @@
 
 <div class="container page hidden" id="master-home">        
     <div class="row mt-5">
-        <div class="col-3" id="menu-applistContainer">
+        <div class="dual-col-l col-3 ds" id="menu-applistContainer">
             
             <input placeholder="Search" class="niceInput smallInput hidden animated fadeIn" onchange="searchUserApps(this.value)" id="appsearch"> </input>
             <ul class="nav flex-column border-right">
@@ -1112,7 +1113,7 @@
                   <a class="nav-link"  onclick="showPage('submit')"> <i class="fas fa-plus"></i> New App</a>
                 </li>
             </ul>
-            <ul class="nav flex-column tall border-right" id="userAppList">
+            <ul class="nav flex-column tall border-right dffw" id="userAppList">
                 
                 <li class="nav-item">
                     <a class="nav-link" ><span class="ml-2">Retrieving Apps</span></a>
@@ -1122,10 +1123,10 @@
 
         </div>
 
-        <div class="col-8 ml-3 hidden mainwindow" id="appinfo-main">
+        <div class="dual-col-r col-8 ml-3 hidden mainwindow" id="appinfo-main">
 
             <div class="row">
-                <div class="col-3">
+                <div class="col-3 duo-expand-r">
                     <div class="image-container" id="previewImageContainer">
                         <img src="/res/placeholder/140x140.png" id="appinfo-icon"></img>
                     </div>
@@ -1290,7 +1291,7 @@
             Fetching Details
         </div>
 
-        <div class="col-8 ml-3 hidden mainwindow" id="appinfo-noapps">
+        <div class="col-8 ml-3 hidden mainwindow dual-col-r" id="appinfo-noapps">
             <div class="row pl-2">
                 <h1 class="largeText"> Welcome, <span class="data-username"></span>. </h1>
             </div>
@@ -1301,7 +1302,6 @@
                 <li> <a href="/submit">Submit a new app or watchface to the store</a> </li>
                 <li> <a target="_blank" href="https://help.rebble.io/submit-an-app">Get help with appstore submissions</a> </li>
             </ul>
-
             <p class="mt-5 pl-0">
                 Looking to get started with Pebble development?
             </p>
@@ -1319,7 +1319,6 @@
                 <li> <a href="" onclick="showPage('recover-account')">I have submitted apps before but they're not here</a> </li>
                 <li> <a target="_blank" href="https://help.rebble.io/developer-changename/">I want to change my developer name</a> </li>
             </ul>
-
             <p class="mt-5 pl-0">
                 Something else?
             </p>
@@ -1336,7 +1335,7 @@
 
 <div class="container page hidden" id="master-submit">
     <div class="row mt-5">
-        <div class="col-3">
+        <div class="col-3 dual-col-l">
             <div style="font-size:0.9rem;">
                 <a onclick="showPage('home')"><i class="fas fa-chevron-left"></i> Back </a>
             </div>
@@ -1361,7 +1360,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-8 dual-col-r">
         <!-- New App -->
         <div class="ml-3 longForm animated fadeIn" id="window-newApp">
             <div class="row ml-1">
@@ -1550,7 +1549,7 @@
 <div class="container page hidden" id="master-release">
         
         <div class="row mt-5">
-            <div class="col-3">
+            <div class="col-3 dual-col-l">
                 <div style="font-size:0.9rem;">
                     <a onclick="showPage('home')"><i class="fas fa-chevron-left"></i> Back </a>
                 </div>
@@ -1563,7 +1562,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-8">
+            <div class="col-8 dual-col-r">
             <!-- New App -->
             <div class="ml-3 longForm animated fadeIn" id="window-newApp">
                 <div class="row ml-1">
@@ -1656,14 +1655,14 @@
         </div>
     </div>
     <footer>
-        <div class="row">
+        <div class="row dm-l">
             Built with <i class="fas fa-heart ml-2 mt-1 mr-2" onmouseover="beatElement(this)" id="attrHeart"></i> by <a class="ml-1" href="https://willmurphy.co.uk" target="_blank"> Will0</a>
         </div>
     </footer>
 </div>
 
 <div class="container page hidden" id="master-setup">        
-    <div class="row mt-5">
+    <div class="row mt-5 dual-col-l">
         <div class="col-2" id="menu-applistContainer">
             
         </div>
@@ -1732,7 +1731,7 @@
             
         </div>
 
-        <div class="col-10 ml-3" id="setup-inital">
+        <div class="col-10 ml-3 dual-col-l dm" id="setup-inital">
             <div class="row pl-2">
                 <h1 class="largeText"> Account Recovery </h1>
             </div>
@@ -1774,7 +1773,7 @@
 </div>
 
 <div class="container page hidden background-dark" id="master-wizard">        
-    <div class="row mt-5">
+    <div class="row mt-5 dual-col-l">
         <div class="col-2" id="menu-applistContainer">
             
         </div>

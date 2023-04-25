@@ -1,0 +1,66 @@
+/* This is an excercise in "Why not?" */
+/* Overrides to support surface duo:  */
+
+@media(horizontal-viewport-segments: 2) {
+
+    .dual-col-l {
+        /* max-width: env(viewport-segment-right 0 0); */
+        max-width: 50%;
+        min-width: 50%;
+    }
+    .dual-col-r-login {
+        padding-left: 30px;
+        min-width: 50%;
+    }
+    .dual-col-r {
+        padding-left: 30px;
+        min-width: 48%;
+        max-width: 48%;
+    }
+    .duo-expand-r {
+        margin-right: 80px;
+    }
+
+    .modal {
+        /* padding: 10px; */
+        max-width: 80%;
+        margin-left: 390px;
+        margin-top: -200px;
+    }
+    .dm {
+        margin-left: -200px !important;
+    }
+    .dm-l {
+        margin-left: -55% !important;
+    }
+    .ds {
+        overflow: scroll;
+        max-height: 75vh !important;
+        list-style-position: inside;
+
+    }
+
+    /* Duo Force Full Width */
+    .dffw {
+        display:table; 
+        margin: 0 auto;
+        width: 100%;
+    }
+    .dffw li {
+        min-width: 100%;
+        width: 100%;
+    }
+
+
+    .banner {
+        height: auto;
+    }
+
+
+
+.red {
+    background-color: red !important;
+}
+
+
+}
