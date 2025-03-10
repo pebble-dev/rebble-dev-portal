@@ -290,12 +290,6 @@ textarea {
   max-width: 85%;
   font-size: 1.3rem;
 }
-.longForm .image-upload {
-  width: 85%;
-}
-.longForm .banner {
-  width: 100%;
-}
 input[type="checkbox"] {
   width: inherit !important; 
   margin-right: 10px;
