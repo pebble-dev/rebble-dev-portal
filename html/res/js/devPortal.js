@@ -430,6 +430,49 @@ function html_populateBannerTabList() {
     $('#editBannersTabContent').html(output)
 }
 
+
+function getEditIcons() {
+    apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/icons", (icon_data => {
+        icon_data = JSON.parse(icon_data)
+        Object.keys(currentAppCache.list_image).forEach(k => {
+            currentAppCache.list_image[k] = config.misc.assetBase + k + '/' + icon_data.large
+        })
+        Object.keys(currentAppCache.icon_image).forEach(k => {
+            currentAppCache.icon_image[k] = config.misc.assetBase + k + '/' + icon_data.small
+        })
+        $('#e-icon-small-i').attr("src", currentAppCache.icon_image["48x48"])
+        $('#e-icon-large-i').attr("src", currentAppCache.list_image["144x144"])
+    }), genericAPIErrorHandler);
+
+}
+function newIconForUpload(imgHolderID, file, size) {
+    $('#' + imgHolderID).attr("src", "/res/img/iconUploading.png");
+    var formData = new FormData();
+    formData.append("icon", file)
+    apiPOST(config.endpoint.base + config.path.editApp + `${currentAppCache.id}/icon/${size}`, formData, getEditIcons, newIconForUpload_ecb, null, true)
+}
+function newIconForUpload_ecb(data, httpCode, platform) {
+    try {
+        data = JSON.parse(data)
+
+        var nicerMessages = {
+            "icon.illegalvalue": "Invalid file type. Please use png or jpg",
+        }
+        var err = nicerMessages.hasOwnProperty(data.e) ? nicerMessages[data.e] : data.error
+
+        if (data.hasOwnProperty("message")) {
+            err += ". " + data.message
+        }
+
+        showAlert("Failed to upload icon", err);
+    } catch (e) {
+        showAlert("Failed to upload icon", "Please try again later");
+    }
+
+    jumpToTopOfPage();
+    getEditIcons();
+}
+
 //  - More options
 function showMoreOptions(sender) {
     if ($('#moreOptionsBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }

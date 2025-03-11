@@ -303,6 +303,9 @@ input[type="checkbox"] {
 .smallInput {
   font-size: 20px;
 }
+.reallySmallInput {
+  font-size: 15px;
+}
 
 .img-card {
   max-width: 144px;
@@ -322,6 +325,12 @@ input[type="checkbox"] {
 .card-img-top {
   width: 144px;
   height: 168px;
+  object-fit: fill;
+  max-width: 100%;
+}
+.card-img-icon {
+  width: 100px;
+  height: 100px;
   object-fit: fill;
   max-width: 100%;
 }
