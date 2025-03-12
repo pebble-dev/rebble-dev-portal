@@ -15,6 +15,7 @@ config = {
     },
     misc: {
         appstoreUrl: "https://apps.rebble.io/en_US/application/",
+        assetBase: "https://assets2.rebble.io/",
         screenshotAsset: "https://assets2.rebble.io/144x168/",
         screenshotAssetRound: "https://assets2.rebble.io/180x180/",
         bannerAsset: "https://assets2.rebble.io/720x320/",
