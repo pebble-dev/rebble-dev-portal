@@ -91,6 +91,8 @@ function showAppListingEditor(sender) {
     $('#e-banner-' + platform + "-tab").tab("show");
     getEditBannersForPlatform(platform)
 
+    getEditIcons()
+
 }
 function updateAppField(field) {
     $('#change-' + field).removeClass("hidden")
