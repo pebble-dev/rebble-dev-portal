@@ -1311,12 +1311,13 @@ function getAppDetails_cb(data) {
 
     //Icons
     $('.tinyicon').addClass("bandw");
-    // $('.supports-emery').addClass("hidden");
     var favouriteSupportedPlatform = "basalt"
+    if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); favouriteSupportedPlatform = "emery" }
     if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("bandw"); favouriteSupportedPlatform = "aplite" }
     if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("bandw"); favouriteSupportedPlatform = "chalk" }
     if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("bandw"); favouriteSupportedPlatform = "diorite" }
     if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("bandw"); favouriteSupportedPlatform = "basalt" }
+
 
     changePreviewWatchPlatform(favouriteSupportedPlatform)
 
