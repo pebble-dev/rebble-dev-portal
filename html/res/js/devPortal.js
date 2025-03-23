@@ -1139,7 +1139,7 @@ function updateFunMessage() {
         "Extracting",
         "Unzipping",
         "Point it. Zoom it. Snap it. Press it",
-        "Just checking twitter real quick",
+        "Just checking bluesky real quick",
         "Working",
         "Still working",
         "Thinking",
@@ -1370,7 +1370,7 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
 
     if (statusCode == 0) {
         //Network error
-        showAlert("Connection Error", "Failed to talk to Rebble. Please check your internet connection. If the problem persists check <a target='_blank' href='https://twitter.com/pebble_dev'>Twitter</a> or <a target='_blank' href='https://rebble.io/discord'>Discord</a>.")
+        showAlert("Connection Error", "Failed to talk to Rebble. Please check your internet connection. If the problem persists check <a target='_blank' href='https://bsky.app/profile/rebble.io'>Bluesky</a> or <a target='_blank' href='https://rebble.io/discord'>Discord</a>.")
     }
 
     if (statusCode == 500) {
