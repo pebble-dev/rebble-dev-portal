@@ -6,6 +6,10 @@ notifications = {
 funMessageIntervalTimer = null;
 isWizard = false
 
+const PLATFORMS = ["aplite","basalt","chalk","diorite", "emery"]
+const GREYSCALE_PLATFORMS = ["aplite", "diorite"]
+
+
 // Worker functions
 
 function displayLoginPage() {
@@ -191,7 +195,7 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
     });
 
     for (var i = numScreenshots; i < 5; i++) {
-        var srclink = (platform == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
+        var srclink = getScreenshotPlaceholderImagePath(platform)
         $(`#e-screenshot-${shortPlatform}-${i+1}-i`).attr("src", srclink);
         $(`#e-screenshot-${shortPlatform}-${i+1}-btn-add`).removeClass("hidden");
         $(`#e-screenshot-${shortPlatform}-${i+1}-btn-delete`).addClass("hidden");
@@ -270,22 +274,22 @@ function deleteScreenshot_ecb(data) {
 }
 function html_populateScreenshotTabList() {
     //Create the HTML for the edit dialogue screenshot list
-    var platforms = ["aplite","basalt","chalk","diorite"]
     var maxScreenshots = 5
     var output = ""
     var exClass = "show active"
 
-    platforms.forEach(p => {
-        pshort = p.substr(0,1)
+    PLATFORMS.forEach(p => {
+        pshort = p.substring(0,1)
         output += `<div class="tab-pane fade ${exClass}" id="e-scr-${p}" role="tabpanel" aria-labelledby="e-scr-${p}-tab">`
         output += `<div class="row">`
 
-        var placeholder = (p == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
+        placeholder = getScreenshotPlaceholderImagePath(p)
+
         var exImgClass = (p == "chalk") ? "roundScr" : ""
         
         for (var i = 1; i <= maxScreenshots; i++) {
-            output += `<div class="card img-card noshadow border-lite ml-3 mt-3">
-                        <img id="e-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass}" src="${placeholder}" />
+            output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
+                        <img id="e-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass} ${p}" src="${placeholder}" />
                         <div class="card-body wide hidden" id="e-screenshot-${pshort}-${i}-btn-delete">
                             <button class="btn btn-danger" id="e-screenshot-${pshort}-${i}-btn-delete-btn" onclick="deleteScreenshotFromButton(this.getAttribute('data-uuid'), '${p}')">Delete</button>
                         </div>
@@ -401,12 +405,11 @@ function deleteBanner_ecb(data) {
 }
 function html_populateBannerTabList() {
     //Create the HTML for the edit dialogue banner list
-    var platforms = ["aplite","basalt","chalk","diorite"]
     var maxBanners = 3
     var output = ""
     var exClass = "show active"
 
-    platforms.forEach(p => {
+    PLATFORMS.forEach(p => {
         pshort = p.substr(0,1)
         output += `<div class="tab-pane fade ${exClass}" id="e-banner-${p}" role="tabpanel" aria-labelledby="e-banner-${p}-tab">`
         output += `<div class="row">`
@@ -635,7 +638,7 @@ function submitAddImage(imagePrefix, imageFile) {
     $(`#${imagePrefix}-removebtn`).removeClass("hidden");
 }
 function submitRemoveImage(imagePrefix) {
-    var srclink = (imagePrefix.split("-")[2] == "c") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png";
+    var srclink = getScreenshotPlaceholderImagePath(imagePrefix.split("-")[2])
     $(`#${imagePrefix}-f`).val("");
     $(`#${imagePrefix}-i`).attr("src",srclink);
     $(`#${imagePrefix}-addbtn`).removeClass("hidden");
@@ -643,23 +646,22 @@ function submitRemoveImage(imagePrefix) {
 }
 function html_populateAddImageTabList() {
     //Create the HTML for the add images screenshot list
-    var platforms = ["aplite","basalt","chalk","diorite"]
     var maxScreenshots = 5
     var output = ""
     var exClass = "show active"
 
-    platforms.forEach(p => {
+    PLATFORMS.forEach(p => {
         pshort = p.substr(0,1)
         output += `<div class="tab-pane fade ${exClass}" id="scr-${p}" role="tabpanel" aria-labelledby="scr-${p}-tab">`
         output += `<div class="row">`
 
-        var placeholder = (p == "chalk") ? "/res/img/screenshotRound.png" : "/res/img/screenshotSquare.png"
+        var placeholder = getScreenshotPlaceholderImagePath(p)
         var exImgClass = (p == "chalk") ? "roundScr" : ""
         
         for (var i = 1; i <= maxScreenshots; i++) {
-            output += `<div class="card img-card noshadow border-lite ml-3 mt-3">
+            output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
                             <label for="i-screenshot-${pshort}-${i}-f">
-                                <img id = "i-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass}" src="${placeholder}" />
+                                <img id = "i-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass} ${p}" src="${placeholder}" />
                                 <div class="card-body wide">
                                     <a  class="btn btn-primary" id="i-screenshot-${pshort}-${i}-addbtn">Add</a>
                                     <button  class="btn btn-primary hidden" id="i-screenshot-${pshort}-${i}-removebtn" onclick="submitRemoveImage('i-screenshot-${pshort}-${i}')">Remove</button>
@@ -1116,7 +1118,7 @@ function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
     $('#previewImageContainer').removeClass("chalk");
     if (platform == "chalk") {
         $('#previewImageContainer').addClass("chalk");
-    } else if (["aplite","diorite"].includes(platform)) {
+    } else if (GREYSCALE_PLATFORMS.includes(platform)) {
         $('#previewImageContainer').addClass("bandw");
     }
 }
@@ -1474,7 +1476,7 @@ function submitNewApp() {
     //if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
         //The weird order here is order of preference for largeIcon platform. Basalt looks best
-        ["basalt","aplite", "diorite", "chalk"].forEach(platform => {
+        ["basalt","aplite", "diorite", "chalk", "emery"].forEach(platform => {
             var short = platform.substr(0,1);
             for (var i = 1; i < 6; i ++) {
                 if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) { 
@@ -1489,6 +1491,7 @@ function submitNewApp() {
         console.log("Is an app, yo")
         formData.append("large_icon", $('#i-icon-large-f').prop("files")[0])
         formData.append("small_icon", $('#i-icon-small-f').prop("files")[0])
+        formData.append("timeline_enabled", $('#i-timeline').prop("checked"))
     } else {
         // Use a screenshot as largeIcon
         formData.append("large_icon", largeIcon)
@@ -1501,6 +1504,7 @@ function submitNewApp() {
     if ($('#i-source').val() != null && $('#i-source').val() != "") {
         formData.append("source", $('#i-source').val());
     }
+
 
     //Attach pbw
     formData.append("pbw",$('#i-pbw').prop('files')[0]);
@@ -1801,6 +1805,18 @@ function friendlyTimeAgo(lc) {
     return out + " " + units + " ago";
 }
 
+function getScreenshotPlaceholderImagePath(platform) {
+    // Accepts aplite, basalt etc as well as a, b etc
+    platform = platform.substring(0,1).toLowerCase()
+    const default_path = "/res/img/screenshotSquare.png" 
+    const non_defaults = {
+        "c": "/res/img/screenshotRound.png",
+        "e": "/res/img/screenshotEmery.png"
+    }
+    let placeholder = (non_defaults.hasOwnProperty(platform)) ? non_defaults[platform] : default_path
+    return placeholder
+}
+
 function initDevPortal() {
     //Check if we need to log in
     checkAuthState();
@@ -1819,10 +1835,12 @@ function initDevPortal() {
     $('.rbtype').on('click', function(e) {
         if ($('#i-iswatchface').prop("checked")) {
             $('#appCategory').addClass("hidden");
+            $('#uses_timeline').addClass("hidden")
             $('#appIconContainer').addClass("hidden");
             $('.newappOrFace').text("Watchface");
         } else {
             $('#appCategory').removeClass("hidden");
+            $('#uses_timeline').removeClass("hidden")
             $('#appIconContainer').removeClass("hidden");
             $('.newappOrFace').text("App")
         }

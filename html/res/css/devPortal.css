@@ -51,10 +51,15 @@ body {
 header {
   margin-bottom: 20px;
 }
+header .watch {
+  height: 37px;
+}
 .navbar-brand {
-  font-size: 35px;
+  font-size: 25px;
   font-weight: 300;
   color: var(--color-foreground-dark) !important;
+  padding-top: 0px;
+  padding-bottom: 0px;
 }
 .container {
   width: 80%;
@@ -174,9 +179,10 @@ footer {
   color: var(--color-rebble-orange) !important;
 }
 
-.nav-link {
+.nav-link, .nav-link:hover {
   font-weight: 300;
   font-size: 1rem;
+  color: black;
 }
 
 .appSmall {
@@ -313,6 +319,18 @@ input[type="checkbox"] {
   width: 144px;
   height: 220px;
 }
+.img-card.chalk {
+  max-width: 180px;
+  max-height: 232px;
+  width: 180px;
+  height: 232px;
+}
+.img-card.emery {
+  max-width: 200px;
+  max-height: 280px;
+  width: 200px;
+  height: 280px;
+}
 .card-body {
   display: inline-block;
   text-align: center;
@@ -328,16 +346,28 @@ input[type="checkbox"] {
   object-fit: fill;
   max-width: 100%;
 }
+.card-img-top.chalk {
+  width: 180px;
+  height: 180px;
+  margin-top: 0px;
+  margin-left: 0px;
+  border-radius: 180px;
+  object-fit: cover;
+}
+.card-img-top.emery {
+  width: 200px;
+  height: 228px;
+}
 .card-img-icon {
   width: 100px;
   height: 100px;
   object-fit: fill;
   max-width: 100%;
 }
-.roundScr {
+/* .roundScr {
   width: 180px !important;
   height: auto !important;
-}
+} */
 .banner {
   width: 720px;
   height: 320px;
@@ -427,6 +457,10 @@ input[type="checkbox"] {
   margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
+}
+img.small {
+  height: 25px;
+  width: auto;
 }
 .funtext {
   width: 100%;
