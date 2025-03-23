@@ -844,7 +844,7 @@
                                     onclick="changePreviewWatchPlatform('chalk', this, true)" title="Chalk" />
                                 <img src="/res/img/icon_p2.png" class="supports-diorite tinyicon bandw"
                                     onclick="changePreviewWatchPlatform('diorite', this, true)" title="Diorite" />
-                                <!-- <img src="/res/img/icon_time2.png" class="supports-emery tinyicon bandw" onclick="changePreviewWatchPlatform('basalt', this, true)" title="Emery"/> -->
+                                <img src="/res/img/icon_time2.png" class="supports-emery tinyicon bandw" title="Emery"/>
                             </li>
                         </ul>
                     </div>
@@ -985,6 +985,12 @@
                                                     role="tab" aria-controls="e-scr-diorite"
                                                     aria-selected="false">Diorite</a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a onclick="getEditScreenshotsForPlatform('emery')" class="nav-link"
+                                                    id="e-scr-emery-tab" data-toggle="tab" href="#e-scr-emery"
+                                                    role="tab" aria-controls="e-scr-emery"
+                                                    aria-selected="false">Emery</a>
+                                            </li>
                                         </ul>
                                         <div class="tab-content" id="editScreenshotTabContent">
                                             <!-- rendered by html_populateScreenshotTabList -->
@@ -1021,6 +1027,12 @@
                                                     id="e-banner-diorite-tab" data-toggle="tab" href="#e-banner-diorite"
                                                     role="tab" aria-controls="e-banner-diorite"
                                                     aria-selected="false">Diorite</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a onclick="getEditBannersForPlatform('emery')" class="nav-link"
+                                                    id="e-banner-emery-tab" data-toggle="tab" href="#e-banner-emery"
+                                                    role="tab" aria-controls="e-banner-emery"
+                                                    aria-selected="false">Emery</a>
                                             </li>
                                         </ul>
 
@@ -1271,6 +1283,10 @@
                                     <a class="nav-link" id="scr-diorite-tab" data-toggle="tab" href="#scr-diorite"
                                         role="tab" aria-controls="scr-diorite" aria-selected="false">Diorite</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="scr-emery-tab" data-toggle="tab" href="#scr-emery"
+                                        role="tab" aria-controls="scr-emery" aria-selected="false">Emery</a>
+                                </li>
                             </ul>
                             <div class="tab-content" id="submitScreenshotTabContent">
                                 <!-- rendered by html_populateAddImageTabList -->
@@ -1342,9 +1358,15 @@
                             <textarea class="niceInput mt-2" id="i-releaseNotes"></textarea>
                         </div>
 
+                        <div class="mt-4 ml-2 hidden" id="uses_timeline">
+                            Special Permissions
+                            <div class="ml-4 mt-2">
+                                <input id="i-timeline" type="checkbox" style="line-height: 20px"> <img class="small" src="./res/img/timeline-pin.svg" /> My app uses timeline</input>
+                            </div>
+                        </div>
+
                         <div class="mt-4 ml-2">
                             App Binary
-                            <br>
                             <div class="small">Last but not least, your built pbw file.</div>
                             <input class="mt-2 green-text" type="file" name="pbw" id="i-pbw"></input>
                         </div>
@@ -1419,6 +1441,14 @@
                                 appinfo.json.</div>
                             <input class="mt-2 green-text" type="file" name="pbw" id="release-pbw"></input>
                         </div>
+
+                        <div class="mt-4 ml-2 hidden">
+                            Super Secret Settings
+                        <div class="ml-4 mt-2" id="wizard-silent-release">
+                            <input id="i-timeline" type="checkbox" style="line-height: 20px"> <img class="small" src="./res/img/mouse.svg" /> Do not announce release</input>
+                        </div>
+                        </div>
+
 
                         <div class="mt-5 ml-2 small">
                             Does that look right? If so..

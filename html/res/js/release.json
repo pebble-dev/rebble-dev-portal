@@ -1,5 +1,5 @@
 {
-    "version": 1.1,
-    "logTitle": "Dev Portal Update",
-    "logMessage": "<h2> Banner Support! </h2><p>The developer portal now gives you the ability to edit banners for your watchface or app. You can now have up to three banners per platform!</p><img style='max-width:90%;max-height:600px;' src='https://media.discordapp.net/attachments/264746316477759489/1055262821262299147/banners.gif?width=1107&height=897'></img><br><br><p>Find it under 'edit appstore listing'. Changes are reflected immediately, like screenshots.</p>"
+    "version": 1.2,
+    "logTitle": "  Emery Support Added",
+    "logMessage": "<p>The developer portal has been updated to add support for the Emery platform! You can now provide platform specific screenshots and banners for Emery if your app or watchface supports it.🎉 </p>"
 }
