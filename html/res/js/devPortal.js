@@ -1310,13 +1310,14 @@ function getAppDetails_cb(data) {
     
 
     //Icons
-    $('.tinyicon').addClass("bandw");
+    $('.tinyicon').addClass("incompatible");
+    $('.tinyicon').attr("title", "Unsupported Platform");
     var favouriteSupportedPlatform = "basalt"
-    if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); favouriteSupportedPlatform = "emery" }
-    if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("bandw"); favouriteSupportedPlatform = "aplite" }
-    if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("bandw"); favouriteSupportedPlatform = "chalk" }
-    if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("bandw"); favouriteSupportedPlatform = "diorite" }
-    if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("bandw"); favouriteSupportedPlatform = "basalt" }
+    if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("incompatible"); $('.supports-emery').attr("title", "Supports Emery"); favouriteSupportedPlatform = "emery" }
+    if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("incompatible"); $('.supports-aplite').attr("title", "Supports Aplite"); favouriteSupportedPlatform = "aplite" }
+    if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("incompatible"); $('.supports-chalk').attr("title", "Supports Chalk"); favouriteSupportedPlatform = "chalk" }
+    if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("incompatible"); $('.supports-diorite').attr("title", "Supports Diorite"); favouriteSupportedPlatform = "diorite" }
+    if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("incompatible"); $('.supports-basalt').attr("title", "Supports Basalt"); favouriteSupportedPlatform = "basalt" }
 
 
     changePreviewWatchPlatform(favouriteSupportedPlatform)
