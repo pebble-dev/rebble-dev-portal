@@ -5,6 +5,7 @@ notifications = {
 }
 funMessageIntervalTimer = null;
 isWizard = false
+hasDeployKey = false
 
 const PLATFORMS = ["aplite","basalt","chalk","diorite", "emery"]
 const GREYSCALE_PLATFORMS = ["aplite", "diorite"]
@@ -825,6 +826,46 @@ function showSetupStep(step) {
 
     $('#newDevName').attr("placeholder",placeholderNames[Math.floor(Math.random() * placeholderNames.length)]);
 }
+function showDeployKeyModal(deploy_key) {
+    $('#deployKeyContainer').text(deploy_key)
+    $('#deployKeyModal').modal({
+        backdrop: 'static',
+        keyboard: false
+    })
+}
+function hideDeployKeyModal() {
+    $('#deployKeyModal').modal("hide")
+    $('#deployKeyContainer').text("Key Hidden")
+}
+function updateDeployKey(new_key) {
+    hasDeployKey = true
+    $('#deployKeyTextbox').val("YouMustRegenerateYourKey")
+    $('#deployKeyButton').text("Regenerate")
+    showDeployKeyModal(new_key)
+}
+function regenerateDeployKey(user_actively_confirmed = false) {
+    if (hasDeployKey && user_actively_confirmed == false) {
+
+        //User already has a deploy key, so require them to confirm regeneration
+        $('#deployKeyChallengeModal').modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+
+    } else {
+
+        $('#deployKeyChallengeModal').modal("hide")
+
+        //They don't have a key yet, so we don't need confirmation OR they have provided confirmation
+        apiPOST(config.endpoint.base + config.path.deployKeyGen, JSON.stringify({"operation": "regenerate"}), (resp => {
+
+            resp = JSON.parse(resp)
+            updateDeployKey(resp.new_key)
+
+        }), genericAPIErrorHandler)
+
+    }
+}
 
 // -  Wizard
 function wizardLoadAppInfo() {
@@ -1259,6 +1300,26 @@ function getUserInfo_cb(data) {
     if (data.w) {
         $('#wizard_nav_button').removeClass("hidden")
         isWizard = true
+    }
+
+    if (data.hasDeployKey) {
+        $('#deployKeyTextbox').val("YouMustRegenerateYourKey")
+        $('#deployKeyButton').text("Regenerate")
+        hasDeployKey = true
+
+        if (data.deployKeyLastUsed != 0) {
+
+            const d = new Date(data.deployKeyLastUsed)
+            const hr_deploy_key_last_use_date = d.toLocaleDateString(navigator.language)
+            $('#deployKeyLastUsed').text("Your current deploy key was last used on " + hr_deploy_key_last_use_date + ". ")
+            $('#deployKeyLastUsed').attr("title", data.deployKeyLastUsed)
+
+        } else {
+
+            $('#deployKeyLastUsed').text("")
+
+        }
+
     }
 
     showPage(page, true);

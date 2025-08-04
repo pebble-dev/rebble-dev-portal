@@ -792,6 +792,58 @@
         </div>
     </div>
 
+    <div class="modal fade mt-5" tabindex="-1" role="dialog" id="deployKeyModal" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content p-4">
+
+                <div class="modal-body">
+                    <div class="row ml-3 mt-3">
+                        <h3> <i class="fas fa-key mr-2"></i> Deploy Key </h3>
+                    </div>
+                    <div class="col-12 mt-2 small">
+                        Your new deploy key is listed below. This is the only time you can view it.
+                        <br><br>
+                        <code id="deployKeyContainer" class="block fw tac">
+                            Key Hidden
+                        </code>
+                        <br><br>
+                        To learn how to use this key, see here.
+                    </div>
+
+                </div>
+
+                <div class="modal-footer float-left noborder">
+                    <button type="button" class="btn btn-secondary" onclick="hideDeployKeyModal()">I've copied my key</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade mt-5" tabindex="-1" role="dialog" id="deployKeyChallengeModal" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content p-4">
+
+                <div class="modal-body">
+                    <div class="row ml-3 mt-3">
+                        <h3> <i class="fas fa-recycle mr-2"></i> Regenerate Key? </h3>
+                    </div>
+                    <div class="col-12 mt-2 small">
+                        If you regenerate your key, the current deploy key will stop working. If you have lost your current deploy key, you cannot recover it and must generate a new key.
+                        <br><br>
+                        <span id="deployKeyLastUsed"></span>
+                        Please confirm you are happy to regenerate your deploy key.
+                    </div>
+
+                </div>
+
+                <div class="modal-footer float-left noborder">
+                    <button type="button" class="btn btn-primary" onclick="regenerateDeployKey(true)">Regenerate Key</button>
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancel</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="container page hidden" id="master-home">
         <div class="row mt-5">
@@ -1516,6 +1568,11 @@
                             screenshots</label>
                     </div>
 
+                    <div class="mt-2">
+                        <h6>Deploy Key</h6>
+                        <button id="deployKeyButton" class="btn btn-primary small" onclick="regenerateDeployKey()"> Generate </button>
+                        <input id="deployKeyTextbox" type="password" value="" readonly></input>
+                    </div>
                 </div>
 
             </div>

@@ -136,7 +136,14 @@ footer {
 }
 
 
-
+.btn.small {
+  height:30px;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 10px;
+  margin: 0px;
+}
 /* Login */
 .btn-primary, .btn-primary:hover {
   background-color: var(--color-rebble-orange) !important;
@@ -228,9 +235,14 @@ ul.nodec > li {
  padding-left: 8px;
 }
 
-
-.loader {
+.block {
+  display: inline-block;
+}
+.loader, .fw {
   width: 100%;
+}
+.tac {
+  text-align: center;
 }
 .spinner {
   border: 8px solid black; 
