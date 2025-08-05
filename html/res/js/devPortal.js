@@ -1842,7 +1842,8 @@ function initDevPortal() {
             $('.newappOrFace').text("Watchface");
         } else {
             $('#appCategory').removeClass("hidden");
-            $('#uses_timeline').removeClass("hidden")
+	    //Hidden until feature is ready for launch
+            //$('#uses_timeline').removeClass("hidden")
             $('#appIconContainer').removeClass("hidden");
             $('.newappOrFace').text("App")
         }
