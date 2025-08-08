@@ -1231,7 +1231,7 @@
                             <br>
                             <div class="small">For a description of each category, <a class="pointer underline"
                                     onclick="$('#categoryExplainModal').modal()">click here</a>.</div>
-                            <div class="input-group mb-3">
+                            <div class="input-group mb-3 clickable">
                                 <select class="custom-select niceInput" id="i-appCat">
                                     <option selected value="">Choose...</option>
                                     <option value="Daily">Daily</option>
@@ -1241,6 +1241,13 @@
                                     <option value="Health & Fitness">Health & Fitness</option>
                                     <option value="Games">Games</option>
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 ml-2 animated fadeIn hidden" id="uses-timeline">
+                            Special Permissions
+                            <div class="ml-4 mt-2">
+                                <input id="i-timeline" type="checkbox" style="line-height: 20px" class="clickable"> <img class="small" src="./res/img/timeline-pin.svg" /> My app uses timeline</input>
                             </div>
                         </div>
 
@@ -1356,13 +1363,6 @@
                             <div class="small">What's included with this release? (Still required for first upload.)
                             </div>
                             <textarea class="niceInput mt-2" id="i-releaseNotes"></textarea>
-                        </div>
-
-                        <div class="mt-4 ml-2 hidden" id="uses_timeline">
-                            Special Permissions
-                            <div class="ml-4 mt-2">
-                                <input id="i-timeline" type="checkbox" style="line-height: 20px"> <img class="small" src="./res/img/timeline-pin.svg" /> My app uses timeline</input>
-                            </div>
                         </div>
 
                         <div class="mt-4 ml-2">
