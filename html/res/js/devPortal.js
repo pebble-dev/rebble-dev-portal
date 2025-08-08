@@ -1837,13 +1837,12 @@ function initDevPortal() {
     $('.rbtype').on('click', function(e) {
         if ($('#i-iswatchface').prop("checked")) {
             $('#appCategory').addClass("hidden");
-            $('#uses_timeline').addClass("hidden")
+            $('#uses-timeline').addClass("hidden")
             $('#appIconContainer').addClass("hidden");
             $('.newappOrFace').text("Watchface");
         } else {
             $('#appCategory').removeClass("hidden");
-	    //Hidden until feature is ready for launch
-            //$('#uses_timeline').removeClass("hidden")
+            $('#uses-timeline').removeClass("hidden")
             $('#appIconContainer').removeClass("hidden");
             $('.newappOrFace').text("App")
         }

@@ -423,6 +423,9 @@ input[type="checkbox"] {
   cursor: pointer;
   text-decoration: underline;
 }
+.clickable {
+  cursor: pointer;
+}
 
 
 .largeText {
