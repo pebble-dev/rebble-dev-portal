@@ -6,8 +6,8 @@ notifications = {
 funMessageIntervalTimer = null;
 isWizard = false
 
-const PLATFORMS = ["aplite","basalt","chalk","diorite", "emery"]
-const GREYSCALE_PLATFORMS = ["aplite", "diorite"]
+const PLATFORMS = ["aplite","basalt","chalk","diorite", "emery", "flint"]
+const GREYSCALE_PLATFORMS = ["aplite", "diorite", "flint"]
 
 
 // Worker functions
@@ -1096,7 +1096,8 @@ function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
         "aplite": "screenshot_slider_background_original.png",
         "basalt": "screenshot_slider_background_time.png",
         "chalk": "screenshot_slider_background_time_round_14.png",
-        "diorite": "screenshot_slider_background_pebble2.png"
+        "diorite": "screenshot_slider_background_pebble2.png",
+        "flint": "screenshot_slider_background_pebble2.png",
     }
     if (platformMap.hasOwnProperty(platform)) {
         $('#previewImageContainer').css("background-image", 'url("/res/img/' + platformMap[platform] + '")');
@@ -1317,6 +1318,7 @@ function getAppDetails_cb(data) {
     if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("incompatible"); $('.supports-aplite').attr("title", "Supports Aplite"); favouriteSupportedPlatform = "aplite" }
     if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("incompatible"); $('.supports-chalk').attr("title", "Supports Chalk"); favouriteSupportedPlatform = "chalk" }
     if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("incompatible"); $('.supports-diorite').attr("title", "Supports Diorite"); favouriteSupportedPlatform = "diorite" }
+    if (data.compatibility.flint.supported) { $('.supports-flint').removeClass("incompatible"); $('.supports-flint').attr("title", "Supports Flint"); favouriteSupportedPlatform = "flint" }
     if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("incompatible"); $('.supports-basalt').attr("title", "Supports Basalt"); favouriteSupportedPlatform = "basalt" }
 
 
@@ -1478,7 +1480,7 @@ function submitNewApp() {
     //if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
         //The weird order here is order of preference for largeIcon platform. Basalt looks best
-        ["basalt","aplite", "diorite", "chalk", "emery"].forEach(platform => {
+        ["basalt","aplite", "diorite", "flint", "chalk", "emery"].forEach(platform => {
             var short = platform.substr(0,1);
             for (var i = 1; i < 6; i ++) {
                 if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) { 
