@@ -845,6 +845,8 @@
                                 <img src="/res/img/icon_p2.png" class="supports-diorite tinyicon"
                                     onclick="changePreviewWatchPlatform('diorite', this, true)" title="Diorite" />
                                 <img src="/res/img/icon_time2.png" class="supports-emery tinyicon" title="Emery"/>
+                                <img src="/res/img/icon_p2.png" class="supports-flint tinyicon"
+                                    onclick="changePreviewWatchPlatform('flint', this, true)" title="Flint" />
                             </li>
                         </ul>
                     </div>
@@ -991,6 +993,12 @@
                                                     role="tab" aria-controls="e-scr-emery"
                                                     aria-selected="false">Emery</a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a onclick="getEditScreenshotsForPlatform('flint')" class="nav-link"
+                                                    id="e-scr-flint-tab" data-toggle="tab" href="#e-scr-flint"
+                                                    role="tab" aria-controls="e-scr-flint"
+                                                    aria-selected="false">Flint</a>
+                                            </li>
                                         </ul>
                                         <div class="tab-content" id="editScreenshotTabContent">
                                             <!-- rendered by html_populateScreenshotTabList -->
@@ -1033,6 +1041,12 @@
                                                     id="e-banner-emery-tab" data-toggle="tab" href="#e-banner-emery"
                                                     role="tab" aria-controls="e-banner-emery"
                                                     aria-selected="false">Emery</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a onclick="getEditBannersForPlatform('flint')" class="nav-link"
+                                                    id="e-banner-flint-tab" data-toggle="tab" href="#e-banner-flint"
+                                                    role="tab" aria-controls="e-banner-flint"
+                                                    aria-selected="false">Flint</a>
                                             </li>
                                         </ul>
 
@@ -1293,6 +1307,10 @@
                                 <li class="nav-item">
                                     <a class="nav-link" id="scr-emery-tab" data-toggle="tab" href="#scr-emery"
                                         role="tab" aria-controls="scr-emery" aria-selected="false">Emery</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="scr-flint-tab" data-toggle="tab" href="#scr-flint"
+                                        role="tab" aria-controls="scr-flint" aria-selected="false">Flint</a>
                                 </li>
                             </ul>
                             <div class="tab-content" id="submitScreenshotTabContent">
