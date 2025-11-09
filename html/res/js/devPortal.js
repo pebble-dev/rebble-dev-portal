@@ -1415,15 +1415,22 @@ function showAppUploadingModal() {
 }
 function syncScreenshotButtonPreviews() {
     //If we refresh the page the file inputs retain the images, but the preview <img>s loose their values. This reloads those. Called by showPage()
-    ["a","b","c","d"].forEach(e => {
+    PLATFORM.forEach(platform => {
+        var short = platform.substr(0,1);
         for (var i=1;i<6;i++) {
-            var fileInput = document.getElementById(`i-screenshot-${e}-${i}-f`)
+            var fileInput = document.getElementById(`i-screenshot-${short}-${i}-f`)
             if (fileInput != null && fileInput.files.length > 0) {
-                document.getElementById(`i-screenshot-${e}-${i}-i`).src = window.URL.createObjectURL(fileInput.files[0])
+                document.getElementById(`i-screenshot-${short}-${i}-i`).src = window.URL.createObjectURL(fileInput.files[0])
             }
         }
     });
 }
+
+function platformScreenshotExists(platform) {
+    var short = platform.substr(0,1);
+    return $(`#i-screenshot-${short}-1-f`).prop('files')[0] != undefined;
+}
+
 function submitNewApp() {
 
     var shinyNewApp = {
@@ -1441,7 +1448,7 @@ function submitNewApp() {
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
     //At least one screenshot
 
-    if ($('#i-screenshot-a-1-f').prop('files')[0] == undefined && $('#i-screenshot-b-1-f').prop('files')[0] == undefined && $('#i-screenshot-c-1-f').prop('files')[0] == undefined && $('#i-screenshot-d-1-f').prop('files')[0] == undefined) {
+    if (PLATFORMS.some(platformScreenshotExists)) {
         newAppValidationError("Provide at least one screenshot")
         return
     }
