@@ -1415,7 +1415,7 @@ function showAppUploadingModal() {
 }
 function syncScreenshotButtonPreviews() {
     //If we refresh the page the file inputs retain the images, but the preview <img>s loose their values. This reloads those. Called by showPage()
-    PLATFORM.forEach(platform => {
+    PLATFORMS.forEach(platform => {
         var short = platform.substr(0,1);
         for (var i=1;i<6;i++) {
             var fileInput = document.getElementById(`i-screenshot-${short}-${i}-f`)
@@ -1448,7 +1448,7 @@ function submitNewApp() {
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
     //At least one screenshot
 
-    if (PLATFORMS.some(platformScreenshotExists)) {
+    if (!PLATFORMS.some(platformScreenshotExists)) {
         newAppValidationError("Provide at least one screenshot")
         return
     }
