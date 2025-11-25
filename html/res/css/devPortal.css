@@ -490,11 +490,11 @@ img.small {
   font-size: 1.1rem;
 }
 #profile-image {
-  background-image: url("/res/img/ptr_exploded.png");
+  background-image: url("/res/img/silkti-exploded.png");
   background-size: contain;
   background-repeat: no-repeat;
   /* background-size: 85%; */
-  height: 77vh;
+  height: 75vh;
 }
 #master-profile {
   overflow-x: hidden;
