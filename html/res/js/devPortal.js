@@ -1787,6 +1787,15 @@ function populateChangeLog_cb(releaseInfo) {
 
 }
 
+function downloadArchive() {
+    apiGET(config.endpoint.base + config.path.downloadArchive, downloadArchive_cb, null, null, 'manual');
+}
+
+function downloadArchive_cb(result) {
+    var rv = JSON.parse(result);
+    window.open(rv.url);
+}
+
 function friendlyTimeAgo(lc) {
     var then = new Date(lc);
     var now = new Date();

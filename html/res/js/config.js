@@ -11,7 +11,8 @@ config = {
         onboard: "/api/dp/onboard",
         wizardUpdateDevName: "/api/dp/wizard/rename/",
         wizardUpdateDevID: "/api/dp/wizard/reassign/",
-        wizardApp: "/api/dp/wizard/app/"
+        wizardApp: "/api/dp/wizard/app/",
+        downloadArchive: "/api/dp/archive/latest",
     },
     misc: {
         appstoreUrl: "https://apps.rebble.io/en_US/application/",
