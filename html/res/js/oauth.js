@@ -7,7 +7,6 @@ const authconfig = {
     redirectURI: "https://dev-portal.rebble.io/auth/complete",
     scopes: "pebble+profile"
 }
-
 const debugOauth = false;
 function debugLog(txt) {
     if (debugOauth) {

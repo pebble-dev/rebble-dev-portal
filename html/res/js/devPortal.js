@@ -6,6 +6,9 @@ notifications = {
 funMessageIntervalTimer = null;
 isWizard = false
 
+appExportWork = []
+exportZip = null
+
 const PLATFORMS = ["aplite","basalt","chalk","diorite", "emery", "flint"]
 const GREYSCALE_PLATFORMS = ["aplite", "diorite", "flint"]
 
@@ -123,7 +126,7 @@ function saveAndPublishAppEdits() {
     setTimeout(function() {
         apiPOST(config.endpoint.base + config.path.editApp + currentAppCache.id, JSON.stringify(appUpdateObj), saveAndPublishAppEdits_cb, saveAndPublishAppEdits_ecb)
     }, 500);
-    
+
 }
 function saveAndPublishAppEdits_cb(data) {
     try {
@@ -188,10 +191,10 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
         $(`#e-screenshot-${shortPlatform}-${index+1}-i`).attr("src", config.misc[assetCfgType] + screenshotID)
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-add`).addClass("hidden");
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete`).removeClass("hidden");
-        
+
         // Set the data attrs to the screenshot UUID for the delete button and modal delete button
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete-btn`).attr("data-uuid", screenshotID);
-        
+
     });
 
     for (var i = numScreenshots; i < 5; i++) {
@@ -286,7 +289,7 @@ function html_populateScreenshotTabList() {
         placeholder = getScreenshotPlaceholderImagePath(p)
 
         var exImgClass = (p == "chalk") ? "roundScr" : ""
-        
+
         for (var i = 1; i <= maxScreenshots; i++) {
             output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
                         <img id="e-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass} ${p}" src="${placeholder}" />
@@ -327,10 +330,10 @@ function getEditBannersForPlatform_cb(data, platform) {
         $(`#e-banner-${shortPlatform}-${index+1}-i`).attr("src", config.misc.bannerAsset + bannerID)
         $(`#e-banner-${shortPlatform}-${index+1}-btn-add`).addClass("hidden");
         $(`#e-banner-${shortPlatform}-${index+1}-btn-delete`).removeClass("hidden");
-        
+
         // Set the data attrs to the screenshot UUID for the delete button and modal delete button
         $(`#e-banner-${shortPlatform}-${index+1}-btn-delete-btn`).attr("data-uuid", bannerID);
-        
+
     });
 
     for (var i = numBanners; i < 3; i++) {
@@ -413,8 +416,8 @@ function html_populateBannerTabList() {
         pshort = p.substr(0,1)
         output += `<div class="tab-pane fade ${exClass}" id="e-banner-${p}" role="tabpanel" aria-labelledby="e-banner-${p}-tab">`
         output += `<div class="row">`
-        
-        for (var i = 1; i <= maxBanners; i++) {         
+
+        for (var i = 1; i <= maxBanners; i++) {
             output += `<div class="card noshadow border-lite ml-3 mt-3">
                         <img id="e-banner-${pshort}-${i}-i" class="card-img-top banner" src="/res/img/newappbanner.png">
                         <div class="card-body wide hidden" id="e-banner-${pshort}-${i}-btn-delete">
@@ -568,7 +571,7 @@ function updateDeveloperName_ecb(data) {
         showAlert("Name update failed", "Something went wrong. Please try again later.");
     }
     showAlert("Name update failed", data.error);
-} 
+}
 
 //  - Submit
 function getCurrentAppSumitStep() {
@@ -592,7 +595,7 @@ function validateThenProgressSubmission() {
     }
 
     if (step == 3) {
-        
+
     }
 
     progressAppSubmission()
@@ -657,7 +660,7 @@ function html_populateAddImageTabList() {
 
         var placeholder = getScreenshotPlaceholderImagePath(p)
         var exImgClass = (p == "chalk") ? "roundScr" : ""
-        
+
         for (var i = 1; i <= maxScreenshots; i++) {
             output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
                             <label for="i-screenshot-${pshort}-${i}-f">
@@ -928,7 +931,7 @@ function wizardDeleteAppBtnPush(id) {
         $('#wizardDeleteAppModal').modal("hide")
         showWarning("App Delete Successful", "Deleted app " + id);
     }, genericAPIErrorHandler)
-    
+
 }
 function wizardGetS3Info(id) {
     apiGET(config.endpoint.base + config.path.wizardApp + id, wizardGetS3Info_cb, genericAPIErrorHandler)
@@ -996,12 +999,12 @@ function tada() {
             disableForReducedMotion: true,
     });
 }
-    
+
 function hugeTada() {
     var end = Date.now() + (15 * 1000);
-    
+
     var colors = ['#ff4700', '#373a3c'];
-    
+
     (function frame() {
         confetti({
             particleCount: 2,
@@ -1017,13 +1020,13 @@ function hugeTada() {
             origin: { x: 1 },
             colors: colors
         });
-    
+
         if (Date.now() < end) {
             requestAnimationFrame(frame);
         }
     }());
 }
-    
+
 
 function showPage(pageID, isFreshLoad = false) {
 
@@ -1031,7 +1034,7 @@ function showPage(pageID, isFreshLoad = false) {
 
     $('.page').addClass("hidden");
 
-    var validPages = ["profile","home","submit","release","setup","recover-account", "wizard"];
+    var validPages = ["profile","home","submit","release","setup","recover-account", "wizard", "export"];
 
     //Any weird custom per-window log goes here
     if (pageID == "submit") {
@@ -1085,7 +1088,72 @@ function showPage(pageID, isFreshLoad = false) {
         $('#master-home').removeClass("hidden");
     }
 
-    
+}
+function showForumModal() {
+    newForumURLValidationError("")
+    $('#forum_set_url_inp').val("")
+    $('#forum_set_text').addClass("hidden")
+    $('#forum_update_text').addClass("hidden")
+
+    if (currentAppCache.discourse_url == null) {
+        $('#forum_set_text').removeClass("hidden")
+    } else {
+        $('.data-forum-url').attr("href", currentAppCache.discourse_url)
+        $('#forum_update_text').removeClass("hidden")
+    }
+
+    $('#forumSetModal').modal("show")
+}
+function setForumURL(new_url) {
+    $('#forumSetBtn').attr("disabled", true)
+    $('#forumSetBtn').text("Updating...")
+
+    newForumURLValidationError("")
+    new_url = new_url.toLowerCase().trim()
+    if (new_url.includes("?")) { new_url = new_url.split("?")[0] }
+
+    if (! new_url.startsWith(config.misc.forumBaseUrl)) {
+        newForumURLValidationError("The URL should start with " + config.misc.forumBaseUrl)
+        return
+    }
+
+    apiPOST(config.endpoint.base + config.path.forumUpdate.replace("{appID}", currentAppCache.id), JSON.stringify({
+       new_url: new_url
+    }), setForumURL_cb, setForumURL_ecb)
+}
+function setForumURL_cb(data) {
+    data = JSON.parse(data)
+    if (data.success) {
+        $('#forumSetBtn').text("Success!")
+        $('#forumSetBtn').addClass("green")
+        setTimeout(() => {
+            $('#forumSetModal').modal("hide")
+            $('#forumSetBtn').text("Link to this topic")
+            $('#forumSetBtn').removeClass("green")
+        }, 500)
+    } else {
+        newForumURLValidationError("Something went wrong")
+    }
+}
+function setForumURL_ecb(data) {
+    $('#forumSetBtn').attr("disabled", false)
+    $('#forumSetBtn').text("Link to this topic")
+
+    data = JSON.parse(data)
+    if (data.hasOwnProperty("message")) {
+        newForumURLValidationError(data.message)
+    } else {
+        newForumURLValidationError(data.error)
+    }
+}
+
+function newForumURLValidationError(error_text) {
+    $('#forum_set_url_error_msg').text(error_text)
+    if (error_text.length < 1) {
+        $('#forum_set_url_error_msg').addClass("hidden")
+    } else {
+        $('#forum_set_url_error_msg').removeClass("hidden")
+    }
 }
 
 function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
@@ -1167,7 +1235,7 @@ function stopFunMessageTimer() {
 function jumpToTopOfPage() {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-} 
+}
 function addNotification(title, text, cb) {
     var notifID = uuidv4()
 
@@ -1221,13 +1289,13 @@ function getUserInfo_cb(data) {
     if (data.hasOwnProperty("authName")) {
         $(".data-rebbleUsername").text(data.authName);
     }
-   
+
 
     $(".data-username").text(data.name);
     $(".data-developerID").text(data.id);
     $(".data-userID").text(data.userid);
     $("#userAppList").html("");
-    
+
     if (window.FS) {
         FS.identify(data.userid);
     }
@@ -1246,7 +1314,7 @@ function getUserInfo_cb(data) {
     } else {
         $('#appinfo-noapps').removeClass("hidden")
     }
-    
+
     if (data.needsSetup && ! ["/setup","/recover-account"].includes(page)) {
         showPage("setup");
         return
@@ -1277,6 +1345,7 @@ function getAppDetails(appID) {
 function getAppDetails_cb(data) {
     try {
         data = JSON.parse(data);
+        console.log(data)
     } catch (e) {
         genericAPIErrorHandler("Failed to parse getAppDetails_cb data")
     }
@@ -1308,7 +1377,16 @@ function getAppDetails_cb(data) {
     $('#appinfo-description').text(data.description);
     $('#appinfo-sourcelink').text(data.source);
     $('#appinfo-releasenotes').text(data.latest_release.release_notes);
-    
+
+    //Forum Connection
+    if (data.discourse_url) {
+        $('#forumConnectionStatusIcon').removeClass("fas fa-exclamation-triangle")
+        $('#forumConnectionStatusIcon').addClass("fab fa-discourse")
+    } else {
+        $('#forumConnectionStatusIcon').addClass("fas fa-exclamation-triangle")
+        $('#forumConnectionStatusIcon').removeClass("fab fa-discourse")
+    }
+
 
     //Icons
     $('.tinyicon').addClass("incompatible");
@@ -1396,7 +1474,7 @@ function genericAPIErrorHandler(data, statusCode, cbo) {
             showAlert("Error","Something went wrong")
         }
     }
-    
+
     if (typeof cbo == "object") {
         $(cbo).text("Something went wrong")
     }
@@ -1481,7 +1559,7 @@ function submitNewApp() {
     if ($('#i-ban-f').prop('files')[0] != undefined) {
         formData.append("banner", $('#i-ban-f').prop('files')[0]);
     }
-    
+
     var largeIcon = null;
     //Collect screenshots, store the first valid one for use as largeIcon if we're a watchface
     //if ($('#usePlatformSpecificScreenshots').prop("checked")) {
@@ -1490,8 +1568,8 @@ function submitNewApp() {
         ["basalt","aplite", "diorite", "flint", "chalk", "emery"].forEach(platform => {
             var short = platform.substr(0,1);
             for (var i = 1; i < 6; i ++) {
-                if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) { 
-                    formData.append(`screenshot-${platform}-${i}`, $(`#i-screenshot-${short}-${i}-f`).prop("files")[0]); 
+                if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) {
+                    formData.append(`screenshot-${platform}-${i}`, $(`#i-screenshot-${short}-${i}-f`).prop("files")[0]);
                     if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${short}-${i}-f`).prop("files")[0] }
                 }
             }
@@ -1635,6 +1713,162 @@ function syncSettings() {
     });
 }
 
+function exportProgress(id, state, text = "") {
+    if ($('#export_state_' + id).length == 0) {
+
+        out_html = '<li id="export_state_' + id + '">'
+        out_html += '<span id="export_state_icon_' + id + '">' + getExportStateIcon(state) + '</span>'
+        out_html += ' <span id="export_state_text_' + id + '">' + text + '</span>'
+        out_html += '</li>'
+
+        $('#export_progress').append(out_html)
+    } else {
+
+        $('#export_state_icon_' + id).html(getExportStateIcon(state))
+        if (text.length > 0) {
+            $('#export_state_text_' + id).text(text)
+        }
+
+    }
+}
+function getExportStateIcon(state) {
+    states = {
+        "working": '<i class="fas fa-circle-notch spin change"></i>',
+        "waiting": '<i class="fas fa-circle-notch grey-text"></i>',
+        "complete": '<i class="fas fa-check green-text"></i>',
+        "failed": '<i class="fas fa-times red-text"></i>',
+    }
+    return states[state]
+}
+function logAppstoreExportWork(work_id, is_complete = false) {
+    if (is_complete) {
+
+        //Reduce array by 1, doesn't actually matter which ID it is
+        appExportWork.pop()
+
+    } else {
+
+        appExportWork.push(work_id)
+
+    }
+
+    if (appExportWork.length < 1) {
+        exportProgress('zipup', "working", "Download .zip with all your data in it")
+        exportAllAppData_readyForDownload()
+    }
+}
+function exportAllAppData() {
+    $('#export-button').attr("disabled", true)
+    $('#export-button').addClass("disabled")
+    exportProgress("fetchapps","working","Fetch list of apps")
+    apiGET(config.endpoint.base + config.path.aboutme, (data => {
+        exportAllAppData_enumerateApps(JSON.parse(data))
+    }))
+    exportZip = new JSZip()
+}
+function exportAllAppData_enumerateApps(app_data) {
+    exportProgress("fetchapps","complete")
+    app_data.applications.forEach(app => { exportProgress(app.id, "waiting", "Fetch metadata for '" + app.title + "'")    })
+
+    app_data.applications.forEach(app => {
+
+        exportProgress(app.id, "working", "Fetch metadata for '" + app.title + "'")
+        // logAppstoreExportWork(app.id)
+
+        let app_folder = exportZip.folder(app.id)
+        apiGET(config.endpoint.base + config.path.appInfo + app.id, (data) => {
+
+            data = JSON.parse(data).data[0]
+            exportProgress(app.id, "working", "Download assets for '" + app.title + "'")
+
+            //Save raw app data
+            app_folder.file("application.json", JSON.stringify(data))
+
+            //Get banners
+            banner_folder = app_folder.folder("banners")
+            if (data.header_images.length > 0) {
+                data.header_images.forEach(header_image => {
+                    header_image_url = header_image.orig
+                    header_image_name = header_image_url.split("/").pop()
+                    export_SaveImageFromURL(banner_folder, header_image_name + ".png", header_image_name, header_image_url)
+                })
+            }
+
+             //Get icons
+            icons_folder = app_folder.folder("icons")
+            if (data.hasOwnProperty("icon_image")) {
+                Object.keys(data.icon_image).forEach(icon_size => {
+                    if (data.icon_image[icon_size].length > 0) {
+                        icon_image_url = data.icon_image[icon_size]
+                        icon_image_name = icon_image_url.split("/").pop() + "_" + icon_size
+                        export_SaveImageFromURL(icons_folder, icon_image_name + ".png", icon_image_name, icon_image_url)
+                    }
+                })
+            }
+
+            //Get pbw
+            exportProgress(app.id + "pbw", "working", "Download pbw for " + app.title)
+            export_SaveImageFromURL(app_folder, app.id + ".pbw", app.id + "pbw", data.latest_release.pbw_file, app.id + "pbw")
+
+            //Get screenshots
+            let compatibility_blacklist = ["android", "ios"]
+            let platforms_to_get_screenshots_for = []
+            Object.keys(data.compatibility).forEach(compat_key => {
+                if (! compatibility_blacklist.includes(compat_key)) {
+                    if (data.compatibility[compat_key].supported == true) {
+                        platforms_to_get_screenshots_for.push(compat_key)
+                    }
+                }
+            })
+            screenshots_folder = app_folder.folder("screenshots")
+            platforms_to_get_screenshots_for.forEach(platform => {
+                logAppstoreExportWork("getScreenshotsFor" + platform)
+                new_platform_folder = screenshots_folder.folder(platform)
+                apiGET(config.endpoint.base + config.path.appInfo + app.id + "?hardware=" + platform, (screenshots, platform_folder) => {
+                    screenshot_data = JSON.parse(screenshots).data[0].screenshot_images
+                    screenshot_data.forEach(screenshot_object => {
+
+                        screenshot_dimensions = Object.keys(screenshot_object)[0]
+                        screenshot_url = screenshot_object[screenshot_dimensions]
+                        screenshot_id = screenshot_url.split("/").pop()
+                        exportProgress(screenshot_id, "working", "Download screenshot " + screenshot_id)
+                        export_SaveImageFromURL(platform_folder, screenshot_id + "_" + screenshot_dimensions + ".png", screenshot_id, screenshot_url, screenshot_id)
+                    })
+                    logAppstoreExportWork("getScreenshotsFor" + platform, true)
+                }, () => {}, new_platform_folder)
+            })
+
+
+            exportProgress(app.id, "complete")
+
+        })
+    })
+
+
+}
+function exportAllAppData_readyForDownload() {
+    exportZip.generateAsync({type:"blob"})
+    .then(function(content) {
+        // see FileSaver.js
+        saveAs(content, "example.zip");
+        exportProgress('zipup', "complete")
+    });
+}
+function export_SaveImageFromURL(folder, filename, progress_id, image_url, id_to_mark_as_complete = "") {
+  logAppstoreExportWork(progress_id)
+  fetch(image_url)
+  .then(response => response.arrayBuffer()) // Get raw binary
+  .then(buffer => {
+    // Convert to Uint8Array (binary data)
+    const bytes = new Uint8Array(buffer);
+    folder.file(filename, bytes)
+    logAppstoreExportWork(progress_id, true)
+    if (id_to_mark_as_complete.length > 0) {
+        exportProgress(id_to_mark_as_complete, "complete")
+    }
+  })
+}
+
 // Helper functions
 
 function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disableContentTypeSet = false, percentageCallback) {
@@ -1685,7 +1919,7 @@ function apiPUT(rurl, putdata, callback, errorCallback, callBackObject, disableC
         console.log("Error Code: " + xmlHttp.status)
         if (xmlHttp.status == 429) {
             rateLimitErrorHandler()
-        } 
+        }
         if (errorCallback != null) {
             errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
        	}
@@ -1711,11 +1945,11 @@ function apiGET(url, callback, errorCallback, callBackObject) {
           callback(xmlHttp.responseText);
         }
         console.log(url);
-  
+
       } else if (xmlHttp.readyState == 4) {
         if (xmlHttp.status == 429) {
             rateLimitErrorHandler()
-        } 
+        }
         if (errorCallback != null) {
             errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
         }
@@ -1738,11 +1972,11 @@ function apiDELETE(url, callback, errorCallback, callBackObject) {
           callback(xmlHttp.responseText);
         }
         console.log(url);
-  
+
       } else if (xmlHttp.readyState == 4) {
         if (xmlHttp.status == 429) {
             rateLimitErrorHandler()
-        } 
+        }
         if (errorCallback != null) {
             errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
         }
@@ -1754,7 +1988,7 @@ function apiDELETE(url, callback, errorCallback, callBackObject) {
     }
     xmlHttp.send(null);
 }
-  
+
 function uuidv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
@@ -1778,7 +2012,7 @@ function populateChangeLog_cb(releaseInfo) {
         // We only want to notify existing users to new versions
         setSetting("changelog", release.version)
     }
-    
+
     if (lastSeenChangeLog < release.version) {
         addNotification(release.logTitle, release.logMessage, function() {
             setSetting("changelog", release.version)
@@ -1828,7 +2062,7 @@ function friendlyTimeAgo(lc) {
 function getScreenshotPlaceholderImagePath(platform) {
     // Accepts aplite, basalt etc as well as a, b etc
     platform = platform.substring(0,1).toLowerCase()
-    const default_path = "/res/img/screenshotSquare.png" 
+    const default_path = "/res/img/screenshotSquare.png"
     const non_defaults = {
         "c": "/res/img/screenshotRound.png",
         "e": "/res/img/screenshotEmery.png"
@@ -1885,15 +2119,16 @@ function initDevPortal() {
         setSetting("disableWarnBeforeScreenshotDelete", dwbsd)
     })
 
-    
+    $('.data-rbl-forum-link').attr("href", config.misc.forumBaseUrl)
+
     $(window).on('popstate', function() {
         // Back button pressed
         var page = window.location.pathname;
         showPage(page)
     });
-    
+
     populateChangeLog();
-    
+
     //Start up. Router and other special stuff runs on callback. Follow this.
     getUserInfo();
 

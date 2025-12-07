@@ -23,6 +23,8 @@
     </link>
     <script type="text/javascript" src="/res/js/config.js"></script>
     <script type="text/javascript" src="/res/js/oauth.js"></script>
+    <script type="text/javascript" src="/res/js/jszip.min.js"></script>
+    <script type="text/javascript" src="/res/js/FileSaver.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 
 
@@ -792,6 +794,44 @@
         </div>
     </div>
 
+    <div class="modal fade mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="forumSetModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content p-4">
+
+                <div class="modal-body">
+                    <div class="row ml-3 mt-3">
+                        <h3> <i class="fab fa-discourse text-coral"></i> Rebble Forum Connection </h3>
+                    </div>
+                    <div class="col-12 mt-3 hidden" id="forum_set_text">
+                        You can link your <span class="appOrFace lcase">app</span> to a thread on the <a target="_blank" class="data-rbl-forum-link" href="set_in_config">Rebble Forum</a>, so that <span class="appOrFace lcase">app</span> updates will be automatically posted to the associated thread.
+                        <br><br>
+                        Create a topic on the forum, then paste the URL below to link it.
+                    </div>
+                    <div class="col-12 mt-3 hidden" id="forum_update_text">
+                        Your <span class="appOrFace lcase">app</span> is currently linked to <a href="#" target="_blank" class="data-forum-url">this forum topic</a>.
+                        <br><br>
+                        You can provide an alternate topic URL below to change where release alerts are automatically posted.
+                    </div>
+
+                    <div class="col-12 mt-3 font-weight-light">
+                        <input class="simple" style="max-width: 500px;" placeholder="https://forum.rebble.io/t/my-amazing-watchface/123"
+                            id="forum_set_url_inp"></input>
+                        <div class="small ml-0 text-warning hidden" id="forum_set_url_error_msg"> An error occured </div>
+                        <button class="btn btn-md btn-primary"
+                            onclick="setForumURL($('#forum_set_url_inp').val())"
+                            id="forumSetBtn">Link to this topic</button>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer float-left noborder">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="container page hidden" id="master-home">
         <div class="row mt-5">
@@ -833,8 +873,9 @@
                                 <i class="fas fa-code-branch ml-4"></i> <span id="appinfo-latestrelease"> </span>
                                 <span id="appinfo-type"> <i class="far fa-clock ml-4"></i> Watchface </span>
                             </li>
-                            <li> <i id="statusIcon" class="far fa-check-circle"></i> <span id="statusText"> Published
-                                </span> </li>
+                            <li>
+                                <i id="statusIcon" class="far fa-check-circle"></i> <span id="statusText"> Published </span>
+                            </li>
                             <li class="mt-1">
                                 <img src="/res/img/icon_og.png" class="supports-aplite tinyicon"
                                     onclick="changePreviewWatchPlatform('aplite', this, true)" title="Aplite" />
@@ -857,6 +898,8 @@
                             class="fas fa-upload"></i> New Release </btn>
                     <btn class="btn btn-secondary noshadow appinfobtn" onclick="showAppListingEditor(this)"
                         id="editStoreListingBtn"> <i class="fas fa-align-justify"></i> Edit Store Listing </btn>
+                    <btn class="btn btn-secondary noshadow appinfobtn" onclick="showForumModal()"
+                        id="editForumConfigBtn"> <i id="forumConnectionStatusIcon" class="fab fa-discourse"></i> Forum Connection </btn>
                 </div>
 
                 <div class="row mt-5 ml-1 appinfoscreen animated fadeIn" id="appinfo-secondary">
@@ -1478,7 +1521,7 @@
 
                 </div>
                 <!-- <div class="ml-4 mt-5" id="navButtons">
-    
+
                 <button class="previousstep" onclick="reverseAppRelease()" id="btn_rel_prev"> <i class="fas fa-backward"></i> Back </button>
                 <button class="previousstep highlight" onclick="validateThenProgressRelease()" id="btn_rel_next"> Next <i class="fas fa-forward"></i> </button>
                 <br><br><br>
@@ -1526,7 +1569,7 @@
                 <div class="mt-2"><a class="mt-3" href="https://github.com/pebble-dev/rebble-dev-portal/issues/new"
                         target="_blank"> Report a dev portal issue <i class="fas fa-external-link-alt"></i> </a></div>
                 <div class="mt-2"><a class="mt-3" href="#" onclick="downloadArchive()"> Download a colossal archive of the whole
-                        entire app store! <i class="fas fa-regular fa-file-export"></i> </a></div>
+                        entire app store! <i class="fas fa-regular fa-cloud-download-alt"></i> </a></div>
                 <br>
                 <h4 class="mt-4"> Settings </h4>
                 <div class="">
