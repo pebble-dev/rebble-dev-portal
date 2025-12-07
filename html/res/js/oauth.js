@@ -1,10 +1,19 @@
+//const authconfig = {
+//    url: {
+//        auth: "https://auth.rebble.io/oauth/authorise",
+//        token: "https://auth.rebble.io/oauth/token",
+//    },
+//    clientID: "MCNV2xmEjwUGj7wJYNA2SaO8",
+//    redirectURI: "https://dev-portal.rebble.io/auth/complete",
+//    scopes: "pebble+profile"
+//}
 const authconfig = {
     url: {
-        auth: "https://auth.rebble.io/oauth/authorise",
-        token: "https://auth.rebble.io/oauth/token",
+	    auth: "http://127.0.0.1:5002/oauth/authorise",
+        token: "http://127.0.0.1:5002/oauth/token",
     },
     clientID: "MCNV2xmEjwUGj7wJYNA2SaO8",
-    redirectURI: "https://dev-portal.rebble.io/auth/complete",
+    redirectURI: "http://127.0.0.1:8082/auth/complete",
     scopes: "pebble+profile"
 }
 

@@ -1,7 +1,9 @@
 config = {
     endpoint: {
-        base: "https://appstore-api.rebble.io",
-        ssoLogout: "https://auth.rebble.io/auth/logout?from=dev_portal"
+	    base: "http://127.0.0.1:5000",
+        ssoLogout: "http://127.0.0.1:5002/auth/logout?from=dev_portal"
+    //    base: "https://appstore-api.rebble.io",
+    //    ssoLogout: "https://auth.rebble.io/auth/logout?from=dev_portal"
     },
     path: {
         aboutme: "/api/v0/users/me/developer",
@@ -13,13 +15,15 @@ config = {
         wizardUpdateDevID: "/api/dp/wizard/reassign/",
         wizardApp: "/api/dp/wizard/app/",
         downloadArchive: "/api/dp/archive/latest",
+        forumUpdate: '/api/dp/app/{appID}/forum'
     },
     misc: {
         appstoreUrl: "https://apps.rebble.io/en_US/application/",
-        assetBase: "https://assets2.rebble.io/",
-        screenshotAsset: "https://assets2.rebble.io/144x168/",
-        screenshotAssetRound: "https://assets2.rebble.io/180x180/",
-        bannerAsset: "https://assets2.rebble.io/720x320/",
-        developerUrl: "https://apps.rebble.io/en_US/developer/"
+        assetBase: "http://127.0.0.1:8124/",
+        screenshotAsset: "http://127.0.0.1:8124/144x168/",
+        screenshotAssetRound: "http://127.0.0.1:8124/180x180/",
+        bannerAsset: "http://127.0.0.1:8124/720x320/",
+        developerUrl: "https://apps.rebble.io/en_US/developer/",
+        forumBaseUrl: "https://forum.rebble.io"
     }
 }

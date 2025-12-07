@@ -3,6 +3,7 @@ body {
   --color-background: #f6faf8;
   --color-header: #373a3c;
   --color-rebble-orange: #ff4700;
+  --color-rebble-coral: #f9a285;
   --color-rebble-green: #6fa673;
   --color-rebble-amber: #FFB449;
   --color-rebble-red: #AF0000;
@@ -27,6 +28,9 @@ body {
 }
 .light-red {
   background-color: var(--color-rebble-red) !important;
+}
+.text-coral {
+  color: #f9a285;
 }
 
 
@@ -135,6 +139,14 @@ footer {
   margin-left: 10px;
 }
 
+.btn.small {
+  height:30px;
+  padding: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: 10px;
+  margin: 0px;
+}
 
 
 /* Login */
@@ -242,14 +254,17 @@ ul.nodec > li {
   margin: 0 auto;
 }
 .spinner-sm {
-  border: 4px solid black; 
-  border-top: 4px solid var(--color-rebble-orange); 
+  border: 4px solid black;
+  border-top: 4px solid var(--color-rebble-orange);
   border-radius: 50%;
   width: 20px;
   height: 20px;
   animation: spin 2s linear infinite;
   margin: 0 auto;
   margin-top: 10px;
+}
+.spin {
+  animation: spin 2s linear infinite;
 }
 
 @keyframes spin {
@@ -506,7 +521,7 @@ img.small {
 
 .modal-dialog .modal-content {
   border-radius: 10px !important;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 .lcase {
@@ -604,4 +619,7 @@ table.nodec td {
 }
 .btn-info {
   background-color: var(--color-rebble-blue) !important;
+}
+.modal-body .btn {
+  margin-left: 0px;
 }
