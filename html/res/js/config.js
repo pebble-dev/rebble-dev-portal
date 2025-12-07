@@ -17,10 +17,10 @@ config = {
     },
     misc: {
         appstoreUrl: "https://apps.rebble.io/en_US/application/",
-        assetBase: "http://127.0.0.1:8124/",
-        screenshotAsset: "http://127.0.0.1:8124/144x168/",
-        screenshotAssetRound: "http://127.0.0.1:8124/180x180/",
-        bannerAsset: "http://127.0.0.1:8124/720x320/",
+	assetBase: "https://assets2.rebble.io/",
+        screenshotAsset: "https://assets2.rebble.io/144x168/",
+        screenshotAssetRound: "https://assets2.rebble.io/180x180/",
+        bannerAsset: "https://assets2.rebble.io/720x320/",
         developerUrl: "https://apps.rebble.io/en_US/developer/",
         forumBaseUrl: "https://forum.rebble.io"
     }
