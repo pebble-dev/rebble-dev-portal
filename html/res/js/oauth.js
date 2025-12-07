@@ -9,11 +9,11 @@
 //}
 const authconfig = {
     url: {
-	    auth: "http://127.0.0.1:5002/oauth/authorise",
-        token: "http://127.0.0.1:5002/oauth/token",
+	auth: "https://auth.rebble.io/oauth/authorise",
+        token: "http://auth.rebble.io/oauth/token",
     },
     clientID: "MCNV2xmEjwUGj7wJYNA2SaO8",
-    redirectURI: "http://127.0.0.1:8082/auth/complete",
+    redirectURI: "https://dev-portal.rebble.io/auth/complete",
     scopes: "pebble+profile"
 }
 
