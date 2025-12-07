@@ -1,9 +1,7 @@
 config = {
     endpoint: {
-	    base: "http://127.0.0.1:5000",
-        ssoLogout: "http://127.0.0.1:5002/auth/logout?from=dev_portal"
-    //    base: "https://appstore-api.rebble.io",
-    //    ssoLogout: "https://auth.rebble.io/auth/logout?from=dev_portal"
+    	base: "https://appstore-api.rebble.io",
+    	ssoLogout: "https://auth.rebble.io/auth/logout?from=dev_portal"
     },
     path: {
         aboutme: "/api/v0/users/me/developer",
