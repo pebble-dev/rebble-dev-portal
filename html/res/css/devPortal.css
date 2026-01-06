@@ -559,11 +559,27 @@ img.small {
 }
 
 .chalk img {
-  margin-top: 61px;
+  margin-top: 60px;
+  margin-left: 24px;
+  width: 113px;
+  height: 113px;
+  border-radius: 55px;
+  object-fit: cover;
+}
+.image-container.emery img {
+  margin-top: 52px;
   margin-left: 26px;
   width: 110px;
-  height: 110px;
-  border-radius: 55px;
+  height: 128px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.image-container.aplite img,.image-container.diorite img, .image-container.flint img {
+  margin-top: 59px;
+  margin-left: 30px;
+  width: 102px;
+  height: 119px;
+  border-radius: 5px;
   object-fit: cover;
 }
 
