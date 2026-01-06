@@ -119,7 +119,6 @@ function showAppListingEditor(sender) {
     html_populateScreenshotTabList();
     html_populateBannerTabList();
 
-    console.log("======" + currentAppCache.type)
     if (currentAppCache.type == "watchface") {
         $('#e-icon-tab-container').addClass("hidden")
         $('#e-scr-tab').tab("show")
