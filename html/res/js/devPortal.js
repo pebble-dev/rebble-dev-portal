@@ -122,6 +122,7 @@ function showAppListingEditor(sender) {
     console.log("======" + currentAppCache.type)
     if (currentAppCache.type == "watchface") {
         $('#e-icon-tab-container').addClass("hidden")
+        $('#e-scr-tab').tab("show")
     } else {
         $('#e-icon-tab-container').removeClass("hidden")
     }
