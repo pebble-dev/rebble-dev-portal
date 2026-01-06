@@ -9,8 +9,53 @@ isWizard = false
 appExportWork = []
 exportZip = null
 
-const PLATFORMS = ["aplite","basalt","chalk","diorite", "emery", "flint"]
-const GREYSCALE_PLATFORMS = ["aplite", "diorite", "flint"]
+const PLATFORM_CONFIG = {
+    "aplite": {
+        "width": 144,
+        "height": 168,
+        "colour": false,
+        "round": false,
+        "background_path": "screenshot_slider_background_original.png"
+    },
+    "basalt": {
+        "width": 144,
+        "height": 168,
+        "colour": true,
+        "round": false,
+        "background_path": "screenshot_slider_background_time.png"
+    },
+    "chalk": {
+        "width": 180,
+        "height": 180,
+        "colour": true,
+        "round": true,
+        "background_path": "screenshot_slider_background_time_round_14.png"
+    },
+    "diorite": {
+        "width": 144,
+        "height": 168,
+        "colour": false,
+        "round": false,
+        "background_path": "screenshot_slider_background_pebble2.png"
+    },
+    "emery": {
+        "width": 200,
+        "height": 228,
+        "colour": true,
+        "round": false,
+        "background_path": "screenshot_slider_background_coretime2.svg"
+    },
+    "flint": {
+        "width": 144,
+        "height": 168,
+        "colour": false,
+        "round": false,
+        "background_path": "screenshot_slider_background_pebble2.png"
+    }
+}
+
+const PLATFORMS = Object.keys(PLATFORM_CONFIG)
+const GREYSCALE_PLATFORMS = Object.keys(PLATFORM_CONFIG).filter(x => PLATFORM_CONFIG[x].colour == false)
 
 
 // Worker functions
@@ -73,6 +118,13 @@ function showAppListingEditor(sender) {
     if ($('#editStoreListingBtn').hasClass("btn-active")) { returnToMainSecondaryWindow(); return; }
     html_populateScreenshotTabList();
     html_populateBannerTabList();
+
+    console.log("======" + currentAppCache.type)
+    if (currentAppCache.type == "watchface") {
+        $('#e-icon-tab-container').addClass("hidden")
+    } else {
+        $('#e-icon-tab-container').removeClass("hidden")
+    }
 
     $('.appinfoscreen').addClass("hidden");
     $('#appinfo-secondary-listingcontrol').removeClass("hidden");
@@ -184,7 +236,7 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
     currentAppCache.screenshotCache[platform] = data
     //Screenshots
     var shortPlatform = platform.substr(0,1)
-    var assetCfgType = (platform == "chalk") ? "screenshotAssetRound" : "screenshotAsset"
+    var assetCfgType = (PLATFORM_CONFIG[platform].round) ? "screenshotAssetRound" : "screenshotAsset"
     var numScreenshots = data.length
 
     data.forEach((screenshotID, index) => {
@@ -246,7 +298,7 @@ function deleteScreenshotFromButton(screenshotID, platform) {
     if (deleteImmediately) {
         deleteScreenshot(currentAppCache.id, platform, screenshotID)
     } else {
-        if (platform == "chalk") {
+        if (PLATFORM_CONFIG[platform].round) {
             $('#deleteScreenshotModalPreviewImg').attr("src", config.misc.screenshotAssetRound + screenshotID);
             $('#deleteScreenshotModalPreviewImg').addClass("roundScr");
         } else {
@@ -288,7 +340,7 @@ function html_populateScreenshotTabList() {
 
         placeholder = getScreenshotPlaceholderImagePath(p)
 
-        var exImgClass = (p == "chalk") ? "roundScr" : ""
+        var exImgClass = (PLATFORM_CONFIG[p].round) ? "roundScr" : ""
 
         for (var i = 1; i <= maxScreenshots; i++) {
             output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
@@ -659,7 +711,7 @@ function html_populateAddImageTabList() {
         output += `<div class="row">`
 
         var placeholder = getScreenshotPlaceholderImagePath(p)
-        var exImgClass = (p == "chalk") ? "roundScr" : ""
+        var exImgClass = (PLATFORM_CONFIG[p].round) ? "roundScr" : ""
 
         for (var i = 1; i <= maxScreenshots; i++) {
             output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
@@ -1160,15 +1212,10 @@ function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
     //Sender is passed by tinyicons, ignore if bandw
     if (sender != null && $(sender).hasClass("bandw")) { return }
 
-    var platformMap = {
-        "aplite": "screenshot_slider_background_original.png",
-        "basalt": "screenshot_slider_background_time.png",
-        "chalk": "screenshot_slider_background_time_round_14.png",
-        "diorite": "screenshot_slider_background_pebble2.png",
-        "flint": "screenshot_slider_background_pebble2.png",
-    }
-    if (platformMap.hasOwnProperty(platform)) {
-        $('#previewImageContainer').css("background-image", 'url("/res/img/' + platformMap[platform] + '")');
+    if (currentAppCache?.compatibility && currentAppCache.compatibility[platform].supported != true) { return }
+
+    if (PLATFORM_CONFIG[platform].background_path.length > 0) {
+        $('#previewImageContainer').css("background-image", 'url("/res/img/' + PLATFORM_CONFIG[platform].background_path + '")');
     }
 
     // forceFetch = true means we've been called by a user clicking the tiny icons.
@@ -1177,19 +1224,20 @@ function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
         apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/screenshots/" + platform, res => {
             res = JSON.parse(res);
             if (res.length > 0) {
-                var platform_src_path = (platform == "chalk") ? config.misc.screenshotAssetRound : config.misc.screenshotAsset
+                var platform_src_path = config.misc.assetBase + PLATFORM_CONFIG[platform].width + "x" + PLATFORM_CONFIG[platform].height + "/"
                 $('#appinfo-icon').prop("src", platform_src_path + res[0])
             }
         }, null);
     }
 
     $('#previewImageContainer').removeClass("bandw");
-    $('#previewImageContainer').removeClass("chalk");
-    if (platform == "chalk") {
+    PLATFORMS.forEach(p => { $('#previewImageContainer').removeClass(p); })
+    if (PLATFORM_CONFIG[platform].round) {
         $('#previewImageContainer').addClass("chalk");
     } else if (GREYSCALE_PLATFORMS.includes(platform)) {
         $('#previewImageContainer').addClass("bandw");
     }
+    $('#previewImageContainer').addClass(platform);
 }
 
 function updateFunMessage() {
@@ -1359,8 +1407,8 @@ function getAppDetails_cb(data) {
 
     debugLog(data)
 
-    var appinfostring = (data.category == "Faces") ? '<i class="far fa-clock ml-4"></i> Watchface' : '<i class="fas fa-mobile-alt ml-4"></i> Watchapp'
-    var appOrFace = (data.category == "Faces") ? "Watchface" : "App"
+    var appinfostring = (data.type == "watchface") ? '<i class="far fa-clock ml-4"></i> Watchface' : '<i class="fas fa-mobile-alt ml-4"></i> Watchapp'
+    var appOrFace = (data.type == "watchface") ? "Watchface" : "App"
     $('.appOrFace').text(appOrFace)
 
     //Data
@@ -1405,11 +1453,9 @@ function getAppDetails_cb(data) {
     // if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); $('.supports-emery').removeClass("hidden");  }
 
     // Preview icon
-    if (favouriteSupportedPlatform == "chalk") {
-        $('#appinfo-icon').attr("src",data.screenshot_images[0]["180x180"]);
-    } else {
-        $('#appinfo-icon').attr("src",data.screenshot_images[0]["144x168"]);
-    }
+    const platform_data = PLATFORM_CONFIG[favouriteSupportedPlatform]
+    const watch_dimensions_str = platform_data.width.toString() + "x" + platform_data.height.toString()
+    $('#appinfo-icon').attr("src",data.screenshot_images[0][watch_dimensions_str]);
 
     //Status
     if (data.visible) {
@@ -1562,18 +1608,17 @@ function submitNewApp() {
 
     var largeIcon = null;
     //Collect screenshots, store the first valid one for use as largeIcon if we're a watchface
-    //if ($('#usePlatformSpecificScreenshots').prop("checked")) {
 
-        //The weird order here is order of preference for largeIcon platform. Basalt looks best
-        ["basalt","aplite", "diorite", "flint", "chalk", "emery"].forEach(platform => {
-            var short = platform.substr(0,1);
-            for (var i = 1; i < 6; i ++) {
-                if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) {
-                    formData.append(`screenshot-${platform}-${i}`, $(`#i-screenshot-${short}-${i}-f`).prop("files")[0]);
-                    if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${short}-${i}-f`).prop("files")[0] }
-                }
+    //The weird order here is order of preference for largeIcon platform. Basalt looks best
+    ["basalt","aplite", "diorite", "flint", "chalk", "emery"].forEach(platform => {
+        var short = platform.substr(0,1);
+        for (var i = 1; i < 6; i ++) {
+            if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) {
+                formData.append(`screenshot-${platform}-${i}`, $(`#i-screenshot-${short}-${i}-f`).prop("files")[0]);
+                if (largeIcon === null && shinyNewApp.type == "watchface") { largeIcon = $(`#i-screenshot-${short}-${i}-f`).prop("files")[0] }
             }
-        })
+        }
+    })
 
     //append app-only fields
     if (shinyNewApp.type == "watchapp") {
