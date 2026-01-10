@@ -1165,6 +1165,8 @@ function setForumURL(new_url) {
     if (new_url.includes("?")) { new_url = new_url.split("?")[0] }
 
     if (! new_url.startsWith(config.misc.forumBaseUrl)) {
+        $('#forumSetBtn').attr("disabled", false)
+        $('#forumSetBtn').text("Link to this topic")
         newForumURLValidationError("The URL should start with " + config.misc.forumBaseUrl)
         return
     }
@@ -1198,7 +1200,6 @@ function setForumURL_ecb(data) {
         newForumURLValidationError(data.error)
     }
 }
-
 function newForumURLValidationError(error_text) {
     $('#forum_set_url_error_msg').text(error_text)
     if (error_text.length < 1) {
@@ -1206,6 +1207,15 @@ function newForumURLValidationError(error_text) {
     } else {
         $('#forum_set_url_error_msg').removeClass("hidden")
     }
+}
+
+function setAppVisibility(is_visible) {
+    apiPOST(config.endpoint.base + config.path.editApp + currentAppCache.id + "/visibility", JSON.stringify({
+        "visibility": (is_visible) ? "public" : "private"
+    }), () => {
+        $('#visibilityChangeModal').modal("hide");
+        getAppDetails(currentAppCache.id);
+    }, genericAPIErrorHandler)
 }
 
 function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
@@ -1413,6 +1423,7 @@ function getAppDetails_cb(data) {
 
     //Data
     $('#appinfo-appname').text(data.title);
+    $('.currentapp-name').text(data.title);
     $('#appinfo-hearts').text(data.hearts);
     $('#appinfo-latestrelease').text(data.latest_release.version);
     $('#appinfo-latestreleaselist').text(data.latest_release.version);
@@ -1420,6 +1431,8 @@ function getAppDetails_cb(data) {
     $('#appinfo-type').html(appinfostring)
     $('#appinfo-id').text(data.id);
     $('#appinfo-category').text(data.category);
+    $('#appinfo-visibility').text((data.visible) ? "Public" : "Private");
+    $('.currentapp-visibility').text((data.visible) ? "Public" : "Private");
     $('#appinfo-initaldate').text(data.created_at);
     $('#appinfo-latestdate').text(data.latest_release.published_date);
     $('#appinfo-description').text(data.description);
@@ -1464,7 +1477,7 @@ function getAppDetails_cb(data) {
         $('#statusIcon').addClass("far fa-check-circle");
         $('#statusIcon').css("color", "var(--color-rebble-green)")
     } else {
-        $('#statusText').text("Unpublished");
+        $('#statusText').text("Unlisted");
         $('#statusIcon').removeClass();
         $('#statusIcon').addClass("far fa-pause-circle");
         $('#statusIcon').css("color", "var(--color-rebble-amber)")

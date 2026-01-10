@@ -817,10 +817,40 @@
                     <div class="col-12 mt-3 font-weight-light">
                         <input class="simple" style="max-width: 500px;" placeholder="https://forum.rebble.io/t/my-amazing-watchface/123"
                             id="forum_set_url_inp"></input>
-                        <div class="small ml-0 text-warning hidden" id="forum_set_url_error_msg"> An error occured </div>
                         <button class="btn btn-md btn-primary"
                             onclick="setForumURL($('#forum_set_url_inp').val())"
                             id="forumSetBtn">Link to this topic</button>
+                        <div class="small ml-0 text-warning hidden" id="forum_set_url_error_msg"> An error occured </div>
+                    </div>
+                </div>
+
+
+                <div class="modal-footer float-left noborder">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade mt-5" data-backdrop="static" tabindex="-1" role="dialog" id="visibilityChangeModal"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content p-4">
+
+                <div class="modal-body">
+                    <div class="row ml-3 mt-3">
+                        <h3> <i class="fas fa-search"></i> <span class="appOrFace">Watchface</span> Visibility</h3>
+                    </div>
+
+                    <div class="ml-3 mt-3">
+                        You can change your <span class="appOrFace lcase">app</span> visibility here. <br> Private <span class="appOrFace lcase">app</span>s will be accessible via their store URLs, but will not show up in search results.
+                        <br><br>
+                        "<span class="currentapp-name">Your app</span>" currently has a visibility of: <i><span class="currentapp-visibility">Unknown</span></i>
+                        <div class="mt-2">
+                            <div class="btn btn-secondary" onclick="setAppVisibility(true)"><i class="far fa-check-circle"></i> Set to Public</div>
+                            <div class="mt-2 btn btn-secondary" onclick="setAppVisibility(false)"><i class="fas fa-mask"></i> Set to Private </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -908,6 +938,10 @@
                         <tr>
                             <td class="font-weight-bold"> Category: </td>
                             <td class="pl-3" id="appinfo-category"> </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold"> Visibility: </td>
+                            <td class="pl-3 clickable" onclick="$('#visibilityChangeModal').modal('show')"> <span id="appinfo-visibility"></span> <i class="fas fa-pencil-alt"></i> </td>
                         </tr>
                         <tr>
                             <td class="font-weight-bold"> ID: </td>
