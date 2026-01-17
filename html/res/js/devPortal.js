@@ -1211,7 +1211,7 @@ function newForumURLValidationError(error_text) {
 
 function setAppVisibility(is_visible) {
     apiPOST(config.endpoint.base + config.path.editApp + currentAppCache.id + "/visibility", JSON.stringify({
-        "visibility": (is_visible) ? "public" : "private"
+        "visibility": (is_visible) ? "public" : "unlisted"
     }), () => {
         $('#visibilityChangeModal').modal("hide");
         getAppDetails(currentAppCache.id);
@@ -1431,8 +1431,8 @@ function getAppDetails_cb(data) {
     $('#appinfo-type').html(appinfostring)
     $('#appinfo-id').text(data.id);
     $('#appinfo-category').text(data.category);
-    $('#appinfo-visibility').text((data.visible) ? "Public" : "Private");
-    $('.currentapp-visibility').text((data.visible) ? "Public" : "Private");
+    $('#appinfo-visibility').text((data.visible) ? "Public" : "Unlisted");
+    $('.currentapp-visibility').text((data.visible) ? "Public" : "Unlisted");
     $('#appinfo-initaldate').text(data.created_at);
     $('#appinfo-latestdate').text(data.latest_release.published_date);
     $('#appinfo-description').text(data.description);
@@ -1650,6 +1650,10 @@ function submitNewApp() {
     }
     if ($('#i-source').val() != null && $('#i-source').val() != "") {
         formData.append("source", $('#i-source').val());
+    }
+    if ($('#i-hiddenapp').prop("checked")) {
+        //If not select, we'll not provide a value so the API can do whatever might be default
+        formData.append("visible", "false")
     }
 
 
@@ -2183,6 +2187,22 @@ function initDevPortal() {
         // Back button pressed
         var page = window.location.pathname;
         showPage(page)
+    });
+
+    $('#i-hiddenapp').on('change', function () {
+        $('#hide-app-img').attr("src", "./res/img/app-hide-middle.svg")
+
+        if ($(this).is(':checked')) {
+            setTimeout(() => {
+                $('#hide-app-img').attr("src", "./res/img/app-hidden.svg")
+                $('#hide-app-img').addClass("hidden-pad")
+            }, 200)
+        } else {
+            setTimeout(() => {
+                $('#hide-app-img').attr("src", "./res/img/app-unhidden.svg")
+                $('#hide-app-img').removeClass("hidden-pad")
+            }, 200)
+        }
     });
 
     populateChangeLog();
