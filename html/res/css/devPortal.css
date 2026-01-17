@@ -110,6 +110,9 @@ input.previousstep {
 .hidden, .hiddenSearchResult {
   display: none !important;
 }
+.hidden-pad {
+  padding-top: 3px;
+}
 
 .noborder, .noborder td {
   border: none !important;
@@ -446,6 +449,13 @@ input[type="checkbox"] {
 .largeText {
   font-size: 3rem;
   color: var(--color-rebble-orange)
+}
+.tinyText {
+  font-size: 10px;
+}
+.dib {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .r2 {

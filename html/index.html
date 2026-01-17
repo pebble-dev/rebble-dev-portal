@@ -525,6 +525,32 @@
         </div>
     </div>
 
+    <div class="modal fade mt-5 uploader" tabindex="-1" role="dialog" id="hiddenExplainModel" aria-hidden="true">
+        <div class="modal-dialog modal-lg uploader">
+            <div class="modal-content p-4 uploader">
+
+                <div>
+                    <div class="row ml-3 mt-3">
+                        <h1 class="lite"> <span class="newappOrFace">App</span> Visibility </h1>
+                    </div>
+                    <div class="ml-3" style="font-size: 1rem;">
+                        If you select the option to hide your <span class="newappOrFace lcase">app</span>, it will be uploaded to the Rebble appstore, but will only be accessible by its store URL. <br>
+                        It won't show up in any searches, and it won't be announced on <a target="_blank" href="https://rebble.io/discord">Discord</a> or the <a target="_blank" href="https://forum.rebble.io">Rebble Forum</a>. <br>
+                        <br>
+                        This feature is useful for uploading early versions of your <span class="newappOrFace lcase">app</span> you don't want to be public.
+                        <br>
+                        <br>
+                        You can easily change your <span class="newappOrFace lcase">app</span>'s visibility at any point in the future.
+                    </div>
+                    <div class="modal-footer float-left noborder">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade mt-5" tabindex="-1" role="dialog" id="confirmDeleteScreenshotModal" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content p-4">
@@ -843,12 +869,12 @@
                     </div>
 
                     <div class="ml-3 mt-3">
-                        You can change your <span class="appOrFace lcase">app</span> visibility here. <br> Private <span class="appOrFace lcase">app</span>s will be accessible via their store URLs, but will not show up in search results.
+                        You can change your <span class="appOrFace lcase">app</span> visibility here. <br> Unlisted <span class="appOrFace lcase">app</span>s will be accessible via their store URLs, but will not show up in search results.
                         <br><br>
                         "<span class="currentapp-name">Your app</span>" currently has a visibility of: <i><span class="currentapp-visibility">Unknown</span></i>
                         <div class="mt-2">
                             <div class="btn btn-secondary" onclick="setAppVisibility(true)"><i class="far fa-check-circle"></i> Set to Public</div>
-                            <div class="mt-2 btn btn-secondary" onclick="setAppVisibility(false)"><i class="fas fa-mask"></i> Set to Private </div>
+                            <div class="mt-2 btn btn-secondary" onclick="setAppVisibility(false)"><i class="fas fa-mask"></i> Set to Unlisted </div>
                         </div>
 
                     </div>
@@ -1448,6 +1474,13 @@
                             <br>
                             <div class="small">Is your app open source? If so pop the repo link in below!</div>
                             <input class="niceInput mt-2" name="source" id="i-source"></input>
+                        </div>
+
+                        <div class="mt-4 ml-2" id="keep-app-hidden">
+                            Visibility
+                            <div class="ml-4 mt-2">
+                                <input id="i-hiddenapp" type="checkbox" style="line-height: 20px" class="clickable"> <img style="width: 25px !important" id="hide-app-img" class="small" src="./res/img/app-unhidden.svg" /> Hide my <span class="newappOrFace lcase">app</span></input> <i class="far fa-question-circle clickable" onclick="$('#hiddenExplainModel').modal('show')"></i>
+                            </div>
                         </div>
                     </div>
 
