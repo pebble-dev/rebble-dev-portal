@@ -51,6 +51,13 @@ const PLATFORM_CONFIG = {
         "colour": false,
         "round": false,
         "background_path": "screenshot_slider_background_pebble2.png"
+    },
+    "gabbro": {
+        "width": 260,
+        "height": 260,
+        "colour": true,
+        "round": true,
+        "background_path": "screenshot_slider_background_time_round_14.png"
     }
 }
 
@@ -1623,7 +1630,7 @@ function submitNewApp() {
     //Collect screenshots, store the first valid one for use as largeIcon if we're a watchface
 
     //The weird order here is order of preference for largeIcon platform. Basalt looks best
-    ["basalt","aplite", "diorite", "flint", "chalk", "emery"].forEach(platform => {
+    ["basalt","aplite", "diorite", "flint", "chalk", "gabbro", "emery"].forEach(platform => {
         var short = platform.substr(0,1);
         for (var i = 1; i < 6; i ++) {
             if ($(`#i-screenshot-${short}-${i}-f`).prop("files")[0] != undefined) {
@@ -2127,7 +2134,8 @@ function getScreenshotPlaceholderImagePath(platform) {
     const default_path = "/res/img/screenshotSquare.png"
     const non_defaults = {
         "c": "/res/img/screenshotRound.png",
-        "e": "/res/img/screenshotEmery.png"
+        "e": "/res/img/screenshotEmery.png",
+        "g": "/res/img/screenshotGabbro.png",
     }
     let placeholder = (non_defaults.hasOwnProperty(platform)) ? non_defaults[platform] : default_path
     return placeholder
