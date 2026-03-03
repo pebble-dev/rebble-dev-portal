@@ -349,6 +349,12 @@ input[type="checkbox"] {
   width: 180px;
   height: 232px;
 }
+.img-card.gabbro {
+  max-width: 180px;
+  max-height: 232px;
+  width: 180px;
+  height: 232px;
+}
 .img-card.emery {
   max-width: 200px;
   max-height: 280px;
@@ -371,6 +377,14 @@ input[type="checkbox"] {
   max-width: 100%;
 }
 .card-img-top.chalk {
+  width: 180px;
+  height: 180px;
+  margin-top: 0px;
+  margin-left: 0px;
+  border-radius: 180px;
+  object-fit: cover;
+}
+.card-img-top.gabbro {
   width: 180px;
   height: 180px;
   margin-top: 0px;
@@ -590,6 +604,14 @@ img.small {
   width: 102px;
   height: 119px;
   border-radius: 5px;
+  object-fit: cover;
+}
+.image-container.gabbro img {
+  margin-top: 60px;
+  margin-left: 24px;
+  width: 113px;
+  height: 113px;
+  border-radius: 55px;
   object-fit: cover;
 }
 
