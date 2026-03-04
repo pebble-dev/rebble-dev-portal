@@ -205,7 +205,7 @@ footer {
   height: 40px;
 }
 .tinyicon {
-  width: 25px;
+  width: 30px;
   height: 30px;
 }
 
@@ -607,11 +607,11 @@ img.small {
   object-fit: cover;
 }
 .image-container.gabbro img {
-  margin-top: 60px;
-  margin-left: 24px;
-  width: 113px;
-  height: 113px;
-  border-radius: 55px;
+  margin-top: 51px;
+  margin-left: 15px;
+  width: 132px;
+  height: 132px;
+  border-radius: 75px;
   object-fit: cover;
 }
 

@@ -57,7 +57,7 @@ const PLATFORM_CONFIG = {
         "height": 260,
         "colour": true,
         "round": true,
-        "background_path": "screenshot_slider_background_time_round_14.png"
+        "background_path": "screenshot_slider_background_time_round_2_20.png"
     }
 }
 
@@ -1256,7 +1256,11 @@ function changePreviewWatchPlatform(platform, sender, forceFetch = false) {
     $('#previewImageContainer').removeClass("bandw");
     PLATFORMS.forEach(p => { $('#previewImageContainer').removeClass(p); })
     if (PLATFORM_CONFIG[platform].round) {
-        $('#previewImageContainer').addClass("chalk");
+        if (platform.toLowerCase() == "gabbro") {
+            $('#previewImageContainer').addClass("gabbro");
+        } else {
+            $('#previewImageContainer').addClass("chalk");
+        }
     } else if (GREYSCALE_PLATFORMS.includes(platform)) {
         $('#previewImageContainer').addClass("bandw");
     }
@@ -1469,6 +1473,7 @@ function getAppDetails_cb(data) {
     if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("incompatible"); $('.supports-emery').attr("title", "Supports Emery"); favouriteSupportedPlatform = "emery" }
     if (data.compatibility.aplite.supported) { $('.supports-aplite').removeClass("incompatible"); $('.supports-aplite').attr("title", "Supports Aplite"); favouriteSupportedPlatform = "aplite" }
     if (data.compatibility.chalk.supported) { $('.supports-chalk').removeClass("incompatible"); $('.supports-chalk').attr("title", "Supports Chalk"); favouriteSupportedPlatform = "chalk" }
+    if (data.compatibility.gabbro.supported) { $('.supports-gabbro').removeClass("incompatible"); $('.supports-gabbro').attr("title", "Supports Gabbro"); favouriteSupportedPlatform = "gabbro" }
     if (data.compatibility.diorite.supported) { $('.supports-diorite').removeClass("incompatible"); $('.supports-diorite').attr("title", "Supports Diorite"); favouriteSupportedPlatform = "diorite" }
     if (data.compatibility.flint.supported) { $('.supports-flint').removeClass("incompatible"); $('.supports-flint').attr("title", "Supports Flint"); favouriteSupportedPlatform = "flint" }
     if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("incompatible"); $('.supports-basalt').attr("title", "Supports Basalt"); favouriteSupportedPlatform = "basalt" }
