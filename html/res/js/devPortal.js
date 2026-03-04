@@ -231,6 +231,12 @@ function returnToMainSecondaryWindow() {
     $('.appinfobtn').removeClass("btn-active");
 }
 
+function getEditResourcesForPlatform(platform) {
+    getEditBannersForPlatform(platform)
+    getEditBannersForPlatform(platform)
+    $(`#e-banner-${platform}-tab`).tab("show")
+    $(`#e-scr-${platform}-tab`).tab("show")
+}
 
 function getEditScreenshotsForPlatform(platform) {
     apiGET(config.endpoint.base + config.path.editApp + currentAppCache.id + "/screenshots/" + platform, getEditScreenshotsForPlatform_cb, genericAPIErrorHandler, platform);
