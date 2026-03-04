@@ -1478,8 +1478,7 @@ function getAppDetails_cb(data) {
     if (data.compatibility.flint.supported) { $('.supports-flint').removeClass("incompatible"); $('.supports-flint').attr("title", "Supports Flint"); favouriteSupportedPlatform = "flint" }
     if (data.compatibility.basalt.supported) { $('.supports-basalt').removeClass("incompatible"); $('.supports-basalt').attr("title", "Supports Basalt"); favouriteSupportedPlatform = "basalt" }
 
-
-    changePreviewWatchPlatform(favouriteSupportedPlatform)
+    changePreviewWatchPlatform(favouriteSupportedPlatform, null, true)
 
     // if (data.compatibility.emery.supported) { $('.supports-emery').removeClass("bandw"); $('.supports-emery').removeClass("hidden");  }
 
