@@ -525,6 +525,74 @@
         </div>
     </div>
 
+    <div class="modal fade mt-5 uploader" tabindex="-1" role="dialog" id="platformExplainModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg uploader">
+            <div class="modal-content p-4 uploader">
+
+                <div>
+                    <div class="ml-3" style="font-size: 1rem;">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item dir">
+                                <img class="platform-explain-img" src="/res/img/family-aplite.png"></img>
+                                <p class="ml-5">
+                                    <b>A</b>plite covers the OG Pebble and the Pebble Steel. <br>
+                                    Screenshots should be 144x168.
+                                </p>
+                            </li>
+                            <li class="list-group-item dir">
+                                <img class="platform-explain-img" src="/res/img/family-basalt.png"></img>
+                                <p class="ml-5">
+                                    <b>B</b>asalt covers the Pebble Time and Pebble Time Steel. <br>
+                                    Screenshots should be 144x168.
+                                </p>
+                            </li>
+                            <li class="list-group-item dir">
+                                <img class="platform-explain-img" src="/res/img/family-chalk.png"></img>
+                                <p class="ml-5">
+                                    <b>C</b>halk covers the Pebble Time Round. <br>
+                                    Screenshots should be 180x180.
+                                </p>
+                            </li>
+                            <li class="list-group-item dir">
+                                <img class="platform-explain-img" src="/res/img/family-diorite.png"></img>
+                                <p class="ml-5">
+                                    <b>D</b>iorite is the Pebble 2. <br>
+                                    Screenshots should be 144x168.
+                                </p>
+                            </li>
+                            <li class="list-group-item dir">
+                                <img class="platform-explain-img" src="/res/img/family-emery.png"></img>
+                                <p class="ml-5">
+                                    <b>E</b>mery is the Pebble Time 2. <br>
+                                    Screenshots should be 200x228.
+                                </p>
+                            </li>
+                            <li class="list-group-item dir">
+                                <img class="platform-explain-img" src="/res/img/family-flint.png"></img>
+                                <p class="ml-5">
+                                    <b>F</b>lint is the Core 2 Duo. <br>
+                                    Screenshots should be 144x168.
+                                </p>
+                            </li>
+                            <li class="list-group-item dir">
+                                <img class="platform-explain-img" src="/res/img/family-gabbro.png"></img>
+                                <p class="ml-5">
+                                    <b>G</b>abbro covers the Pebble Round 2. <br>
+                                    Screenshots should be 260x260.
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer float-left noborder">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <br><br><br><br><br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade mt-5 uploader" tabindex="-1" role="dialog" id="hiddenExplainModel" aria-hidden="true">
         <div class="modal-dialog modal-lg uploader">
             <div class="modal-content p-4 uploader">
@@ -933,19 +1001,19 @@
                                 <i id="statusIcon" class="far fa-check-circle"></i> <span id="statusText"> Published </span>
                             </li>
                             <li class="mt-1">
-                                <img src="/res/img/platform_aplite.png" class="supports-aplite tinyicon"
+                                <img src="/res/img/platform_aplite.png" class="supports-aplite tinyicon clickable"
                                     onclick="changePreviewWatchPlatform('aplite', this, true)" title="Aplite" />
-                                <img src="/res/img/platform_basalt.png" class="supports-basalt tinyicon"
+                                <img src="/res/img/platform_basalt.png" class="supports-basalt tinyicon clickable"
                                     onclick="changePreviewWatchPlatform('basalt', this, true)" title="Basalt" />
-                                <img src="/res/img/platform_chalk.png" class="supports-chalk tinyicon"
+                                <img src="/res/img/platform_chalk.png" class="supports-chalk tinyicon clickable"
                                     onclick="changePreviewWatchPlatform('chalk', this, true)" title="Chalk" />
-                                <img src="/res/img/platform_diorite.png" class="supports-diorite tinyicon"
+                                <img src="/res/img/platform_diorite.png" class="supports-diorite tinyicon clickable"
                                     onclick="changePreviewWatchPlatform('diorite', this, true)" title="Diorite" />
-                                <img src="/res/img/platform_emery.png" class="supports-emery tinyicon"
+                                <img src="/res/img/platform_emery.png" class="supports-emery tinyicon clickable"
                                     onclick="changePreviewWatchPlatform('emery', this, true)" title="Emery"/>
-                                <img src="/res/img/platform_flint.png" class="supports-flint tinyicon"
+                                <img src="/res/img/platform_flint.png" class="supports-flint tinyicon clickable"
                                     onclick="changePreviewWatchPlatform('flint', this, true)" title="Flint" />
-                                    <img src="/res/img/platform_gabbro.png" class="supports-gabbro tinyicon"
+                                <img src="/res/img/platform_gabbro.png" class="supports-gabbro tinyicon clickable"
                                     onclick="changePreviewWatchPlatform('gabbro', this, true)" title="Gabbro" />
                             </li>
                         </ul>
@@ -1434,6 +1502,7 @@
                                     <a class="nav-link" id="scr-gabbro-tab" data-toggle="tab" href="#scr-gabbro"
                                         role="tab" aria-controls="scr-gabbro" aria-selected="false">Gabbro</a>
                                 </li>
+                                <li><i class="far fa-question-circle clickable" style="margin-top: 11px; margin-left: 10px;" onclick="$('#platformExplainModal').modal('show')"></i></li>
                             </ul>
                             <div class="tab-content" id="submitScreenshotTabContent">
                                 <!-- rendered by html_populateAddImageTabList -->
@@ -1446,7 +1515,8 @@
                             <div class="small">
                                 This is the banner that is displayed above your <span class="apptype lcase">app</span>
                                 screenshots in the store.<br>
-                                It is required for apps, and optional for watchfaces.
+                                It is required for apps, and optional for watchfaces.<br>
+                                You can specify per-platform banners after the inital upload.
                             </div>
                             <div class="image-upload br-sm border-lite curve">
                                 <label for="i-ban-f" class="m-0">

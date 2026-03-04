@@ -671,3 +671,12 @@ table.nodec td {
 .modal-body .btn {
   margin-left: 0px;
 }
+
+.platform-explain-img {
+  height: 200px !important;
+  width: auto !important;
+}
+
+.dir {
+  display: inline ruby;
+}
