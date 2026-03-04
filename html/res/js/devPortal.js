@@ -472,7 +472,7 @@ function html_populateBannerTabList() {
     var exClass = "show active"
 
     PLATFORMS.forEach(p => {
-        pshort = p.substr(0,1)
+        pshort = p.substring(0,1)
         output += `<div class="tab-pane fade ${exClass}" id="e-banner-${p}" role="tabpanel" aria-labelledby="e-banner-${p}-tab">`
         output += `<div class="row">`
 
@@ -1671,7 +1671,7 @@ function submitNewApp() {
 
 }
 function submitNewApp_cb(data) {
-    stopFunMessageTimer();
+    stopFunMessageTimer()
     $('.submitModal-section').addClass("hidden");
     $('#submitModal-success').removeClass("hidden");
     data = JSON.parse(data);
