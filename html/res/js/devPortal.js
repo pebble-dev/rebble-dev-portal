@@ -233,7 +233,7 @@ function returnToMainSecondaryWindow() {
 
 function getEditResourcesForPlatform(platform) {
     getEditBannersForPlatform(platform)
-    getEditBannersForPlatform(platform)
+    getEditScreenshotsForPlatform(platform)
     $(`#e-banner-${platform}-tab`).tab("show")
     $(`#e-scr-${platform}-tab`).tab("show")
 }
