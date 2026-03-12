@@ -671,3 +671,20 @@ table.nodec td {
 .modal-body .btn {
   margin-left: 0px;
 }
+
+.img-edit-btn-container {
+  text-align: center;
+}
+.img-edit-btn-container button {
+  border: none;
+  background-color: transparent;
+}
+
+.screenshot-holder:first-child .btn-move-up, .last-down-btn {
+  color: #DDD;
+  cursor: not-allowed !important;
+}
+
+.btn-move-up:focus, .btn-move-down:focus {
+  outline:0;
+}
