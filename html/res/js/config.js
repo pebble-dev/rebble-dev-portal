@@ -13,7 +13,8 @@ config = {
         wizardUpdateDevID: "/api/dp/wizard/reassign/",
         wizardApp: "/api/dp/wizard/app/",
         downloadArchive: "/api/dp/archive/latest",
-        forumUpdate: '/api/dp/app/{appID}/forum'
+        forumUpdate: '/api/dp/app/{appID}/forum',
+        reorderScreenshots: '/api/dp/app/{appID}/screenshots/{platform}/set_order'
     },
     misc: {
         appstoreUrl: "https://apps.rebble.io/en_US/application/",
