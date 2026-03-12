@@ -9,6 +9,8 @@ isWizard = false
 appExportWork = []
 exportZip = null
 
+const MAX_SCREENSHOTS = 5
+
 const PLATFORM_CONFIG = {
     "aplite": {
         "width": 144,
@@ -254,7 +256,9 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
 
     data.forEach((screenshotID, index) => {
         $(`#e-screenshot-${shortPlatform}-${index+1}-i`).attr("src", config.misc[assetCfgType] + screenshotID)
+        $(`#e-screenshot-${shortPlatform}-${index+1}-i`).data("uuid", screenshotID)
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-add`).addClass("hidden");
+
         $(`#e-screenshot-${shortPlatform}-${index+1}-btn-delete`).removeClass("hidden");
 
         // Set the data attrs to the screenshot UUID for the delete button and modal delete button
@@ -265,9 +269,14 @@ function getEditScreenshotsForPlatform_cb(data, platform) {
     for (var i = numScreenshots; i < 5; i++) {
         var srclink = getScreenshotPlaceholderImagePath(platform)
         $(`#e-screenshot-${shortPlatform}-${i+1}-i`).attr("src", srclink);
+        $(`#e-screenshot-${shortPlatform}-${i+1}-i`).data("scr-id", "");
         $(`#e-screenshot-${shortPlatform}-${i+1}-btn-add`).removeClass("hidden");
         $(`#e-screenshot-${shortPlatform}-${i+1}-btn-delete`).addClass("hidden");
     }
+
+    $('.last-down-btn').removeClass("last-down-btn")
+    $(`#e-screenshot-${shortPlatform}-${numScreenshots}-btn-move-down`).addClass("last-down-btn")
+    $('.btn-move-scr').attr("disabled", false)
 
 }
 function newScreenshotForUpload(imgHolderID, file, platform) {
@@ -340,9 +349,52 @@ function deleteScreenshot_ecb(data) {
     }
     jumpToTopOfPage();
 }
+function moveScreenshot(platform, index, direction) {
+    if (! ["up", "down"].includes(direction)) { throw Error("Invalid direction") }
+    if (index < 1 || index > MAX_SCREENSHOTS) { throw Error("Invalid index") }
+
+    //Screenshots are 1 based, array is 0 based
+    index -= 1
+
+    let screenshot_order = getCurrentScreenshotOrder(platform)
+
+    if (direction == "up" && index < 1) { return }
+    if (direction == "down" && index > screenshot_order.length - 2) { return }
+
+    if (direction == "down") {
+        displaced = screenshot_order[index]
+        screenshot_order[index] = screenshot_order[index + 1]
+        screenshot_order[index+1] = displaced
+    } else {
+        displaced = screenshot_order[index]
+        screenshot_order[index] = screenshot_order[index-1]
+        screenshot_order[index-1] = displaced
+    }
+
+    let payload = JSON.stringify({
+        "order": screenshot_order
+    })
+    $('.btn-move-scr').attr("disabled", true)
+    apiPOST(config.endpoint.base + config.path.reorderScreenshots.replace("{appID}", currentAppCache.id).replace("{platform}", platform), payload, (data => {
+        getEditScreenshotsForPlatform(platform)
+    }), genericAPIErrorHandler)
+
+}
+function getCurrentScreenshotOrder(platform) {
+    let platform_short = platform.toLowerCase().substring(0,1)
+    let out = []
+    for (let i = 1; i <= MAX_SCREENSHOTS; i++) {
+        let uuid = $(`#e-screenshot-${platform_short}-${i}-i`).data("uuid")
+        if (uuid) {
+            out.push(uuid)
+        } else {
+            break
+        }
+    }
+    return out
+}
 function html_populateScreenshotTabList() {
     //Create the HTML for the edit dialogue screenshot list
-    var maxScreenshots = 5
     var output = ""
     var exClass = "show active"
 
@@ -355,15 +407,17 @@ function html_populateScreenshotTabList() {
 
         var exImgClass = (PLATFORM_CONFIG[p].round) ? "roundScr" : ""
 
-        for (var i = 1; i <= maxScreenshots; i++) {
-            output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
+        for (var i = 1; i <= MAX_SCREENSHOTS; i++) {
+            output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3 screenshot-holder">
                         <img id="e-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass} ${p}" src="${placeholder}" />
-                        <div class="card-body wide hidden" id="e-screenshot-${pshort}-${i}-btn-delete">
-                            <button class="btn btn-danger" id="e-screenshot-${pshort}-${i}-btn-delete-btn" onclick="deleteScreenshotFromButton(this.getAttribute('data-uuid'), '${p}')">Delete</button>
+                        <div class="img-edit-btn-container" id="e-screenshot-${pshort}-${i}-btn-delete">
+                            <button class="btn-move-scr btn-move-up" id="e-screenshot-${pshort}-${i}-btn-move-up" onclick="moveScreenshot('${p}', ${i}, 'up')"> <i class="fas fa-chevron-left"></i> </button>
+                            <button class="red-text" id="e-screenshot-${pshort}-${i}-btn-delete-btn" onclick="deleteScreenshotFromButton(this.getAttribute('data-uuid'), '${p}')"> <i class="fas fa-trash"></i> </button>
+                            <button class="btn-move-scr btn-move-down" id="e-screenshot-${pshort}-${i}-btn-move-down" onclick="moveScreenshot('${p}', ${i}, 'down')"> <i class="fas fa-chevron-right"></i> </button>
                         </div>
                         <label for="e-screenshot-${pshort}-${i}-f" class="mt-1">
-                            <div class="card-body wide" id="e-screenshot-${pshort}-${i}-btn-add">
-                                <a  class="btn btn-primary">Add</a>
+                            <div class="img-edit-btn-container" id="e-screenshot-${pshort}-${i}-btn-add">
+                                <a class=""> <i class="fas fa-plus-circle"></i> </a>
                             </div>
                         </label>
                         <input id="e-screenshot-${pshort}-${i}-f" type="file" class="hidden" onchange="newScreenshotForUpload('e-screenshot-${pshort}-${i}-i', this.files[0], '${p}')">
@@ -714,7 +768,7 @@ function submitRemoveImage(imagePrefix) {
 }
 function html_populateAddImageTabList() {
     //Create the HTML for the add images screenshot list
-    var maxScreenshots = 5
+    var MAX_SCREENSHOTS = 5
     var output = ""
     var exClass = "show active"
 
@@ -726,7 +780,7 @@ function html_populateAddImageTabList() {
         var placeholder = getScreenshotPlaceholderImagePath(p)
         var exImgClass = (PLATFORM_CONFIG[p].round) ? "roundScr" : ""
 
-        for (var i = 1; i <= maxScreenshots; i++) {
+        for (var i = 1; i <= MAX_SCREENSHOTS; i++) {
             output += `<div class="card img-card ${p} noshadow border-lite ml-3 mt-3">
                             <label for="i-screenshot-${pshort}-${i}-f">
                                 <img id = "i-screenshot-${pshort}-${i}-i" class="card-img-top ${exImgClass} ${p}" src="${placeholder}" />
