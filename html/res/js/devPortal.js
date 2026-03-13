@@ -2226,5 +2226,4 @@ function initDevPortal() {
 
 }
 
-
 initDevPortal();
