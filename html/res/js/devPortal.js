@@ -1,5 +1,9 @@
 //Global variables
+var zip;
+import("./zip.js").then(z => { zip = z; pbwAdded(); });
+
 currentAppCache = {}
+pbwAppinfo = null;
 notifications = {
     count: 0
 }
@@ -65,6 +69,40 @@ const PLATFORM_CONFIG = {
 
 const PLATFORMS = Object.keys(PLATFORM_CONFIG)
 const GREYSCALE_PLATFORMS = Object.keys(PLATFORM_CONFIG).filter(x => PLATFORM_CONFIG[x].colour == false)
+
+
+function pbwAdded() {
+	const pbwFile = $('#i-pbw').prop('files')[0];
+	if (!pbwFile) {
+		return;
+	}
+	const reader = new FileReader();
+	 reader.onload = async function() {
+	   const arrayBuffer = this.result;
+		const zipFileHeaders = zip.getZipFileHeaders(arrayBuffer);
+		const appinfoHeader = zipFileHeaders.find(
+	     header => header.filename == "appinfo.json",
+	   );
+		if (appinfoHeader) {
+			try {
+				const fileData = await zip.unzipFile(arrayBuffer, appinfoHeader);
+				const textDecoder = new TextDecoder("utf-8");
+				const fileDataAsString = textDecoder.decode(fileData);
+				pbwAppinfo = JSON.parse(fileDataAsString);
+				const nameField = $('#i-newapp-name');
+				if (!nameField.prop('value')) {
+					nameField.prop('value', pbwAppinfo.displayName);
+				}
+				updateWatchappOrFaceText();
+			} catch (e) {
+				pbwAppinfo = null;
+			}
+	   } else {
+				pbwAppinfo = null;
+		 }
+	 }
+	 reader.readAsArrayBuffer(pbwFile);
+}
 
 
 // Worker functions
@@ -1636,10 +1674,12 @@ function platformScreenshotExists(platform) {
 }
 
 function submitNewApp() {
-
+		if (!pbwAppinfo) {
+        newAppValidationError("Error parsing PBW");
+		}
     var shinyNewApp = {
         name: $('#i-newapp-name').val(),
-        type: ($('#i-iswatchface').prop("checked")) ? "watchface" : "watchapp",
+        type: pbwAppinfo.watchapp.watchface ? "watchface" : "watchapp",
         description: $('#i-description').val(),
         releaseNotes: $('#i-releaseNotes').val(),
     }
@@ -1652,7 +1692,7 @@ function submitNewApp() {
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
     //At least one screenshot
 
-    if (!PLATFORMS.some(platformScreenshotExists)) {
+    if (!pbwAppinfo.targetPlatforms.some(platformScreenshotExists)) {
         newAppValidationError("Provide at least one screenshot")
         return
     }
@@ -2201,6 +2241,20 @@ function getScreenshotPlaceholderImagePath(platform) {
     return placeholder
 }
 
+function updateWatchappOrFaceText() {
+		if (pbwAppinfo.watchapp.watchface) {
+				$('#appCategory').addClass("hidden");
+				$('#uses-timeline').addClass("hidden")
+				$('#appIconContainer').addClass("hidden");
+				$('.newappOrFace').text("Watchface");
+		} else {
+				$('#appCategory').removeClass("hidden");
+				$('#uses-timeline').removeClass("hidden")
+				$('#appIconContainer').removeClass("hidden");
+				$('.newappOrFace').text("App")
+		}
+}
+
 function initDevPortal() {
     //Check if we need to log in
     checkAuthState();
@@ -2215,20 +2269,6 @@ function initDevPortal() {
         // Change subtitle on visiblity change
         updateProfileSubtitle();
      });
-
-    $('.rbtype').on('click', function(e) {
-        if ($('#i-iswatchface').prop("checked")) {
-            $('#appCategory').addClass("hidden");
-            $('#uses-timeline').addClass("hidden")
-            $('#appIconContainer').addClass("hidden");
-            $('.newappOrFace').text("Watchface");
-        } else {
-            $('#appCategory').removeClass("hidden");
-            $('#uses-timeline').removeClass("hidden")
-            $('#appIconContainer').removeClass("hidden");
-            $('.newappOrFace').text("App")
-        }
-    });
 
     $('#usePlatformSpecificScreenshots').on('click', function(e) {
         if ($('#usePlatformSpecificScreenshots').prop("checked")) {
@@ -2277,7 +2317,6 @@ function initDevPortal() {
 
     //Start up. Router and other special stuff runs on callback. Follow this.
     getUserInfo();
-
 }
 
 
