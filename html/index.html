@@ -1335,25 +1335,16 @@
                     </div>
 
                     <div id="substep-1" class="substep">
+                        <div class="mt-4 ml-2">
+                            App Binary
+                            <div class="small">Your built pbw file.</div>
+                            <input class="mt-2 green-text" type="file" name="pbw" id="i-pbw" onchange="pbwAdded();"></input>
+                        </div>
+
                         <div class="mt-3 ml-2">
                             <span class="newappOrFace">Watchface</span> Name*
                             <br>
                             <input class="niceInput mt-2" name="appname" id="i-newapp-name"></input>
-                        </div>
-
-                        <div class="mt-4 ml-2">
-                            App Type*
-                            <br>
-                            <div class="custom-control custom-radio m-l-s">
-                                <input type="radio" class="custom-control-input rbtype" id="i-iswatchface"
-                                    name="apptype">
-                                <label class="custom-control-label" for="i-iswatchface">Watchface</label>
-                            </div>
-                            <div class="custom-control custom-radio m-l-s">
-                                <input type="radio" class="custom-control-input rbtype" id="i-iswatchapp"
-                                    name="apptype">
-                                <label class="custom-control-label" for="i-iswatchapp">Watch App</label>
-                            </div>
                         </div>
 
                         <div class="mt-4 ml-2 animated fadeIn hidden" id="appCategory">
@@ -1508,12 +1499,6 @@
                             <div class="small">What's included with this release? (Still required for first upload.)
                             </div>
                             <textarea class="niceInput mt-2" id="i-releaseNotes"></textarea>
-                        </div>
-
-                        <div class="mt-4 ml-2">
-                            App Binary
-                            <div class="small">Last but not least, your built pbw file.</div>
-                            <input class="mt-2 green-text" type="file" name="pbw" id="i-pbw" accept=".pbw"></input>
                         </div>
 
                         <!-- <div class="ml-1 mt-5">

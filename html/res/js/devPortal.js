@@ -1,5 +1,28 @@
 //Global variables
+var zip;
+import("./zip.js").then(z => { zip = z; pbwAdded(); });
+
+const PBW_SHAPE = {
+    capabilities: [],
+    displayName: "",
+    uuid: "",
+    sdkVersion: "",
+    enableMultiJS: true,
+    targetPlatforms: [],
+    watchapp: { watchface: true },
+    resources: {},
+    name: "",
+    shortName: "",
+    longName: "",
+    versionLabel: "",
+    companyName: "",
+    messageKeys: [],
+    appKeys: [],
+}
+
 currentAppCache = {}
+pbwAppinfo = {};
+missingAppinfoField = "";
 notifications = {
     count: 0
 }
@@ -65,6 +88,63 @@ const PLATFORM_CONFIG = {
 
 const PLATFORMS = Object.keys(PLATFORM_CONFIG)
 const GREYSCALE_PLATFORMS = Object.keys(PLATFORM_CONFIG).filter(x => PLATFORM_CONFIG[x].colour == false)
+
+function findMissingKey(a, b, keyStr) {
+    for (const key of Object.keys(a)) {
+        if (b[key] === undefined || typeof a[key] !== typeof b[key]) {
+            return keyStr + key;
+        }
+
+        const SHAPE_PROP = a[key];
+        if (typeof SHAPE_PROP === "object" && SHAPE_PROP !== null) {
+            const missing = findMissingKey(a[key], b[key], keyStr + key + ".");
+            if (missing) {
+                return missing;
+            }
+        }
+    }
+    return "";
+}
+
+function checkPbwShape() {
+    missingAppinfoField = findMissingKey(PBW_SHAPE, pbwAppinfo, "");
+    return missingAppinfoField;
+}
+
+function pbwAdded() {
+    const pbwFile = $('#i-pbw').prop('files')[0];
+    if (!pbwFile) {
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = async function() {
+        const arrayBuffer = this.result;
+        const zipFileHeaders = zip.getZipFileHeaders(arrayBuffer);
+        const appinfoHeader = zipFileHeaders.find(header => header.filename == "appinfo.json");
+        if (appinfoHeader) {
+            try {
+                const fileData = await zip.unzipFile(arrayBuffer, appinfoHeader);
+                const textDecoder = new TextDecoder("utf-8");
+                const fileDataAsString = textDecoder.decode(fileData);
+                pbwAppinfo = JSON.parse(fileDataAsString);
+                if (checkPbwShape()) {
+                    pbwAppinfo = {};
+                    return;
+                }
+                const nameField = $('#i-newapp-name');
+                if (!nameField.prop('value')) {
+                    nameField.prop('value', pbwAppinfo.displayName);
+                }
+                updateWatchappOrFaceText();
+            } catch (e) {
+                pbwAppinfo = {};
+            }
+        } else {
+            pbwAppinfo = {};
+        }
+    }
+    reader.readAsArrayBuffer(pbwFile);
+}
 
 
 // Worker functions
@@ -1636,10 +1716,17 @@ function platformScreenshotExists(platform) {
 }
 
 function submitNewApp() {
-
+    if (missingAppinfoField) {
+        newAppValidationError("Missing Appinfo field: " + missingAppinfoField);
+        return;
+    }
+    if (pbwAppinfo == {}) {
+        newAppValidationError("Missing PBW");
+        return;
+    }
     var shinyNewApp = {
         name: $('#i-newapp-name').val(),
-        type: ($('#i-iswatchface').prop("checked")) ? "watchface" : "watchapp",
+        type: pbwAppinfo.watchapp.watchface ? "watchface" : "watchapp",
         description: $('#i-description').val(),
         releaseNotes: $('#i-releaseNotes').val(),
     }
@@ -1652,7 +1739,7 @@ function submitNewApp() {
     if (shinyNewApp.releaseNotes == "") { newAppValidationError("Release Notes cannot be blank"); return }
     //At least one screenshot
 
-    if (!PLATFORMS.some(platformScreenshotExists)) {
+    if (!pbwAppinfo.targetPlatforms.some(platformScreenshotExists)) {
         newAppValidationError("Provide at least one screenshot")
         return
     }
@@ -2001,23 +2088,23 @@ function export_SaveImageFromURL(folder, filename, progress_id, image_url, id_to
 // Helper functions
 
 function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disableContentTypeSet = false, percentageCallback) {
-	debugLog("POST: " + rurl + " - Data: " + postdata)
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-	if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
-		if (callBackObject != null) {
-			callback(xmlHttp.responseText, callBackObject);
-		} else {
-			callback(xmlHttp.responseText);
+    debugLog("POST: " + rurl + " - Data: " + postdata)
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
+        if (callBackObject != null) {
+            callback(xmlHttp.responseText, callBackObject);
+        } else {
+            callback(xmlHttp.responseText);
         }
-	} else if (xmlHttp.readyState == 4) {
+    } else if (xmlHttp.readyState == 4) {
         if (xmlHttp.status == 429) {
             rateLimitErrorHandler()
         }
         if (errorCallback != null) {
-	   	    errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
+            errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
         }
-	}
+    }
     }
     xmlHttp.onprogress = function (e) {
         if (e.lengthComputable && percentageCallback != null) {
@@ -2035,31 +2122,31 @@ function apiPOST(rurl, postdata, callback, errorCallback, callBackObject, disabl
 }
 
 function apiPUT(rurl, putdata, callback, errorCallback, callBackObject, disableContentTypeSet = false) {
-	debugLog("PUT: " + rurl + " - Data: " + putdata)
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.onreadystatechange = function() {
-	if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
-		if (callBackObject != null) {
-			callback(xmlHttp.responseText, callBackObject);
-		} else {
-			callback(xmlHttp.responseText);
+    debugLog("PUT: " + rurl + " - Data: " + putdata)
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && RegExp('20[01]').test(xmlHttp.status)) {
+            if (callBackObject != null) {
+                callback(xmlHttp.responseText, callBackObject);
+            } else {
+                callback(xmlHttp.responseText);
+            }
+        } else if (xmlHttp.readyState == 4) {
+            console.log("Error Code: " + xmlHttp.status)
+            if (xmlHttp.status == 429) {
+                rateLimitErrorHandler()
+            }
+            if (errorCallback != null) {
+                errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
+            }
         }
-	} else if (xmlHttp.readyState == 4) {
-        console.log("Error Code: " + xmlHttp.status)
-        if (xmlHttp.status == 429) {
-            rateLimitErrorHandler()
-        }
-        if (errorCallback != null) {
-            errorCallback(xmlHttp.responseText, xmlHttp.status, callBackObject);
-       	}
-	}
     }
     xmlHttp.open("PUT", rurl, true);
     if (! disableContentTypeSet) {
         xmlHttp.setRequestHeader("Content-Type", "application/json");
     }
     if (getUserToken() != null) {
-      xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
+        xmlHttp.setRequestHeader("Authorization", "Bearer " + getUserToken());
     }
     xmlHttp.send(putdata);
 }
@@ -2201,6 +2288,20 @@ function getScreenshotPlaceholderImagePath(platform) {
     return placeholder
 }
 
+function updateWatchappOrFaceText() {
+    if (pbwAppinfo.watchapp.watchface) {
+        $('#appCategory').addClass("hidden");
+        $('#uses-timeline').addClass("hidden")
+        $('#appIconContainer').addClass("hidden");
+        $('.newappOrFace').text("Watchface");
+    } else {
+        $('#appCategory').removeClass("hidden");
+        $('#uses-timeline').removeClass("hidden")
+        $('#appIconContainer').removeClass("hidden");
+        $('.newappOrFace').text("App")
+    }
+}
+
 function initDevPortal() {
     //Check if we need to log in
     checkAuthState();
@@ -2215,20 +2316,6 @@ function initDevPortal() {
         // Change subtitle on visiblity change
         updateProfileSubtitle();
      });
-
-    $('.rbtype').on('click', function(e) {
-        if ($('#i-iswatchface').prop("checked")) {
-            $('#appCategory').addClass("hidden");
-            $('#uses-timeline').addClass("hidden")
-            $('#appIconContainer').addClass("hidden");
-            $('.newappOrFace').text("Watchface");
-        } else {
-            $('#appCategory').removeClass("hidden");
-            $('#uses-timeline').removeClass("hidden")
-            $('#appIconContainer').removeClass("hidden");
-            $('.newappOrFace').text("App")
-        }
-    });
 
     $('#usePlatformSpecificScreenshots').on('click', function(e) {
         if ($('#usePlatformSpecificScreenshots').prop("checked")) {
@@ -2277,7 +2364,6 @@ function initDevPortal() {
 
     //Start up. Router and other special stuff runs on callback. Follow this.
     getUserInfo();
-
 }
 
 
